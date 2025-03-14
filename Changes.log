@@ -1,0 +1,548 @@
+GraphArray: changes log
+
+Version 6.0:
+• Project has been renamed to GraphArray;
+• Current updates have been applied
+
+Version 5.8.8:
+• Videoguide has been updated
+
+Version 5.8.6:
+• Access and appearance of the Lab Policy have been updated
+
+Version 5.8.5:
+• Updated the associations registrator;
+• Updated the behavior of the “App about” interface
+
+Version 5.8.4:
+• Current updates have been applied;
+• Fixed the non-auto axes placement when using preview templates;
+• Some interface improvements have been applied
+
+Version 5.8.2:
+• The new identity has been applied
+
+Version 5.8:
+• Implemented the data extractor for image files. It allows you to put the line segment
+  on the picture and obtain the RGB separated data from pixels that are covered by this line.
+  Use [Ctrl] + [M] keys to run it
+
+Version 5.7.9:
+• The “App about” interface has been updated
+
+Version 5.7.8:
+• Updated the settings storage (requires some re-adjustments);
+• XPUN update has been applied
+
+Version 5.7.6:
+• The application has been retargeted to .NET Framework 4.8.1;
+• Access checking method has been completely rewritten: now it will properly detect problems
+  with file / registry input / output and help user with fixing them;
+• Added the special section in the user guide for access troubleshooting;
+• The MS Store version will now be able to use the default preview template
+
+Version 5.7.2:
+• Updated HypeHelp and Updates checker mechanics: this should fix apps freezing immediately
+  after launch (on some PCs);
+• Updated the HypeHelp links list
+
+Version 5.7:
+• Update for XPUN has been applied;
+• Adjusted some interface elements;
+• Removed the menu icons
+
+Version 5.6.1:
+• Added localized video guides
+
+Version 5.6:
+• Core updates have been applied;
+• Fixed some minor interface bugs
+
+Version 5.5.6:
+• Added a new version of offline help
+
+Version 5.5.5:
+• The offline quick help has been discontinued;
+• Completed the process of version control unification
+
+Version 5.5.3:
+• Updates and fixes have been applied to the update polling mechanism, as well as to other auxiliary functions
+
+Version 5.5.1:
+• Fixed problem with NaN values on systems with non-English localizations
+
+Version 5.5:
+• MSO Excel support libraries updated to v 3.6;
+• The translation of the complete user guide for the app to English has been completed
+
+Version 5.4.9:
+• New identity has been applied
+
+Version 5.4.8:
+• Added the obvious URLs for videoguide and for text guide
+
+Version 5.4.7:
+• Fixed some issues with the Policy loader where it would sometimes ask for multiple confirmations
+
+Version 5.4.5:
+• Fixed some text messages;
+• Fixed some interface elements;
+• Updated the guide links
+
+Version 5.4.3:
+• Implemented the access rights checker: it will test the availability of the Windows registry
+  and the application placement for writing and notify user about possible problems;
+• Updated the storage method of text tips
+
+Version 5.4:
+• Rewritten settings operator: it should fix problems with requiring administrator rights
+
+Version 5.3.8:
+• Updated the interface of message boxes
+
+Version 5.3.7:
+• Added UTF32 encoding;
+• All text encodings changed to UTF8;
+• The interface was adapted to Windows 10, incorrect window borders were fixed
+
+Version 5.3.5:
+• Cumulative updates have been applied
+
+Version 5.3.2:
+• App about form has been upgraded;
+• Links list for HypeHelp has been updated;
+• Fixed the updates downloader behavior in some rare conditions
+
+Version 5.3:
+• The text tips processing code has been refactored, some methods have been unified and simplified;
+• Removed some redundant code
+
+Version 5.2.7:
+• Updated the HypeHelp mechanics
+
+Version 5.2.2:
+• The app now uses a new, secure method for setting the size and position of windows;
+• Implemented support for HypeHelp mechanics
+
+Version 5.2:
+• Added the ability to restore the default preview template;
+• Selection tool has been replaced with the middle mouse button. It allows to select
+  diagrams and object with drag’n’drop movement or with one click;
+• Implemented the ability to properly parse line interruptions in the data generator
+  (for tg, ctg and other similar functions);
+• Updated the user guide;
+• Removed alphabet hotkeys for the main menu
+
+Version 5.1:
+• Tables merger and vector images generator have been integrated into GDD;
+• Font size of interface elements is correct now;
+• XPR control has been implemented;
+• Adjusted the control of single active copy
+
+Version 5.0:
+• Implemented the ability to open localized ADP, SCP and Welcome pages;
+• Required framework version updated from 4.0 to 4.8;
+• Removed obsolete code
+
+Version 4.21:
+• Added the ability to use dates as abscissas: app will convert them to YYYY.r format and display
+  in correct format on the diagram. The corresponding number format for Ox and Oy axes has been
+  added to the settings panel;
+• Some code refactoring has been performed
+
+Version 4.20.2:
+• Fixed the bug that affected the file association method
+
+Version 4.20:
+• Parsing methods for ADP and projects descriptions have been upgraded;
+• Current updates and improvements applied
+
+Version 4.19.37:
+• Implemented the updates downloading directly from the “About the app” interface. This function
+  requires DPModule. It allows you to download DPModule if it was not previously installed
+
+Version 4.19.3:
+• Current updates and improvements applied
+
+Version 4.19.1:
+• User manual has been rewritten and now available online;
+• Settings fields now react on mouse hover;
+• Some menu hotkeys have been restored;
+• Added some extra warnings for preventing data losses
+
+Version 4.19:
+• App got the scalable icons and the digital signature (only self-signed for now);
+• Applied some updates for core assemblies
+
+Version 4.18.17:
+• Updated internal mechanism of checking for updates (applied compatibility with new GitHub theme)
+
+Version 4.18.15:
+• Added the registry access checker: it will show recommended actions for the executable file
+  when Windows doesn’t allow saving settings;
+• Applied new elements in user interface;
+• AboutForm and HardWorkExecutor universal classes have been upgraded and improved;
+• Update link for ADP;
+• Optimized (as possible) mechanism of data transferring from main to editing window;
+• Fixed possible bug in data transferring to the editor
+
+Version 4.18.1:
+• Updated link and text presenter for ADP;
+• Applied fixed icons
+
+Version 4.18:
+• New identity applied;
+• New links to RD AAOW FDL added;
+• Added direct lab link
+
+Version 4.17.4:
+• Added ability to “ask developer” via E-mail for help, or send wish, advice or bug report;
+• Applied new paths processor
+
+Version 4.17.3:
+• Fixed bug in Policy acception interface that disallowed to accept it in offline mode at first start
+
+Version 4.17.2:
+• Added ability to register file associations;
+• Some code improvements applied;
+• .gddstyle extenstion replaced with .gds
+
+Version 4.17:
+• Application info interface now able to get last release’s changes log;
+• Fixed bug that disallowed to use columns headers with spaces
+
+Version 4.16.3i:
+• Found and fixed hidden bug that caused an error when starting the application from local network;
+• Fixed bug that caused the web page request method to fail if server disconnected
+
+Version 4.16.2p:
+• Added ability to accept/decline ADP at first start to the application info interface
+
+Version 4.16.1p:
+• Updated application info interface (more convenient font is used for now);
+• Added a button to access the Application development policy and EULA in the application info interface (due to ADP update);
+• Added automatic check for updates to the application info interface
+
+Version 4.16:
+• Names of generated functions now will be properly transferred to main window;
+• Automatic names of added relations are now better corresponding to all diagram types;
+• User interface code has been reviewed;
+• Some minor bugs have been fixed
+
+Version 4.15h:
+• New application info interface implemented
+
+Version 4.14.4:
+• Fixed some interface bugs
+
+Version 4.14.3L:
+• Applied correct representation of supported languages list
+
+Version 4.14.2:
+• Fixed multiple registry reading in ConfigAccessor: now settings will be filled once and called from local variables;
+• Some source code improvements applied
+
+Version 4.14u:
+• Application namespace, icon and development environment have been unified;
+• Localization system has been unified;
+• Application setting moved to system registry; configuration file will not be created anymore;
+• Fixed saving of scaled raster image when texts of captions and notches are not auto-placed
+
+Version 4.13:
+• Fixed drawing of vector images in “markers only” mode (lines will not draw anymore);
+• Fixed color setting for filled shapes;
+• Added ability to save an image from command line (PNG or SVG; uses default preview template)
+
+Version 4.12:
+• Abscissa processing variables extended to “double”;
+• Some improvements added to parsing functions;
+• Fixed some minor bugs.
+New *.gdd and *.gddstyle files ARE NOT compatible with previous version of application due to extension of data fields
+
+Version 4.11:
+• Formula evaluation interface updated: more freedom in formula input – all letter cases allowed, using and missing spaces allowed;
+  exponential number format support removed;
+• Data rows count limit adjusted for best fitness with curves generation ranges;
+• Incorrect middle/center axes placement fixed;
+• Application menu fully reviewed: curves merging, data columns replacing, styles management and preview templates
+  have been moved to new menu item called “Operations”;
+• Application interface reviewed: only adding, deleting, hiding and selection tools are now at the main window.
+  Adding and deleting tools have been duplicated by hotkeys and now available from the keyboard.
+New *.gdd and *.gddstyle files are compatible with previous version of application
+
+Version 4.10:
+• ExcelDataReader was updated to actual version. Accidentally, it fixed some bugs in XLS files loading process;
+• QuickSheet has been rewritten and now available in user manual (part 6).
+New *.gdd and *.gddstyle files are compatible with previous version of application
+
+Version 4.9:
+• .any input file format has been removed; replaced with extracting option;
+• .csv and .xls[x] formats parsing now more “tolerant”: invalid and text values will be replaced with zeros;
+• Application can be used from command line for data file formats conversion; use /? key or user manual (part 4.5) for more information;
+• QuickSheet has been removed from user manual; it will be rewritten soon.
+New *.gdd and *.gddstyle files are compatible with previous version of application
+
+Version 4.8:
+• Loading diagram data from the clipboard is now available (use Ctrl + V);
+• Keys for data editor changed to Ctrl + E (it is more suitable);
+• Added missing tool tips for main menu.
+New *.gdd and *.gddstyle files are compatible with previous version of application
+
+Version 4.7:
+• Curves generation interface upgraded: fixed potential “division by zero” exception;
+• Drawing interruption curves points and NaN values now works correctly.
+New *.gdd and *.gddstyle files are compatible with previous version of application
+
+Version 4.6:
+• Microsoft Excel format support added (file opening). Based on MIT license. Read user manual for more information.
+New *.gdd and *.gddstyle files are compatible with previous version of application
+
+Version 4.5c:
+• Some raster images drawing bugs fixed (invalid rectangles cropping, line’s first marker absence);
+• “Usage tips” section added to help file.
+New *.gdd and *.gddstyle files are compatible with previous version of application, but you may need to re-add
+  “line” objects to your diagram
+
+Version 4.5:
+• Upgraded additional object “line”: endpoints coordinates setting has been simplified;
+• Some minor defects have been fixed
+
+Version 4.4:
+• Graphical shapes added; now user can seriously increase informativity of his diagrams by using free text labels,
+  pointing lines, rectangles and ellipses (up to 50 in this version);
+• Some picture saving bugs fixed;
+• Axes notches count auto-evaluation has been revised;
+• Curves merging bugs fixed;
+• Behavior of configuration panels has been revised.
+*.gdd and *.gddstyle files from old and new versions of application are compatible in both directions
+
+Version 4.3:
+• Improved data table generation function. Now user can enter a SET of analytical representations of functions
+  and set plotting range for them. And get a diagram with SET of curves as a result;
+• Some artifacts in formula evaluation class fixed: speed of lexemes extraction seriously increased;
+• Some other interface bugs fixed;
+• Count of curves in diagram decreased from 100 to 20: don’t think that it is necessary to have too many curves on a diagram.
+New *.gdd and *.gddstyle files are compatible with previous version of application
+
+Version 4.2 (11.02.17):
+• Added data table generation function. Now user can enter analytical representation of function and set plotting range for it.
+  And get a diagram as a result;
+• Added “Close diagram” function. Sometimes it is necessary;
+• Some artifacts fixed.
+New *.gdd and *.gddstyle files are compatible with previous version of application
+
+Version 4.1 (26.11.16):
+• EMF (Windows metafile) support added (saving diagrams) (compatible with Office applications);
+• Curve drawing bug (incorrect displaying of curve’s break) in vector image formats fixed (but it causes increasing of them sizes;
+  EMZ and SVGZ will solve this problem).
+New *.gdd and *.gddstyle files are compatible with previous version of application
+
+Version 4.0:
+• English (USA) variant of interface added; help file not translated yet;
+• Internal dialogs have been updated and unified;
+• Mouse placement of curve images bug fixed;
+• Some artifacts fixed;
+• Grid drawing updated and corrected;
+• Data redundancy in DiagramData class fixed.
+*.gdd and *.gddstyle from 3.8 are compatible with 4.0
+
+Version 3.8:
+• Publishing on GitHub
+
+
+
+Older versions have no version specifications and can only be separated by release date
+
+Доработки от 16.09.16:
+• Устранить сброс списка выделенных кривых при редактировании данных;
+• Разработать языковой пакет
+
+Доработки от 9.09.16:
+• Проведена лицензионная адаптация программы;
+• Файлы программы переведены в бинарный формат;
+• Исправлена отрисовка сетки на растровых диаграммах;
+• Исправлена функция замены данных;
+• Реализовано визуальное выделение текущей кривой;
+• Исправлена работа списка выбранных кривых
+
+Доработки от 9.07.16:
+• Расширить спецификацию формата CSV для работы с англоязычными десятичными разделителями;
+• Разработать механизм замены данных, привязанных к имеющемуся стилю отображения;
+• Обновить механизм отрисовки изображения;
+• Устранить чёрную ауру при отрисовке подписей в растровом режиме в Win8
+
+Доработки от 25.06.16:
+• Исправлена ошибка при получении имён столбцов в режиме извлечения данных;
+• Добавить возможность расположения графиков в ряд или в столбец;
+• Добавить возможность группового изменения расположения подписей диаграмм
+
+Доработки от 28.05.16:
+• Для SVGCreator: разработать интерфейс для командной строки;
+• Снять ограничение на количество блоков Text;
+• Для GeomagDataDrawer: разработать защитные ограничения для массивов программы
+
+Доработки от 30.04.16:
+• Разработать механизм выделения (режим выделения) изображений диаграмм;
+• Разработать механизм совмещения диаграмм (общие/разные оси, окраска)
+
+Доработки от 23.04.16:
+• Для SVGCreator: разработать механизм включения файлов в скрипты формирования изображений с возможностью задания координат,
+  на которых будет выполняться построение включаемого файла
+
+Доработки от 12.03.16:
+• Разработать возможность работы с программой на сенсорном планшете;
+• Добавить возможность сохранения шаблона отображения диаграммы
+
+Доработки от 6.03.16:
+• Добавить функцию движения по рабочему полотну
+
+Доработки от 30.01.16:
+• Восстановить сохранение стилей при редактировании данных диаграммы;
+• Восстановить изменение ширины столбцов в поле редактирования;
+• Добавить возможность работы с именами столбцов;
+• Разработать механизм сохранения нескольких стилей и зависимостей, к которым они применяются
+
+Доработки от 16.01.16:
+• Заменить элемент управления, используемый при указании текущей кривой, на «Лист»; добавить возможность множественного выбора;
+• Разработать возможность редактирования данных внутри Geomag Data Drawer;
+• Добавить возможность выбора вида представления подписей на диаграмме
+
+Доработки от 3.01.16:
+• Вместо стилей использовать стандартный изменяемый список команд, добавляющий кривые на диаграмму
+
+Доработки от 6.12.15:
+• Создать утилиту конвертации скрипта с данными и параметрами кривых в формат SVG
+
+Доработки от 25.11.15:
+• Добавить пересчёт расположения подписей осей диаграммы при их автоматическом расположении
+
+Доработки от 21.11.15:
+• Разработать механизм автоматического отображения первых четырёх диаграмм из загруженного файла;
+• Установить поддержку формата XLS;
+• Разделить шрифты подписей осей и подписи рисунка
+
+Доработки от 14.11.15:
+• Установить поддержку формата XLS (для всех программ)
+
+Доработки от 7.11.15:
+• Разработать механизм выборочного логарифмирования и мультиплицирования для файлов данных (GDDTools)
+
+Доработки от 24.10.15:
+• Создать собственный формат файла (данные + стиль + выборки); изменить структуру файла стиля под настройку
+  одной отдельной диаграммы;
+• Создать функцию извлечения данных из файлов произвольных форматов с игнорированием ошибок чтения
+
+Доработки от 27.09.15:
+• Проконтролировать работу задания положения подписей с помощью мыши в граничных условиях и при включённом
+  автоматическом расположении;
+• Исправить ошибку загрузки стиля пользователя;
+• Добавить возможность пакетного добавления кривых параметрическим способом
+
+Доработки от 12.09.15:
+• Удалить все форматы данных, кроме универсального табличного;
+• Разработать механизм раздельного построения отдельных графиков на странице;
+• Разработать «командную строку» для построения графиков
+
+Доработки от 22.03.2015:
+• Добавить дополнительные маркеры;
+• Объединить вкладки «Смещение диаграммы» и «Размер диаграммы»;
+• Добавить возможность сброса загруженных данных в файл clip.txt (с подтверждением и возможностью отключения опции);
+• Перевести сохранение стиля в автоматический режим (default.gddstyle рядом с файлом приложения, с подтверждением
+  и возможностью отключения опции);
+• Добавить возможность автозагрузки стандартного стиля (с возможность отключения опции);
+• Скорректировать шаги в числовых полях в Formula evaluator;
+• Recent list для программы Formula evaluator;
+• Добавить в Formula evaluator флаг закрытия программы при успешной записи;
+• Добавить в Formula evaluator флаг записи в стандартный файл
+
+Доработки от 13.03.2015:
+• Добавить возможность автозагрузки файла clip.txt при старте приложения (с возможностью отключения опции);
+• Переработать exceptions в программе FormulaEvaluator
+
+Доработки от 9.03.2015:
+• Разработать механизм получения производной от функции, представленной в виде табличных данных;
+• Добавить в обработку DTMA-файла столбцы конечных разностей;
+• Разработать механизм генерации табличных данных по аналитическому виду функции
+
+Доработки от 1.03.2015:
+• Добавить автовычисление числа засечек на осях;
+• Исправить дефект установки ограничений в полях смещений подписей;
+• Исправить занятие файлов изображений маркеров
+
+Доработки от 15.02.2015:
+• Скорректировать ограничения размеров изображений кривых;
+• Добавить ручное расположение подписи к диаграмме и изменение текста в них; установить большее ограничение длины;
+• Скорректировать обработку стилей при добавлении дополнительных графиков на диаграмму;
+• Скорректировать интерфейс (добавить разделители между областями настройки);
+• Добавить отключение подтверждения выхода из программы;
+• Заменить названия: «Стиль диаграммы» на «Вид», «Подписи» на «Шрифт»;
+• Отключить автоотрисовку графика при выборе столбца;
+• Добавить предложение сохранить текущий стиль отображения (с возможностью отключения этой опции);
+• Скорректировать группировку элементов графика
+
+Доработки от 7.02.2015:
+• Добавить DragNDrop-способ задания координат;
+• Доработать округление для подписей на осях;
+• Добавить обработку фрагментов данных Excel, доработать обработку абзацев;
+• Добавить возможность ручного указания позиций подписей на осях;
+• Установить собственные цвета для подписей на осях
+
+Доработки от 31.01.2015:
+• Доработать расчёт границ построения;
+• Добавить обработку пустых абзацев в AnyData;
+• Добавить ручную настройку расположения осей;
+• Добавить стандартные размеры A3, A4, A5 + ориентация страницы;
+• Доработать отрисовку подписей в формате SVG (дефект цвета и шрифта);
+• Доработать отрисовку легенды
+
+Доработки от 24.01.2015:
+• Добавить подсказки к элементам управления;
+• Добавить векторный формат изображений;
+• Добавить авторов программы;
+• Изменить подпись «Кривая» на «Столбец ординат»
+
+Доработки от 18.01.2015:
+• Добавить моментальный обмен границ диапазонов построения;
+• Доработать AnyData до неограниченного числа столбцов;
+• Добавить возможность загрузки стандартного файла данных AnyData;
+• Добавить контроль запуска единственного экземпляра приложения;
+• Добавить сохранение размеров и положения окна;
+• Добавить описание обработки белого цвета в программе в файл справки; добавить отключающие кнопки в окна настроек осей и сетки;
+• Добавить пункт меню «Сброс стиля»
+
+Доработки от 17.01.2015:
+• Разработать возможность построения нескольких диаграмм на одном поле;
+• Объединить пункты меню «Открыть», «Сохранить» и «Выход» в меню «Файл»;
+• Восстановить ControlBox;
+• Установить прозрачный фон для сохраняемых изображений
+
+Доработки от 10.01.2015:
+• Создать файл справки
+
+Доработки от 9.01.2015:
+• Добавить выгрузку/загрузку стилей;
+• Добавить маркеры в виде загружаемых изображений;
+• Добавить ручное указание требуемых значений на засечках на осях;
+• Доработать систему выбора шрифтов
+
+Доработки от 8.01.2015:
+• Отделить полностью маркеры от линий (цвета);
+• Добавить точки с запятыми в сплиттеры;
+• Решить проблему с осями при развороте границ построения и повороте графика
+
+Доработки от 4.01.2015:
+• Выполнять округление по оси Ox до первой ненулевой цифры;
+• Добавить формат anydata;
+• Добавить подписи: Mfk – магнитная восприимчивость, Jra – вектора намагниченности;
+• Добавить обмен осей
+
+Доработки от 3.01.2015:
+• Выполнять округление по оси Oy до первой ненулевой цифры;
+• Разделители – табуляции;
+• Вынести все настройки, кроме диапазона построения, в меню;
+• Добавить возможность вывода линий по отдельности;
+• Возможность «максимум меньше минимума»;
+• Добавить маркеры;
+• Добавить новые форматы;
+• Перестроить порядок вызова классов под трёхлинейные диаграммы;
+• Добавить подписи к кривым

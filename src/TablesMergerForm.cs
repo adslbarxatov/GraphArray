@@ -53,10 +53,8 @@ namespace RD_AAOW
 			{
 			// Локализация
 			OFDialog.Filter = RDLocale.GetText (this.Name + "_OFDialog_F");
-			/*OFDialog.Title = RDLocale.GetControlText ("GeomagDataDrawerForm", "OFDialog");*/
 			OFDialog.Title = RDLocale.GetText ("GeomagDataDrawerForm_OFDialog");
 			SFDialog.Filter = RDLocale.GetText (this.Name + "_SFDialog_F");
-			/*SFDialog.Title = RDLocale.GetControlText ("GeomagDataDrawerForm", "SFDialog");*/
 			SFDialog.Title = RDLocale.GetText ("GeomagDataDrawerForm_SFDialog");
 
 			while (MergeType.Items.Count < 2)

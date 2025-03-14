@@ -72,18 +72,13 @@ namespace RD_AAOW
 			// Панели
 			RDLocale.SetControlsText (MergingAxes);
 			RDLocale.SetControlsText (MergingVariant);
-			/*Ox.Text = Ox.Name;
-			Oy.Text = Oy.Name;*/
 
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
-			/*this.Text = RDLocale.GetControlText (this.Name, "T");*/
 			this.Text = RDLocale.GetText (this.Name + "_T");
 
 			// Сохранение параметров
 			string line = RDLocale.GetText (MergingVariant.Name + "_Line");
-			/*FirstLine.Text = RDLocale.GetControlText (MergingVariant.Name, "Line") + " " + Line1Name;
-			SecondLine.Text = RDLocale.GetControlText (MergingVariant.Name, "Line") + " " + Line2Name;*/
 			FirstLine.Text = line + " " + Line1Name;
 			SecondLine.Text = line + " " + Line2Name;
 

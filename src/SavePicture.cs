@@ -31,7 +31,6 @@ namespace RD_AAOW
 			RDLocale.SetControlsText (this);
 			SaveButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Save);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
-			/*this.Text = RDLocale.GetControlText (this.Name, "T");*/
 			this.Text = RDLocale.GetText (this.Name + "_T");
 
 			// Передача значений
@@ -46,7 +45,6 @@ namespace RD_AAOW
 			imageHeight = DiagramData.DiagramHeight;
 
 			// Настройка контролов
-			/*SFDialog.Title = RDLocale.GetControlText (this.Name, "SFDialog");*/
 			SFDialog.Title = RDLocale.GetText (this.Name + "_SFDialog");
 
 			ImageScale.Minimum = (decimal)DiagramStyle.MinScale;
@@ -237,14 +235,12 @@ namespace RD_AAOW
 		private void CustomSize_CheckedChanged (object sender, EventArgs e)
 			{
 			ImageScale.Enabled = true;
-			/*SFDialog.Filter = RDLocale.GetControlText (this.Name, "SFDialog_FR");*/
 			SFDialog.Filter = RDLocale.GetText (this.Name + "_SFDialog_FR");
 			}
 
 		private void A4Horiz_CheckedChanged (object sender, EventArgs e)
 			{
 			ImageScale.Enabled = false;
-			/*SFDialog.Filter = RDLocale.GetControlText (this.Name, "SFDialog_FR");*/
 			SFDialog.Filter = RDLocale.GetText (this.Name + "_SFDialog_FR");
 			}
 
@@ -266,7 +262,6 @@ namespace RD_AAOW
 		private void VectorImage_CheckedChanged (object sender, EventArgs e)
 			{
 			ImageScale.Enabled = false;
-			/*SFDialog.Filter = RDLocale.GetControlText (this.Name, "SFDialog_FV");*/
 			SFDialog.Filter = RDLocale.GetText (this.Name + "_SFDialog_FV");
 			}
 		}

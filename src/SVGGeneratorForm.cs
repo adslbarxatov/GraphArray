@@ -306,11 +306,11 @@ namespace RD_AAOW
 				}
 
 			if (RDLocale.IsCurrentLanguageRuRu)
-				FS.Write (RD_AAOW.Properties.GeomagDataDrawer.Sample_ru_ru, 0,
-					RD_AAOW.Properties.GeomagDataDrawer.Sample_ru_ru.Length);
+				FS.Write (RD_AAOW.Properties.GraphArray.Sample_ru_ru, 0,
+					RD_AAOW.Properties.GraphArray.Sample_ru_ru.Length);
 			else
-				FS.Write (RD_AAOW.Properties.GeomagDataDrawer.Sample_en_us, 0,
-					RD_AAOW.Properties.GeomagDataDrawer.Sample_en_us.Length);
+				FS.Write (RD_AAOW.Properties.GraphArray.Sample_en_us, 0,
+					RD_AAOW.Properties.GraphArray.Sample_en_us.Length);
 
 			FS.Close ();
 			}

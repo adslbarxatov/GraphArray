@@ -60,7 +60,6 @@ namespace RD_AAOW
 
 			SaveButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Save);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
-			/*this.Text = RDLocale.GetControlText (this.Name, "T");*/
 			this.Text = RDLocale.GetText (this.Name + "_T");
 
 			// Запуск

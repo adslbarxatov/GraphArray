@@ -160,13 +160,9 @@ namespace RD_AAOW
 			RDLocale.SetControlsText (this);
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
-			/*this.Text = RDLocale.GetControlText (this.Name, "T");*/
 			this.Text = RDLocale.GetText (this.Name + "_T");
 
 			// Настройка контролов
-			/*OFDialog.Filter = SFDialog.Filter = RDLocale.GetControlText (this.Name, "OFDialog_F");
-			OFDialog.Title = RDLocale.GetControlText (this.Name, "OFDialog");
-			SFDialog.Title = RDLocale.GetControlText (this.Name, "SFDialog");*/
 			OFDialog.Filter = SFDialog.Filter = RDLocale.GetText (this.Name + "_OFDialog_F");
 			OFDialog.Title = RDLocale.GetText (this.Name + "_OFDialog");
 			SFDialog.Title = RDLocale.GetText (this.Name + "_SFDialog");
@@ -216,7 +212,6 @@ namespace RD_AAOW
 
 			// Обработка
 			ProcessingMsg.Text = ProcessCommandLine (CommandLine.Text);
-			/*if (ProcessingMsg.Text == RDLocale.GetControlText (this.Name, "Correct"))*/
 			if (ProcessingMsg.Text == correctLine)
 				{
 				// Успешно
@@ -255,7 +250,6 @@ namespace RD_AAOW
 					}
 				catch
 					{
-					/*return RDLocale.GetControlText (this.Name, "ICNError");*/
 					return RDLocale.GetText (this.Name + "_ICNError");
 					}
 
@@ -266,7 +260,6 @@ namespace RD_AAOW
 					}
 				catch
 					{
-					/*return RDLocale.GetControlText (this.Name, "IDSError");*/
 					return RDLocale.GetText (this.Name + "_IDSError");
 					}
 
@@ -277,7 +270,6 @@ namespace RD_AAOW
 					}
 				catch
 					{
-					/*return RDLocale.GetControlText (this.Name, "IDOError");*/
 					return RDLocale.GetText (this.Name + "_IDOError");
 					}
 
@@ -295,28 +287,24 @@ namespace RD_AAOW
 						}
 					catch
 						{
-						/*return RDLocale.GetControlText (this.Name, "ITOError");*/
 						return RDLocale.GetText (this.Name + "_ITOError");
 						}
 					}
 				}
 			else
 				{
-				/*return RDLocale.GetControlText (this.Name, "IPCError");*/
 				return RDLocale.GetText (this.Name + "_IPCError");
 				}
 
 			// Контроль диапазонов
 			if ((xColumnNumberT >= dataColumnsCount) || (yColumnNumberT >= dataColumnsCount))
 				{
-				/*return string.Format (RDLocale.GetControlText (this.Name, "OCNError"), dataColumnsCount);*/
 				return string.Format (RDLocale.GetText (this.Name + "_OCNError"), dataColumnsCount);
 				}
 
 			if ((imageWidthT > DiagramStyle.MaxImageWidth) || (imageWidthT < DiagramStyle.MinImageWidth) ||
 				(imageHeightT > DiagramStyle.MaxImageHeight) || (imageHeightT < DiagramStyle.MinImageHeight))
 				{
-				/*return string.Format (RDLocale.GetControlText (this.Name, "ODSError"),*/
 				return string.Format (RDLocale.GetText (this.Name + "_ODSError"),
 					DiagramStyle.MinImageWidth, DiagramStyle.MaxImageWidth, DiagramStyle.MinImageHeight,
 					DiagramStyle.MaxImageHeight);
@@ -324,14 +312,12 @@ namespace RD_AAOW
 
 			if ((imageLeftT > DiagramStyle.MaxImageWidth) || (imageTopT > DiagramStyle.MaxImageHeight))
 				{
-				/*return string.Format (RDLocale.GetControlText (this.Name, "ODOError"),*/
 				return string.Format (RDLocale.GetText (this.Name + "_ODOError"),
 					DiagramStyle.MaxImageWidth, DiagramStyle.MaxImageHeight);
 				}
 
 			if ((lineNameLeftOffsetT > imageWidthT) || (lineNameTopOffsetT > imageHeightT))
 				{
-				/*return string.Format (RDLocale.GetControlText (this.Name, "OTOError"),*/
 				return string.Format (RDLocale.GetText (this.Name + "_OTOError"),
 					imageWidthT, imageHeightT);
 				}
@@ -348,7 +334,6 @@ namespace RD_AAOW
 			lineNameLeftOffset.Add (lineNameLeftOffsetT);
 			lineNameTopOffset.Add (lineNameTopOffsetT);
 
-			/*return RDLocale.GetControlText (this.Name, "Correct");*/
 			return correctLine;
 			}
 
@@ -400,7 +385,6 @@ namespace RD_AAOW
 
 			if (ProcessingResults.Text == "")
 				{
-				/*ProcessingResults.Text = RDLocale.GetControlText (this.Name, "Correct");*/
 				ProcessingResults.Text = correctLine;
 				ProcessingResults.ForeColor = Color.FromArgb (0, 192, 0);
 				}
@@ -434,7 +418,7 @@ namespace RD_AAOW
 			if (RDGenerics.StartedFromMSStore)
 				{
 				s = RDGenerics.GetEncoding (RDEncodings.UTF8).
-					GetString (RD_AAOW.Properties.GeomagDataDrawer.LineParameters);
+					GetString (RD_AAOW.Properties.GraphArray.LineParameters);
 				TR = new StringReader (s);
 				}
 			else
@@ -461,7 +445,6 @@ namespace RD_AAOW
 				string res = ProcessCommandLine (s);
 				line++;
 
-				/*if (res != RDLocale.GetControlText (this.Name, "Correct"))*/
 				if (res != correctLine)
 					{
 					ProcessingResults.Text += ("#" + line.ToString () + ": " + res + RDLocale.RN);
@@ -519,8 +502,8 @@ namespace RD_AAOW
 				}
 
 			// Запись и завершение
-			FS.Write (RD_AAOW.Properties.GeomagDataDrawer.LineParameters, 0,
-				RD_AAOW.Properties.GeomagDataDrawer.LineParameters.Length);
+			FS.Write (RD_AAOW.Properties.GraphArray.LineParameters, 0,
+				RD_AAOW.Properties.GraphArray.LineParameters.Length);
 			FS.Close ();
 			return true;
 			}

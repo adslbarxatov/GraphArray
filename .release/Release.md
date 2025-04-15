@@ -1,4 +1,3 @@
-_Changes for v 6.0_: 
-- Project has been renamed to ***GraphArray***;
+_Changes for v 6.0.1_:
 - Current updates have been applied;
-- Videoguide has been updated
+- Project has been renamed to ***GraphArray***

@@ -42,7 +42,7 @@ namespace RD_AAOW
 				return y;
 				}
 			}
-		private List<double> y = new List<double> ();
+		private List<double> y = [];
 
 		/// <summary>
 		/// Метод сравнивает данный экземпляр с указанным
@@ -56,26 +56,18 @@ namespace RD_AAOW
 			try
 				{
 				if (x < Sample.x)
-					{
 					return -1;
-					}
-				else if (x > Sample.x)
-					{
+
+				if (x > Sample.x)
 					return 1;
-					}
-				else
-					{
-					if (tableNumber < Sample.tableNumber)
-						{
-						return -1;
-						}
-					else if (tableNumber > Sample.tableNumber)
-						{
-						return 1;
-						}
-					else
-						return 0;
-					}
+
+				if (tableNumber < Sample.tableNumber)
+					return -1;
+
+				if (tableNumber > Sample.tableNumber)
+					return 1;
+
+				return 0;
 				}
 			catch
 				{

@@ -9,7 +9,7 @@ namespace RD_AAOW
 	public class LexemesExtractor
 		{
 		// Переменные
-		private char[] splitters = new char[] { '\x20', '\x9', '\xA', '\xD' };
+		private char[] splitters = ['\x20', '\x9', '\xA', '\xD'];
 
 		/// <summary>
 		/// Возвращает последнюю обработанную лексему. Является местом ошибки в случае присутствия таковой
@@ -39,7 +39,8 @@ namespace RD_AAOW
 			expression = expression.Replace ("*", " * ");
 			expression = expression.Replace ("/", " / ");
 			expression = expression.Replace ("^", " ^ ");
-			expression = expression.Replace ("-", " -");    // Для минуса правый пробел запрещён, т.к. его наличие меняет смысл выражения
+			expression = expression.Replace ("-", " -");
+			// Для минуса правый пробел запрещён, т.к. его наличие меняет смысл выражения
 
 
 			// Извлечение строковых представлений лексем. Требует разделения отдельных
@@ -55,20 +56,16 @@ namespace RD_AAOW
 				if (expressionStatus == ExpressionStatuses.Ok)
 					{
 					if (extractedLexemes[extractedLexemes.Count - 1].LexemeType == Lexeme.LexemeTypes.LeftParenthesis)
-						{
 						pStatus++;
-						}
+						
 					if (extractedLexemes[extractedLexemes.Count - 1].LexemeType == Lexeme.LexemeTypes.RightParenthesis)
-						{
 						pStatus--;
-						}
+						
 
 					// Эта проверка должна отлавливать случаи расположения правых скобок перед левыми
 					// при их одинаковом количестве
 					if (pStatus < 0)
-						{
 						expressionStatus = ExpressionStatuses.MisplacedRightParenthesis;
-						}
 					}
 
 				// Проверка корректности следования лексем в выражении
@@ -76,13 +73,12 @@ namespace RD_AAOW
 					{
 					if (i > 0)
 						{
-						followingStatus = LexemesFollowingMatrix.IfLexeme2FollowLexeme1 (extractedLexemes[i - 1], extractedLexemes[i]);
+						followingStatus = LexemesFollowingMatrix.IfLexeme2FollowLexeme1 (extractedLexemes[i - 1],
+							extractedLexemes[i]);
 						}
 
 					if (expressionStatus == ExpressionStatuses.Ok)
-						{
 						lastLexeme = lexemes[i];
-						}
 					}
 
 				// Проверка начала и конца выражения
@@ -117,15 +113,11 @@ namespace RD_AAOW
 
 			// Конечная проверка скобок
 			if (pStatus > 0)
-				{
 				expressionStatus = ExpressionStatuses.LeftParenthesisWasNotClosed;
-				}
 
 			// Конечная проверка выражения
 			if (extractedLexemes.Count == 0)
-				{
 				expressionStatus = ExpressionStatuses.ExpressionIsEmpty;
-				}
 			}
 
 		/// <summary>
@@ -138,7 +130,7 @@ namespace RD_AAOW
 				return extractedLexemes;
 				}
 			}
-		private List<Lexeme> extractedLexemes = new List<Lexeme> ();
+		private List<Lexeme> extractedLexemes = [];
 
 		/// <summary>
 		/// Перечисление статусов общего анализа выражения

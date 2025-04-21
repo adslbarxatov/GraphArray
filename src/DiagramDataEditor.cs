@@ -128,15 +128,13 @@ namespace RD_AAOW
 				}
 
 			DataTable table = (DataTable)MainDataGrid.DataSource;
-			List<int> indices = new List<int> ();
+			List<int> indices = [];
 
 			// Индексирование удаляемого диапазона
 			for (int i = 0; i < MainDataGrid.SelectedCells.Count; i++)
 				{
 				if (!indices.Contains (MainDataGrid.SelectedCells[i].RowIndex))
-					{
 					indices.Add (MainDataGrid.SelectedCells[i].RowIndex);
-					}
 				}
 			indices.Sort ();
 
@@ -149,13 +147,9 @@ namespace RD_AAOW
 				{
 				MainDataGrid.ClearSelection ();
 				if (indices[0] - 1 < 0)
-					{
 					MainDataGrid.Rows[0].Cells[0].Selected = true;
-					}
 				else
-					{
 					MainDataGrid.Rows[indices[0] - 1].Cells[0].Selected = true;
-					}
 				}
 			}
 

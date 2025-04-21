@@ -13,11 +13,14 @@ namespace RD_AAOW
 	public partial class SavePicture: Form
 		{
 		// Специальные стили, используемые для сохранения изображения
-		private List<DiagramStyle> lineStyles = new List<DiagramStyle> ();
+		private List<DiagramStyle> lineStyles = [];
+		private List<DiagramStyle> objectStyles = [];
 
-		private List<DiagramStyle> objectStyles = new List<DiagramStyle> ();
-		private uint imageWidth, imageHeight;   // Новый размер диаграммы
-		private DiagramData diagramData;        // Данные диаграммы
+		// Новый размер диаграммы
+		private uint imageWidth, imageHeight;
+
+		// Данные диаграммы
+		private DiagramData diagramData;
 
 		/// <summary>
 		/// Конструктор. Принимает отрисовываемые данные и стиль отрисовки
@@ -72,8 +75,6 @@ namespace RD_AAOW
 		/// <summary>
 		/// Метод сохраняет изображение в 'тихом' режиме
 		/// </summary>
-		/// <param name="Path"></param>
-		/// <param name="Type"></param>
 		public void SaveImage (string Path, ImageOutputTypes Type)
 			{
 			// Настройка триггеров

@@ -14,12 +14,13 @@ namespace RD_AAOW
 		[STAThread]
 		public static void Main (string[] args)
 			{
-			// Загрузка конфигурации
-			ConfigAccessor ca = new ConfigAccessor ();
+			/*// Загрузка конфигурации
+			ConfigAccessor ca = new ConfigAccessor ();*/
 
 			// Запуск программы в случае уникальности
 			Application.EnableVisualStyles ();
 			Application.SetCompatibleTextRenderingDefault (false);
+			RDLocale.InitEncodings ();
 
 			// Язык интерфейса и контроль XPUN
 			if (!RDLocale.IsXPUNClassAcceptable)
@@ -39,7 +40,7 @@ namespace RD_AAOW
 			if (args.Length > 0)
 				{
 				// Справка по командной строке
-				if (args[0].Contains ("?"))
+				if (args[0].Contains ('?'))
 					{
 					RDInterface.LocalizedMessageBox (RDMessageTypes.Information_Left, "CommandLineHelp");
 					return;
@@ -76,8 +77,8 @@ namespace RD_AAOW
 					}
 
 				// Определение параметров для консольной обработки
-				uint skippedLinesCount = ca.SkippedLinesCount;
-				uint expectedColumnsCount = ca.ExpectedColumnsCount;
+				uint skippedLinesCount = ConfigAccessor.SkippedLinesCount;
+				uint expectedColumnsCount = ConfigAccessor.ExpectedColumnsCount;
 
 				if (args.Length > 2)
 					{

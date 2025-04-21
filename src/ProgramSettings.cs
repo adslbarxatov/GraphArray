@@ -8,8 +8,8 @@ namespace RD_AAOW
 	/// </summary>
 	public partial class ProgramSettings: Form
 		{
-		// Переменные
-		private ConfigAccessor ca = new ConfigAccessor ();
+		/*// Переменные
+		private ConfigAccessor ca = new ConfigAccessor ();*/
 
 		/// <summary>
 		/// Конструктор. Запускает настройку программы
@@ -26,15 +26,15 @@ namespace RD_AAOW
 			this.Text = RDLocale.GetText (this.Name + "_T");
 
 			// Настройка контролов
-			ConfirmExit.Checked = ca.ForceExitConfirmation;
+			ConfirmExit.Checked = ConfigAccessor.ForceExitConfirmation;
 
 			if (RDGenerics.AppHasAccessRights (false, false))
-				ForceUsingBackupFile.Checked = ca.ForceUsingBackupDataFile;
+				ForceUsingBackupFile.Checked = ConfigAccessor.ForceUsingBackupDataFile;
 			else
 				ForceUsingBackupFile.Checked = ForceUsingBackupFile.Enabled = false;
 
-			ForceShowDiagram.Checked = ca.ForceShowDiagram;
-			ForceSavingColumnNames.Checked = ca.ForceSavingColumnNames;
+			ForceShowDiagram.Checked = ConfigAccessor.ForceShowDiagram;
+			ForceSavingColumnNames.Checked = ConfigAccessor.ForceSavingColumnNames;
 
 			// Запуск
 			this.ShowDialog ();
@@ -49,10 +49,10 @@ namespace RD_AAOW
 		// Сохранение
 		private void SaveSettings_Click (object sender, EventArgs e)
 			{
-			ca.ForceExitConfirmation = ConfirmExit.Checked;
-			ca.ForceUsingBackupDataFile = ForceUsingBackupFile.Checked;
-			ca.ForceShowDiagram = ForceShowDiagram.Checked;
-			ca.ForceSavingColumnNames = ForceSavingColumnNames.Checked;
+			ConfigAccessor.ForceExitConfirmation = ConfirmExit.Checked;
+			ConfigAccessor.ForceUsingBackupDataFile = ForceUsingBackupFile.Checked;
+			ConfigAccessor.ForceShowDiagram = ForceShowDiagram.Checked;
+			ConfigAccessor.ForceSavingColumnNames = ForceSavingColumnNames.Checked;
 
 			this.Close ();
 			}

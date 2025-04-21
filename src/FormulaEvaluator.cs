@@ -32,7 +32,7 @@ namespace RD_AAOW
 				return x;
 				}
 			}
-		private List<double> x = new List<double> ();
+		private List<double> x = [];
 
 		/// <summary>
 		/// Возвращает массив ординат сгенерированной кривой
@@ -44,7 +44,7 @@ namespace RD_AAOW
 				return y;
 				}
 			}
-		private List<List<double>> y = new List<List<double>> ();
+		private List<List<double>> y = [];
 
 		/// <summary>
 		/// Возвращает список названий столбцов данных
@@ -56,7 +56,7 @@ namespace RD_AAOW
 				return columnsNames;
 				}
 			}
-		private List<string> columnsNames = new List<string> ();
+		private List<string> columnsNames = [];
 
 		/// <summary>
 		/// Конструктор. Запускает форму ввода формулы
@@ -113,7 +113,7 @@ namespace RD_AAOW
 				ExpressionEvaluator ee;
 
 				// Подготовка
-				y.Add (new List<double> ());
+				y.Add ([]);
 
 				// Генерация
 				for (double i = (double)Math.Min (StartValue.Value, EndValue.Value); i <

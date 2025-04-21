@@ -14,28 +14,28 @@ namespace RD_AAOW
 	public class DiagramData
 		{
 		// ПЕРЕМЕННЫЕ
-		private char[] anyDataSplitters = new char[] { ' ', '\t', ';' };    // Массивы сплиттеров
-		private char[] anyHeadersSplitters = new char[] { '\t', ';' };
-		private char[] csvSplitters = new char[] { ';' };
-		private char[] dateSplitters = new char[] { '.', '/', '-' };
+		private char[] anyDataSplitters = [' ', '\t', ';'];    // Массивы сплиттеров
+		private char[] anyHeadersSplitters = ['\t', ';'];
+		private char[] csvSplitters = [';'];
+		private char[] dateSplitters = ['.', '/', '-'];
 
 		// Исходный массив данных
-		private List<List<double>> dataValues = new List<List<double>> ();
+		private List<List<double>> dataValues = [];
 
 		// Имена столбцов исходного массива данных
-		private List<string> dataColumnNames = new List<string> ();
+		private List<string> dataColumnNames = [];
 
 		// Массив кривых диаграммы
-		private List<DiagramCurve> curves = new List<DiagramCurve> ();
+		private List<DiagramCurve> curves = [];
 
 		// Массив сопоставленных стилей отображения
-		private List<DiagramStyle> lineStyles = new List<DiagramStyle> ();
+		private List<DiagramStyle> lineStyles = [];
 
 		// Массив дополнительных объектов
-		private List<DiagramAdditionalObjects> additionalObjects = new List<DiagramAdditionalObjects> ();
+		private List<DiagramAdditionalObjects> additionalObjects = [];
 
 		// Стили дополнительных объектов
-		private List<DiagramStyle> additionalObjectsStyles = new List<DiagramStyle> ();
+		private List<DiagramStyle> additionalObjectsStyles = [];
 
 		// Правый отступ от края изображения до диаграммы (в долях)
 		private const float RightMargin = LeftMargin + DiagramFieldPart;
@@ -137,9 +137,14 @@ namespace RD_AAOW
 				// Следующие обработки выполняются в дополнительных методах
 				case DataInputTypes.XLS:
 					// Контроль доступа к компонентам
-					if (!File.Exists (RDGenerics.AppStartupPath + ProgramDescription.CriticalComponents_New[0]) ||
+					/*if (!File.Exists (RDGenerics.AppStartupPath + ProgramDescription.CriticalComponents_New[0]) ||
 						!File.Exists (RDGenerics.AppStartupPath + ProgramDescription.CriticalComponents_New[1]) ||
 						!File.Exists (RDGenerics.AppStartupPath + ProgramDescription.CriticalComponents_New[2]))
+						{
+						initResult = DiagramDataInitResults.ExcelNotAvailable;
+						return;
+						}*/
+					if (!RDGenerics.CheckLibraries (ProgramDescription.CriticalComponents_New, false))
 						{
 						initResult = DiagramDataInitResults.ExcelNotAvailable;
 						return;
@@ -162,7 +167,8 @@ namespace RD_AAOW
 			#endregion
 
 			// Попытка открытия файла
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (DataFileName, FileMode.Open);
@@ -178,7 +184,8 @@ namespace RD_AAOW
 
 			// Создание вспомогательных переменных
 			string s;
-			string[] values = null;
+			/*string[] values = null;*/
+			string[] values;
 
 			// Пропуск строк
 			for (uint i = 0; i < SkippedLinesCount; i++)
@@ -214,7 +221,7 @@ namespace RD_AAOW
 
 			// Разметка массива
 			for (int i = 0; i < dataColumnsCount; i++)
-				dataValues.Add (new List<double> ());
+				dataValues.Add ([]);
 
 			#region Извлечение имён столбцов (по возможности)
 
@@ -338,7 +345,8 @@ namespace RD_AAOW
 
 			// Попытка открытия файла
 			FileStream FS = null;
-			TextReader SR = null;
+			/*TextReader SR = null;*/
+			TextReader SR;
 
 			if (!FromClipboard)
 				{
@@ -363,11 +371,14 @@ namespace RD_AAOW
 
 			// Разметка массива
 			for (uint i = 0; i < ColumnsCount; i++)
-				dataValues.Add (new List<double> ());
+				dataValues.Add ([]);
 
-			// Создание вспомогательных переменных
-			string s;                   // Промежуточные строки
-			string[] values = null;     // Извлечённые значения
+			// Промежуточные строки
+			string s;
+
+			// Извлечённые значения
+			/*string[] values = null;*/
+			string[] values;
 
 			#region Извлечение имён столбцов (по возможности)
 
@@ -428,7 +439,8 @@ namespace RD_AAOW
 						}
 
 					// Попытка извлечения значения с текущим десятичным разделителем
-					double parsed = 0.0;
+					/*double parsed = 0.0;*/
+					double parsed;
 					double.TryParse (PrepareDataValue (values[i], false), RDGenerics.FloatNumberStyle,
 						RDLocale.GetCulture (RDLanguages.en_us).NumberFormat, out parsed);
 					dataValues[i].Add (parsed);
@@ -501,10 +513,10 @@ namespace RD_AAOW
 				// Создание структуры
 				if (c == 0)
 					{
-					dataValues.Add (new List<double> ());
+					dataValues.Add ([]);
 					dataColumnNames.Add ("x");
 					}
-				dataValues.Add (new List<double> ());
+				dataValues.Add ([]);
 				dataColumnNames.Add (ColumnsNames[c]);
 
 				// Интерпретация данных
@@ -552,9 +564,8 @@ namespace RD_AAOW
 				for (int c = 0; c < DataTable[r].Count; c++)
 					{
 					if (r == 0)
-						{
-						dataValues.Add (new List<double> ());
-						}
+						dataValues.Add ([]);
+
 					dataValues[c].Add (DataTable[r][c]);
 					}
 				}
@@ -567,7 +578,8 @@ namespace RD_AAOW
 		private void LoadGDDFile (string DataFileName)
 			{
 			// Попытка открытия файла
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (DataFileName, FileMode.Open);
@@ -594,9 +606,12 @@ namespace RD_AAOW
 				}
 
 			#region Чтение блока данных
+
 			// Получение размерности файла
-			uint rows = 0;
-			uint dataColumnsCount = 0;
+			/*uint rows = 0;
+			uint dataColumnsCount = 0;*/
+			uint rows;
+			uint dataColumnsCount;
 			try
 				{
 				if ((rows = BR.ReadUInt16 ()) > MaxDataRows)
@@ -612,8 +627,7 @@ namespace RD_AAOW
 				// Разметка массива и чтение имён столбцов
 				for (int i = 0; i < dataColumnsCount; i++)
 					{
-					dataValues.Add (new List<double> ());
-
+					dataValues.Add ([]);
 					dataColumnNames.Add (BR.ReadString ());
 					}
 				}
@@ -648,11 +662,14 @@ namespace RD_AAOW
 
 			// Предположительно успешная загрузка (необходима имитация для корректной работы методов добавления)
 			initResult = DiagramDataInitResults.Ok;
+
 			#endregion
 
 			#region Чтение данных о кривых
+
 			// Получение числа кривых
-			uint linesCount = 0;
+			/*uint linesCount = 0;*/
+			uint linesCount;
 			try
 				{
 				if ((linesCount = BR.ReadUInt16 ()) > MaxLines)
@@ -665,12 +682,15 @@ namespace RD_AAOW
 				initResult = DiagramDataInitResults.BrokenFile;
 				return;
 				}
+
 			#endregion
 
 			#region Чтение стилей
+
 			for (int i = 0; i < linesCount; i++)
 				{
-				DiagramStyle style = null;
+				/*DiagramStyle style = null;*/
+				DiagramStyle style;
 				if (!EjectStyle (BR, out style) || (AddDiagram (style.XColumnNumber, style.YColumnNumber) < 0))
 					{
 					BR.Close ();
@@ -678,11 +698,14 @@ namespace RD_AAOW
 					initResult = DiagramDataInitResults.BrokenFile;
 					return;
 					}
+
 				lineStyles[i] = new DiagramStyle (style);
 				}
+
 			#endregion
 
 			#region Чтение данных о дополнительных объектах
+
 			// Получение числа объектов
 			uint additionalObjectsCount = 0;
 			try
@@ -693,13 +716,14 @@ namespace RD_AAOW
 				{
 				// Игнорировать ошибку на случай открытия файла версии старше 4.4
 				}
+
 			if (additionalObjectsCount > MaxAdditionalObjects)
-				{
 				additionalObjectsCount = MaxAdditionalObjects;
-				}
+
 			#endregion
 
 			#region Чтение стилей дополнительных объектов
+
 			// Количество объектов останется равным нулю для старой версии файла
 			for (int i = 0; i < additionalObjectsCount; i++)
 				{
@@ -708,9 +732,8 @@ namespace RD_AAOW
 					{
 					DiagramAdditionalObjects dao = (DiagramAdditionalObjects)BR.ReadUInt16 ();
 					if (dao == DiagramAdditionalObjects.OldLine)    // Старая линия заменяется на ближайшую по смыслу
-						{
 						dao = DiagramAdditionalObjects.LineNWtoSE;
-						}
+
 					additionalObjects.Add (dao);
 					}
 				catch
@@ -722,7 +745,8 @@ namespace RD_AAOW
 					}
 
 				// Чтение стиля объекта
-				DiagramStyle style = null;
+				/*DiagramStyle style = null;*/
+				DiagramStyle style;
 				if (!EjectStyle (BR, out style))
 					{
 					BR.Close ();
@@ -730,8 +754,10 @@ namespace RD_AAOW
 					initResult = DiagramDataInitResults.BrokenFile;
 					return;
 					}
+
 				additionalObjectsStyles.Add (style);
 				}
+
 			#endregion
 
 			// Чтение успешно завершено
@@ -743,7 +769,8 @@ namespace RD_AAOW
 		private void LoadExcelFile (string DataFileName, uint SkippedLinesCount)
 			{
 			// Попытка открытия файла
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (DataFileName, FileMode.Open);
@@ -756,7 +783,8 @@ namespace RD_AAOW
 
 			// Чтение данных
 			ExcelDataReader.IExcelDataReader excelReader = null;
-			DataTable table = null;
+			/*DataTable table = null;*/
+			DataTable table;
 			try
 				{
 				if (DataFileName.Contains ("xlsx"))
@@ -798,11 +826,9 @@ namespace RD_AAOW
 			// Интерпретация данных
 			for (int c = 0; c < table.Columns.Count; c++)
 				{
-				dataValues.Add (new List<double> ());
+				dataValues.Add ([]);
 				if (dataValues.Count >= MaxDataColumns)
-					{
 					break;
-					}
 				}
 
 			try
@@ -818,16 +844,13 @@ namespace RD_AAOW
 							{
 							string dcn = table.Rows[(int)r].ItemArray[c].ToString ();
 							while (dataColumnNames.Contains (dcn))
-								{
 								dcn += "1";
-								}
+
 							dataColumnNames.Add (dcn);
 
 							// Если ячейка пуста, заменить её значение на стандартное
 							if (dataColumnNames[dataColumnNames.Count - 1].Trim () == "")
-								{
 								dataColumnNames[dataColumnNames.Count - 1] = "c." + dataColumnNames.Count.ToString ();
-								}
 							}
 
 						// Имена найдены
@@ -839,9 +862,7 @@ namespace RD_AAOW
 				if (dataColumnNames.Count == 0)
 					{
 					for (int c = 0; c < dataValues.Count; c++)
-						{
 						dataColumnNames.Add (table.Columns[c].Caption);
-						}
 					}
 				}
 			catch
@@ -914,18 +935,15 @@ namespace RD_AAOW
 			{
 			// Ограничение на количество добавляемых объектов
 			if (additionalObjects.Count >= MaxAdditionalObjects)
-				{
 				return -3;
-				}
 
 			// Контроль состояния
 			if (initResult != DiagramDataInitResults.Ok)
-				{
 				return -1;
-				}
 
 			// Добавление в массив
-			string type = "";
+			/*string type = "";*/
+			string type;
 			switch (ObjectType)
 				{
 				case DiagramAdditionalObjects.Ellipse:
@@ -952,14 +970,12 @@ namespace RD_AAOW
 					break;
 				}
 
+			// Защита от возможных дефектов интерфейса
 			if (ObjectType == DiagramAdditionalObjects.OldLine)
-				{
-				additionalObjects.Add (DiagramAdditionalObjects.LineNWtoSE);    // Защита от возможных дефектов интерфейса
-				}
+				additionalObjects.Add (DiagramAdditionalObjects.LineNWtoSE);
 			else
-				{
 				additionalObjects.Add (ObjectType);
-				}
+
 			additionalObjectsStyles.Add (new DiagramStyle ((uint)additionalObjects.Count - 1,
 				type + additionalObjects.Count.ToString (), 0, 0));
 
@@ -988,8 +1004,9 @@ namespace RD_AAOW
 			// Определение номера добавляемого/замещаемого столбца
 			int currentLine = curves.Count;
 			bool replace = false;
-			if ((LineToReplace >= 0) && (LineToReplace < curves.Count))
+
 			// Замена
+			if ((LineToReplace >= 0) && (LineToReplace < curves.Count))
 				{
 				currentLine = LineToReplace;
 				replace = true;
@@ -999,9 +1016,7 @@ namespace RD_AAOW
 				{
 				// Ограничение на количество добавляемых кривых
 				if (curves.Count >= MaxLines)
-					{
 					return -3;
-					}
 				}
 
 			// Промежуточные границы построения
@@ -1012,67 +1027,50 @@ namespace RD_AAOW
 
 			// Контроль состояния
 			if (initResult != DiagramDataInitResults.Ok)
-				{
 				return -1;
-				}
 
 			if ((XColumnNumber >= dataValues.Count) || (YColumnNumber >= dataValues.Count))
-				{
 				return -2;
-				}
 
 			// Обработка столбцов
 			for (int row = 0; row < dataValues[0].Count; row++)
 				{
-				// Поиск максимумов и минимумов по оси Oy
-				if (!double.IsNaN (dataValues[(int)YColumnNumber][row]))    // Создаёт потенциальную опасность выхода на max|min = Infinity
-					{                                                       // Но пока что хрен с ним
+				// Поиск максимумов и минимумов по оси Oy.
+				// Создаёт потенциальную опасность выхода на max|min == Infinity.
+				// Но пока что хрен с ним
+				if (!double.IsNaN (dataValues[(int)YColumnNumber][row]))
+					{
 					if (minY == double.NegativeInfinity)
-						{
 						minY = maxY = dataValues[(int)YColumnNumber][row];
-						}
 					else if (minY > dataValues[(int)YColumnNumber][row])
-						{
 						minY = dataValues[(int)YColumnNumber][row];
-						}
 					else if (maxY < dataValues[(int)YColumnNumber][row])
-						{
 						maxY = dataValues[(int)YColumnNumber][row];
-						}
 					}
 
 				// Поиск максимумов и минимумов по оси Ox
 				if (!double.IsNaN (dataValues[(int)XColumnNumber][row]))
 					{
 					if (minX == double.NegativeInfinity)
-						{
 						minX = maxX = dataValues[(int)XColumnNumber][row];
-						}
 					else if (minX > dataValues[(int)XColumnNumber][row])
-						{
 						minX = dataValues[(int)XColumnNumber][row];
-						}
 					else if (maxX < dataValues[(int)XColumnNumber][row])
-						{
 						maxX = dataValues[(int)XColumnNumber][row];
-						}
 					}
 				}
 
 			// Пересчёт максимума и минимума по осям и расчёт округлений
-			int xRoundPos = 0, yRoundPos = 0;
+			/*int xRoundPos = 0, yRoundPos = 0;*/
+			int xRoundPos, yRoundPos;
 			RecalculateMaxMin (minX, maxX, minY, maxY, out minX, out maxX, out minY, out maxY,
 				out xRoundPos, out yRoundPos);
 
 			// Добавление в массив служебных параметров
 			if (replace)
-				{
 				curves[currentLine].SetValues (minX, maxX, minY, maxY, xRoundPos, yRoundPos);
-				}
 			else
-				{
 				curves.Add (new DiagramCurve (minX, maxX, minY, maxY, xRoundPos, yRoundPos));
-				}
 
 			// Добавление стиля или замена параметров стиля
 			if (replace)
@@ -1106,14 +1104,10 @@ namespace RD_AAOW
 			{
 			// Контроль состояния
 			if (initResult != DiagramDataInitResults.Ok)
-				{
 				return -1;
-				}
 
 			if (LineNumber >= curves.Count)
-				{
 				return -2;
-				}
 
 			// Удаление
 			curves.RemoveAt ((int)LineNumber);
@@ -1133,14 +1127,10 @@ namespace RD_AAOW
 			{
 			// Контроль состояния
 			if (initResult != DiagramDataInitResults.Ok)
-				{
 				return -1;
-				}
 
 			if (ObjectNumber >= additionalObjects.Count)
-				{
 				return -2;
-				}
 
 			// Удаление
 			additionalObjects.RemoveAt ((int)ObjectNumber);
@@ -1151,7 +1141,7 @@ namespace RD_AAOW
 			}
 
 		// Метод пересчитывает максимумы и минимумы диапазонов с округлением до первой ненулевой цифры слева
-		private void RecalculateMaxMin (double OldMinX, double OldMaxX, double OldMinY, double OldMaxY,
+		private static void RecalculateMaxMin (double OldMinX, double OldMaxX, double OldMinY, double OldMaxY,
 			out double NewMinX, out double NewMaxX, out double NewMinY, out double NewMaxY,
 			out int XRoundPosition, out int YRoundPosition)
 			{
@@ -1234,13 +1224,10 @@ namespace RD_AAOW
 		public int XRoundPos (uint LineNumber)
 			{
 			if (LineNumber < curves.Count)
-				{
 				return curves[(int)LineNumber].XRoundPosition;
-				}
-			else
-				{
-				return 3;   // Чтобы интерфейс не добавлял знаки после запятой, нужные диаграммам
-				}
+
+			// Чтобы интерфейс не добавлял знаки после запятой, нужные диаграммам
+			return 3;
 			}
 
 		/// <summary>
@@ -1252,13 +1239,10 @@ namespace RD_AAOW
 		public int YRoundPos (uint LineNumber)
 			{
 			if (LineNumber < curves.Count)
-				{
 				return curves[(int)LineNumber].YRoundPosition;
-				}
-			else
-				{
-				return 3;   // Чтобы интерфейс не добавлял знаки после запятой, нужные диаграммам
-				}
+
+			// Чтобы интерфейс не добавлял знаки после запятой, нужные диаграммам
+			return 3;
 			}
 
 		/// <summary>
@@ -1359,8 +1343,7 @@ namespace RD_AAOW
 		private DiagramDataInitResults initResult = DiagramDataInitResults.NotInited;
 
 		// Метод формирует изображение одной кривой
-		private void DrawDiagram (int LineNumber, DiagramStyle LineStyle, Graphics DrawField,
-			bool IsSelected)
+		private void DrawDiagram (int LineNumber, DiagramStyle LineStyle, Graphics DrawField, bool IsSelected)
 			{
 			// Создание пустого изображения заданного размера с белым фоном
 			Bitmap lineImage = new Bitmap ((int)LineStyle.DiagramImageWidth, (int)LineStyle.DiagramImageHeight);
@@ -1381,8 +1364,9 @@ namespace RD_AAOW
 			// Создание переменных
 			float x1, x2;   // Вспомогательные переменные для отрисовки линий
 			float y1, y2;
-			double ptx1 = 0.0, ptx2 = 0.0;
-			double pty1 = 0.0, pty2 = 0.0;
+			/*double ptx1 = 0.0, ptx2 = 0.0;
+			double pty1 = 0.0, pty2 = 0.0;*/
+			double ptx1, ptx2, pty1, pty2;
 			float ox = 0.0f, oy = 0.0f; // Точки фиксации осей
 			Brush br = null;        // Кисть для заливок
 			Pen p = null;           // Карандаш для линий
@@ -1390,8 +1374,8 @@ namespace RD_AAOW
 			float NotchSize;    // Вычисляемый размер засечек
 			double styleMinX, styleMaxX;            // Вспомогательные переменные для транспонирования диаграмм
 			double styleMinY, styleMaxY;
-			uint styleXPrimaryDiv, styleYPrimaryDiv,
-				styleXSecondaryDiv, styleYSecondaryDiv;
+			uint styleXPrimaryDiv, styleYPrimaryDiv;
+			uint styleXSecondaryDiv, styleYSecondaryDiv;
 			string txt;
 
 			// Получение текущего маркера
@@ -1778,21 +1762,24 @@ namespace RD_AAOW
 				}
 
 			#region Отрисовка осей
+
 			if (p != null)
-				{
 				p.Dispose ();
-				}
+
 			p = new Pen (LineStyle.AxesColor, LineStyle.AxesLinesWidth);
-			g.DrawLine (p, ox, (float)LineStyle.DiagramImageHeight * TopMargin, ox, (float)LineStyle.DiagramImageHeight * BottomMargin);
-			g.DrawLine (p, (float)LineStyle.DiagramImageWidth * LeftMargin, oy, (float)LineStyle.DiagramImageWidth * RightMargin, oy);
+			g.DrawLine (p, ox, (float)LineStyle.DiagramImageHeight * TopMargin, ox,
+				(float)LineStyle.DiagramImageHeight * BottomMargin);
+			g.DrawLine (p, (float)LineStyle.DiagramImageWidth * LeftMargin, oy,
+				(float)LineStyle.DiagramImageWidth * RightMargin, oy);
+
 			#endregion
 
 			#region Легенда
+
 			// Расчёт положения
 			if (br != null)
-				{
 				br.Dispose ();
-				}
+
 			br = new SolidBrush (LineStyle.TextFontColor);
 
 			// Отрисовка подписи с учётом масштабирования и размера шрифта
@@ -1810,11 +1797,12 @@ namespace RD_AAOW
 			else
 				{
 				string str = LineStyle.LineName;
-				sz = g.MeasureString (str, LineStyle.TextFont);
+				/*sz = g.MeasureString (str, LineStyle.TextFont);*/
 
-				g.DrawString (str, LineStyle.TextFont, br,
-					LineStyle.LineNameLeftOffset, LineStyle.LineNameTopOffset);
+				g.DrawString (str, LineStyle.TextFont, br, LineStyle.LineNameLeftOffset,
+					LineStyle.LineNameTopOffset);
 				}
+
 			#endregion
 
 			// Финальная отрисовка
@@ -1832,11 +1820,12 @@ namespace RD_AAOW
 			}
 
 		// Метод формирует изображение одного дополнительного объекта
-		private void DrawObject (int ObjectNumber, DiagramStyle ObjectStyle, Graphics DrawField,
-			bool IsSelected)
+		private void DrawObject (int ObjectNumber, DiagramStyle ObjectStyle, Graphics DrawField, bool IsSelected)
 			{
 			// Создание пустого изображения заданного размера с белым фоном
-			Bitmap objectImage = new Bitmap ((int)ObjectStyle.DiagramImageWidth, (int)ObjectStyle.DiagramImageHeight);  // Будущее изображение
+			Bitmap objectImage = new Bitmap ((int)ObjectStyle.DiagramImageWidth, (int)ObjectStyle.DiagramImageHeight);
+			// Будущее изображение
+
 			Graphics g = Graphics.FromImage (objectImage);  // Графический дескриптор
 			g.Clear (DiagramStyle.ImageBackColor);
 
@@ -1948,8 +1937,7 @@ namespace RD_AAOW
 		/// <returns>Возвращает 0 в случае успеха; -1, если класс не был успешно инициализирован; 
 		/// -2, если входные параметры некорректны</returns>
 		public int DrawAllDiagrams (uint WidthValue, uint HeightValue, List<DiagramStyle> NewLinesStyles,
-			List<DiagramStyle> NewObjectsStyles, Graphics DrawField, ListBox.SelectedIndexCollection
-			CurrentLines)
+			List<DiagramStyle> NewObjectsStyles, Graphics DrawField, ListBox.SelectedIndexCollection CurrentLines)
 			{
 			// Контроль значений
 			if ((WidthValue < DiagramStyle.MinImageWidth) || (HeightValue < DiagramStyle.MinImageHeight) ||
@@ -1961,9 +1949,7 @@ namespace RD_AAOW
 
 			// Контроль состояния
 			if (initResult != DiagramDataInitResults.Ok)
-				{
 				return -1;
-				}
 
 			// Создание поля для отрисовки
 			DrawField.Clear (DiagramStyle.ImageBackColor);
@@ -2006,14 +1992,15 @@ namespace RD_AAOW
 			SizeF sz;
 			double x1, x2;  // Вспомогательные переменные для отрисовки линий
 			double y1, y2;
-			double ptx1 = 0.0;
-			double pty1 = 0.0;
+			/*double ptx1 = 0.0;
+			double pty1 = 0.0;*/
+			double ptx1, pty1;
 			float ox = 0.0f, oy = 0.0f; // Точки фиксации осей
 			float NotchSize;    // Вычисляемый размер засечек
 			double styleMinX, styleMaxX;            // Вспомогательные переменные для транспонирования диаграмм
 			double styleMinY, styleMaxY;
-			uint styleXPrimaryDiv, styleYPrimaryDiv,
-				styleXSecondaryDiv, styleYSecondaryDiv;
+			uint styleXPrimaryDiv, styleYPrimaryDiv;
+			uint styleXSecondaryDiv, styleYSecondaryDiv;
 			string txt;
 
 			// Получение текущего маркера
@@ -2394,12 +2381,13 @@ namespace RD_AAOW
 				lineStyles[LineNumber].MaxY))
 				{
 				#region Отрисовка кривых
+
 				// Открытие группы для кривой
 				VectorAdapter.OpenGroup ();
 
 				// Отрисовка маркеров и сборка ломаной линии
-				List<double> xv = new List<double> ();
-				List<double> yv = new List<double> ();
+				List<double> xv = [];
+				List<double> yv = [];
 
 				for (int i = 0; i < dataValues[0].Count; i++)
 					{
@@ -2433,9 +2421,7 @@ namespace RD_AAOW
 
 					// Маркеры
 					if (lineStyles[LineNumber].LineDrawingFormat != DrawingLinesFormats.OnlyLine)
-						{
 						VectorAdapter.DrawMarker (currentMarker, x1, y1, (uint)LineNumber);
-						}
 					}
 
 				// Отрисовка ломаной линии
@@ -2452,6 +2438,7 @@ namespace RD_AAOW
 
 				// Закрытие группы для кривой
 				VectorAdapter.CloseGroup ();
+
 				#endregion
 				}
 
@@ -2465,64 +2452,73 @@ namespace RD_AAOW
 		// Метод формирует векторное изображение одной кривой
 		private void DrawObject (uint X, uint Y, int ObjectNumber, IVectorAdapter VectorAdapter)
 			{
-			VectorAdapter.SetClipBox ((double)X, (double)Y, (double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth,
+			VectorAdapter.SetClipBox ((double)X, (double)Y, (double)X +
+				(double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth,
 				(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight);
 
 			switch (additionalObjects[ObjectNumber])
 				{
 				case DiagramAdditionalObjects.Ellipse:
-					VectorAdapter.DrawEllipse ((double)X, (double)Y, (double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
+					VectorAdapter.DrawEllipse ((double)X, (double)Y, (double)X +
+						(double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
 						(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight - 1,
 						additionalObjectsStyles[ObjectNumber].LineWidth, additionalObjectsStyles[ObjectNumber].LineColor);
 					break;
 
 				case DiagramAdditionalObjects.FilledEllipse:
-					VectorAdapter.FillEllipse ((double)X, (double)Y, (double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
+					VectorAdapter.FillEllipse ((double)X, (double)Y, (double)X +
+						(double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
 						(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight - 1,
 						additionalObjectsStyles[ObjectNumber].LineColor);
 					break;
 
 				case DiagramAdditionalObjects.Rectangle:
-					VectorAdapter.DrawRectangle ((double)X, (double)Y, (double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
+					VectorAdapter.DrawRectangle ((double)X, (double)Y, (double)X +
+						(double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
 						(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight - 1,
 						additionalObjectsStyles[ObjectNumber].LineWidth, additionalObjectsStyles[ObjectNumber].LineColor);
 					break;
 
 				case DiagramAdditionalObjects.FilledRectangle:
-					VectorAdapter.FillRectangle ((double)X, (double)Y, (double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
+					VectorAdapter.FillRectangle ((double)X, (double)Y, (double)X +
+						(double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
 						(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight - 1,
 						additionalObjectsStyles[ObjectNumber].LineColor);
 					break;
 
 				case DiagramAdditionalObjects.OldLine:  // Изоляция исключений
 				case DiagramAdditionalObjects.LineNWtoSE:
-					VectorAdapter.DrawLine ((double)X + 0, (double)Y + 0, (double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
+					VectorAdapter.DrawLine ((double)X + 0, (double)Y + 0, (double)X +
+						(double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
 							(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight - 1,
 							additionalObjectsStyles[ObjectNumber].LineWidth,
 							additionalObjectsStyles[ObjectNumber].LineColor);
 					break;
 
 				case DiagramAdditionalObjects.LineSWtoNE:
-					VectorAdapter.DrawLine ((double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1, (double)Y + 0,
-							(double)X + 0, (double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight - 1,
-							additionalObjectsStyles[ObjectNumber].LineWidth,
-							additionalObjectsStyles[ObjectNumber].LineColor);
+					VectorAdapter.DrawLine ((double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
+						(double)Y + 0,
+						(double)X + 0, (double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight - 1,
+						additionalObjectsStyles[ObjectNumber].LineWidth,
+						additionalObjectsStyles[ObjectNumber].LineColor);
 					break;
 
 				case DiagramAdditionalObjects.LineH:
-					VectorAdapter.DrawLine ((double)X + 0, (double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight / 2.0,
-							(double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
-							(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight / 2.0,
-							additionalObjectsStyles[ObjectNumber].LineWidth,
-							additionalObjectsStyles[ObjectNumber].LineColor);
+					VectorAdapter.DrawLine ((double)X + 0, (double)Y +
+						(double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight / 2.0,
+						(double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth - 1,
+						(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight / 2.0,
+						additionalObjectsStyles[ObjectNumber].LineWidth,
+						additionalObjectsStyles[ObjectNumber].LineColor);
 					break;
 
 				case DiagramAdditionalObjects.LineV:
-					VectorAdapter.DrawLine ((double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth / 2.0, (double)Y + 0,
-							(double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth / 2.0,
-							(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight - 1,
-							additionalObjectsStyles[ObjectNumber].LineWidth,
-							additionalObjectsStyles[ObjectNumber].LineColor);
+					VectorAdapter.DrawLine ((double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth / 2.0,
+						(double)Y + 0,
+						(double)X + (double)additionalObjectsStyles[ObjectNumber].DiagramImageWidth / 2.0,
+						(double)Y + (double)additionalObjectsStyles[ObjectNumber].DiagramImageHeight - 1,
+						additionalObjectsStyles[ObjectNumber].LineWidth,
+						additionalObjectsStyles[ObjectNumber].LineColor);
 					break;
 
 				case DiagramAdditionalObjects.Text:
@@ -2582,7 +2578,8 @@ namespace RD_AAOW
 		private int SaveGDDFile (string DataFileName)
 			{
 			// Создание файла
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (DataFileName, FileMode.Create);
@@ -2687,7 +2684,8 @@ namespace RD_AAOW
 				}
 
 			// Создание файла
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (DataFileName, FileMode.Create);
@@ -2714,6 +2712,7 @@ namespace RD_AAOW
 							break;
 						}
 					}
+
 				SW.Write (RDLocale.RN);
 				}
 
@@ -2725,11 +2724,13 @@ namespace RD_AAOW
 					switch (DataFileType)
 						{
 						case DataOutputTypes.ANY:
-							SW.Write (dataValues[col][row].ToString (RDLocale.GetCulture (RDLanguages.en_us).NumberFormat) + anyDataSplitters[1].ToString ());
+							SW.Write (dataValues[col][row].ToString (RDLocale.GetCulture (RDLanguages.en_us).NumberFormat) +
+								anyDataSplitters[1].ToString ());
 							break;
 
 						case DataOutputTypes.CSV:
-							SW.Write (dataValues[col][row].ToString (RDLocale.GetCulture (RDLanguages.ru_ru).NumberFormat) + csvSplitters[0].ToString ());
+							SW.Write (dataValues[col][row].ToString (RDLocale.GetCulture (RDLanguages.ru_ru).NumberFormat) +
+								csvSplitters[0].ToString ());
 							break;
 						}
 					}
@@ -2823,7 +2824,8 @@ namespace RD_AAOW
 				return -2;
 
 			// Попытка открытия файла
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (StyleFileName, FileMode.Open);
@@ -2837,7 +2839,8 @@ namespace RD_AAOW
 			BinaryReader BR = new BinaryReader (FS, RDGenerics.GetEncoding (RDEncodings.UTF8));
 
 			// Получение количества стилей в файле
-			uint stylesCount = 0;
+			/*uint stylesCount = 0;*/
+			uint stylesCount;
 			try
 				{
 				BR.ReadString ();       // Версия файла
@@ -2857,7 +2860,8 @@ namespace RD_AAOW
 				for (int i = 0; (i < stylesCount) && (i < LineNumbers.Count); i++)
 					{
 					// Извлечение стиля
-					DiagramStyle style = null;
+					/*DiagramStyle style = null;*/
+					DiagramStyle style;
 					if (!EjectStyle (BR, out style))
 						{
 						BR.Close ();
@@ -2895,7 +2899,8 @@ namespace RD_AAOW
 				for (int i = 0; i < stylesCount; i++)
 					{
 					// Извлечение стиля
-					DiagramStyle style = null;
+					/*DiagramStyle style = null;*/
+					DiagramStyle style;
 					if (!EjectStyle (BR, out style))
 						{
 						BR.Close ();
@@ -2926,7 +2931,7 @@ namespace RD_AAOW
 			}
 
 		// Метод считывает один стиль из файла, дескриптор чтения которого передаётся как параметр
-		private bool EjectStyle (BinaryReader BR, out DiagramStyle LoadedStyle)
+		private static bool EjectStyle (BinaryReader BR, out DiagramStyle LoadedStyle)
 			{
 			// Инициализация стиля
 			LoadedStyle = null;
@@ -3002,7 +3007,8 @@ namespace RD_AAOW
 				return -2;
 
 			// Попытка открытия файла
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (StyleFileName, FileMode.Create);
@@ -3051,7 +3057,7 @@ namespace RD_AAOW
 			}
 
 		// Метод записывает один стиль в файл, дескриптор записи которого передаётся как параметр
-		private bool FlushStyle (BinaryWriter BW, DiagramStyle StyleToSave)
+		private static bool FlushStyle (BinaryWriter BW, DiagramStyle StyleToSave)
 			{
 			// Запись
 			BW.Write ((UInt16)StyleToSave.XColumnNumber);
@@ -3115,19 +3121,16 @@ namespace RD_AAOW
 			{
 			// Контроль состояния
 			if (initResult != DiagramDataInitResults.Ok)
-				{
 				return -1;
-				}
 
 			if (LineOrObjectNumber >= curves.Count + additionalObjects.Count)
-				{
 				return -2;
-				}
 
 			// Сброс
 			if (LineOrObjectNumber < lineStyles.Count)
 				{
-				lineStyles[(int)LineOrObjectNumber] = new DiagramStyle (LineOrObjectNumber, lineStyles[(int)LineOrObjectNumber].LineName,
+				lineStyles[(int)LineOrObjectNumber] = new DiagramStyle (LineOrObjectNumber,
+					lineStyles[(int)LineOrObjectNumber].LineName,
 					lineStyles[(int)LineOrObjectNumber].XColumnNumber, lineStyles[(int)LineOrObjectNumber].YColumnNumber);
 
 				// Установка настроек
@@ -3174,11 +3177,10 @@ namespace RD_AAOW
 				{
 				for (int row = 0; row < dataValues[0].Count; row++)
 					{
-					List<object> newRow = new List<object> ();
+					List<object> newRow = [];
 					for (int col = 0; col < dataValues.Count; col++)
-						{
 						newRow.Add (dataValues[col][row]);
-						}
+
 					table.Rows.Add ();
 					table.Rows[table.Rows.Count - 1].ItemArray = newRow.ToArray ();
 					}
@@ -3196,9 +3198,7 @@ namespace RD_AAOW
 			{
 			// Контроль состояния
 			if (initResult != DiagramDataInitResults.Ok)
-				{
 				return null;
-				}
 
 			return new List<List<double>> (dataValues);
 			}
@@ -3246,7 +3246,7 @@ namespace RD_AAOW
 			if ((result.Length > 10) || (result.Length < 7))    // Длина поля даты
 				return result;
 
-			if (result.Contains ("E") || result.Contains ("N") || result.Contains ("a") || result.Contains ("-"))
+			if (result.Contains ('E') || result.Contains ('N') || result.Contains ('a') || result.Contains ('-'))
 				return result;
 
 			// Контроль количества элементов
@@ -3281,7 +3281,7 @@ namespace RD_AAOW
 			}
 
 		// Метод разворачивает значение даты из рационального числа
-		private string DecompressDateValue (double DoubleValue)
+		private static string DecompressDateValue (double DoubleValue)
 			{
 			try
 				{

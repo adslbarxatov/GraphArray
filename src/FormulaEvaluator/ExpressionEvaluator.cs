@@ -37,7 +37,7 @@ namespace RD_AAOW
 				return;
 
 			// Массив промежуточных результатов
-			List<double> semiresults = new List<double> ();
+			List<double> semiresults = [];
 
 			// Вычисление
 			for (int i = 0; i < Chain.EvaluationChain.Count; i++)

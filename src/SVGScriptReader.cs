@@ -13,10 +13,14 @@ namespace RD_AAOW
 		// Переменные
 		#region Общие параметры
 
-		// Внутренние параметры
-		private char[] splitters = new char[] { ';' };          // Массив сплиттеров строк параметров
-		private const string tmpExtension = ".pcsc";            // Расширение вспомогательного файла
-		private const uint maxIncludeDeep = 100;                // Максимальное количество подключений
+		// Массив сплиттеров строк параметров
+		private char[] splitters = [ ';'];
+
+		// Расширение вспомогательного файла
+		private const string tmpExtension = ".pcsc";
+
+		// Максимальное количество подключений
+		private const uint maxIncludeDeep = 100;
 
 		/// <summary>
 		/// Максимальная абсцисса изображения
@@ -214,7 +218,7 @@ namespace RD_AAOW
 				return linesX;
 				}
 			}
-		private List<List<float>> linesX = new List<List<float>> ();
+		private List<List<float>> linesX = [];
 
 		/// <summary>
 		/// Возвращает массив ординат точек кривых, полученный из файла сценария
@@ -227,7 +231,7 @@ namespace RD_AAOW
 				return linesY;
 				}
 			}
-		private List<List<double>> linesY = new List<List<double>> ();
+		private List<List<double>> linesY = [];
 
 		/// <summary>
 		/// Возвращает список цветов кривых в соответствии с их порядком в массиве данных
@@ -239,7 +243,7 @@ namespace RD_AAOW
 				return linesColors;
 				}
 			}
-		private List<Color> linesColors = new List<Color> ();
+		private List<Color> linesColors = [];
 
 		/// <summary>
 		/// Возвращает список значений толщины кривых в соответствии с их порядком в массиве данных
@@ -251,7 +255,7 @@ namespace RD_AAOW
 				return linesWidths;
 				}
 			}
-		private List<uint> linesWidths = new List<uint> ();
+		private List<uint> linesWidths = [];
 
 		#endregion
 
@@ -291,7 +295,7 @@ namespace RD_AAOW
 				return oxNotchesOffsets;
 				}
 			}
-		private List<float> oxNotchesOffsets = new List<float> ();
+		private List<float> oxNotchesOffsets = [];
 
 		/// <summary>
 		/// Возвращает массив длин засечек на оси Ox
@@ -303,7 +307,7 @@ namespace RD_AAOW
 				return oxNotchesSizes;
 				}
 			}
-		private List<double> oxNotchesSizes = new List<double> ();
+		private List<double> oxNotchesSizes = [];
 
 		/// <summary>
 		/// Возвращает массив смещений засечек на оси Oy относительно верхнего края изображения
@@ -315,7 +319,7 @@ namespace RD_AAOW
 				return oyNotchesOffsets;
 				}
 			}
-		private List<double> oyNotchesOffsets = new List<double> ();
+		private List<double> oyNotchesOffsets = [];
 
 		/// <summary>
 		/// Возвращает массив длин засечек на оси Oy
@@ -327,7 +331,7 @@ namespace RD_AAOW
 				return oyNotchesSizes;
 				}
 			}
-		private List<float> oyNotchesSizes = new List<float> ();
+		private List<float> oyNotchesSizes = [];
 
 		/// <summary>
 		/// Возвращает толщину линии оси Ox и её засечек
@@ -415,7 +419,7 @@ namespace RD_AAOW
 				return textX;
 				}
 			}
-		private List<float> textX = new List<float> ();
+		private List<float> textX = [];
 
 		/// <summary>
 		/// Возвращает массив смещений подписей по оси Oy
@@ -427,7 +431,7 @@ namespace RD_AAOW
 				return textY;
 				}
 			}
-		private List<double> textY = new List<double> ();
+		private List<double> textY = [];
 
 		/// <summary>
 		/// Возвращает массив цветов подписей
@@ -439,7 +443,7 @@ namespace RD_AAOW
 				return textColors;
 				}
 			}
-		private List<Color> textColors = new List<Color> ();
+		private List<Color> textColors = [];
 
 		/// <summary>
 		/// Возвращает массив шрифтов подписей
@@ -451,7 +455,7 @@ namespace RD_AAOW
 				return textFonts;
 				}
 			}
-		private List<Font> textFonts = new List<Font> ();
+		private List<Font> textFonts = [];
 
 		/// <summary>
 		/// Возвращает массив текстов подписей
@@ -463,7 +467,7 @@ namespace RD_AAOW
 				return texts;
 				}
 			}
-		private List<string> texts = new List<string> ();
+		private List<string> texts = [];
 
 		#endregion
 
@@ -477,7 +481,7 @@ namespace RD_AAOW
 				return sourceScript;
 				}
 			}
-		private List<string> sourceScript = new List<string> ();
+		private List<string> sourceScript = [];
 
 		/// <summary>
 		/// Конструктор. Считывает файл сценария и формирует схему построения изображения
@@ -485,15 +489,26 @@ namespace RD_AAOW
 		/// <param name="FileName">Имя файла сценария</param>
 		public SVGScriptReader (string FileName)
 			{
-			// Переменные
-			bool notIncluded = true;    // Флаг, указывающий, что сборка скрипта ещё не завершена
-			FileStream FSI = null, FSO = null, FSInc = null;    // Дескрипторы файлов (входной, выходной, подключаемый)
+			// Флаг, указывающий, что сборка скрипта ещё не завершена
+			bool notIncluded = true;
+
+			// Дескрипторы файлов (входной, выходной, подключаемый)
+			/*FileStream FSI = null, FSO = null, FSInc = null;
 			StreamReader SR = null, SRInc = null;
-			StreamWriter SW = null;
-			uint step = 1;              // Номер шага сборки
-			uint includeDeep = 0;       // Количество подключенных файлов (для прерывания зацикливания)
-			string fileNameI = FileName,    // Имена промежуточных файлов
-				fileNameO = FileName + tmpExtension + step.ToString ();
+			StreamWriter SW = null;*/
+			FileStream FSI, FSO, FSInc;
+			StreamReader SR, SRInc;
+			StreamWriter SW;
+
+			// Номер шага сборки
+			uint step = 1;
+
+			// Количество подключенных файлов (для прерывания зацикливания)
+			uint includeDeep = 0;
+
+			// Имена промежуточных файлов
+			string fileNameI = FileName;
+			string fileNameO = FileName + tmpExtension + step.ToString ();
 			var nfi = RDLocale.GetCulture (RDLanguages.en_us).NumberFormat;
 
 			#region Сборка скрипта
@@ -578,8 +593,10 @@ namespace RD_AAOW
 						// Получение координат вставки
 						line = SR.ReadLine ();
 						string[] values = line.Split (splitters, StringSplitOptions.RemoveEmptyEntries);
-						float x = 0;
-						double y = 0;
+						/*float x = 0;
+						double y = 0;*/
+						float x;
+						double y;
 
 						try
 							{
@@ -605,9 +622,8 @@ namespace RD_AAOW
 						SW.WriteLine ("{");
 						SW.WriteLine (x.ToString (nfi) + ";" + y.ToString (nfi));
 						while (!SRInc.EndOfStream)
-							{
 							SW.WriteLine (SRInc.ReadLine ());
-							}
+							
 						SW.WriteLine ();
 						SW.WriteLine ("}");
 						SW.WriteLine ();
@@ -633,6 +649,7 @@ namespace RD_AAOW
 						}
 					catch { }
 					}
+
 				fileNameI = fileNameO;
 				step++;
 				fileNameO = FileName + tmpExtension + step.ToString ();
@@ -653,8 +670,8 @@ namespace RD_AAOW
 			SR = new StreamReader (FSI, RDGenerics.GetEncoding (RDEncodings.UTF8));
 
 			// Создание накопителей смещений
-			List<float> xOffset = new List<float> ();
-			List<double> yOffset = new List<double> ();
+			List<float> xOffset = [];
+			List<double> yOffset = [];
 
 			// Чтение секций
 			while (!SR.EndOfStream)
@@ -715,8 +732,8 @@ namespace RD_AAOW
 						double yOffsetSum = ArraySum (yOffset);
 
 						// Добавление кривой во все массивы
-						linesX.Add (new List<float> ());
-						linesY.Add (new List<double> ());
+						linesX.Add ([]);
+						linesY.Add ([]);
 						linesColors.Add (Color.FromArgb (0, 0, 0));
 						linesWidths.Add (1);
 
@@ -1135,23 +1152,21 @@ namespace RD_AAOW
 			}
 
 		// Метод суммирует элементы массива
-		private float ArraySum (List<float> Array)
+		private static  float ArraySum (List<float> Array)
 			{
 			float sum = 0.0f;
 			for (int i = 0; i < Array.Count; i++)
-				{
 				sum += Array[i];
-				}
+				
 			return sum;
 			}
 
-		private double ArraySum (List<double> Array)
+		private static double ArraySum (List<double> Array)
 			{
 			double sum = 0.0;
 			for (int i = 0; i < Array.Count; i++)
-				{
 				sum += Array[i];
-				}
+				
 			return sum;
 			}
 		}

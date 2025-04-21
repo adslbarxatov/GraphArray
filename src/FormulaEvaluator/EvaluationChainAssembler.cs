@@ -18,7 +18,7 @@ namespace RD_AAOW
 				return chain;
 				}
 			}
-		private List<EvaluationChainElement> chain = new List<EvaluationChainElement> ();
+		private List<EvaluationChainElement> chain = [];
 
 		/// <summary>
 		/// Конструктор. Выполняет сборку цепочки вычислений
@@ -33,7 +33,7 @@ namespace RD_AAOW
 				}
 
 			// Формирование массива приоритетов
-			List<int> links = new List<int> ();
+			List<int> links = [];
 			int multiplier = 10000;
 			for (int i = 0; i < ExpressionLexemesExtractor.ExtractedLexemes.Count; i++)
 				{

@@ -12,15 +12,15 @@ namespace RD_AAOW
 	public partial class TablesMergerForm: Form
 		{
 		// Исходные таблицы
-		private List<List<List<double>>> dataTables = new List<List<List<double>>> ();
-		private List<List<string>> columnNames = new List<List<string>> ();
-		private List<uint> abscissasColumnsNumbers = new List<uint> ();
+		private List<List<List<double>>> dataTables = [];
+		private List<List<string>> columnNames = [];
+		private List<uint> abscissasColumnsNumbers = [];
 
-		private List<SourceTableRow> dataRows = new List<SourceTableRow> ();
+		private List<SourceTableRow> dataRows = [];
 
 		// Собранная таблица
-		private List<List<double>> mergedTable = new List<List<double>> ();
-		private List<string> mergedColumnNames = new List<string> ();
+		private List<List<double>> mergedTable = [];
+		private List<string> mergedColumnNames = [];
 
 		// Флаги обработки
 		private int mergeType;
@@ -100,7 +100,7 @@ namespace RD_AAOW
 
 				// Добавление в списки
 				dataTables.Add (dd.GetData ());
-				columnNames.Add (new List<string> ());
+				columnNames.Add ([]);
 				for (uint c = 0; c < dd.DataColumnsCount; c++)
 					columnNames[columnNames.Count - 1].Add (dd.GetDataColumnName (c));
 
@@ -225,7 +225,7 @@ namespace RD_AAOW
 				if (currentAbscissa != dataRows[r].X)
 					{
 					currentAbscissa = dataRows[r].X;
-					mergedTable.Add (new List<double> ());
+					mergedTable.Add ([]);
 					mergedTable[mergedTable.Count - 1].Add (dataRows[r].X);
 					}
 

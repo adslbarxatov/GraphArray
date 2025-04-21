@@ -206,7 +206,7 @@ namespace RD_AAOW
 		private OperationTypes operationType = OperationTypes.Nothing;
 
 		// Функция обработки нессылочных операндов
-		private bool LoadRealOperand (Lexeme Operand, out OperandTypes OperandType, out double OperandValue
+		private static bool LoadRealOperand (Lexeme Operand, out OperandTypes OperandType, out double OperandValue
 #if IndexedVariables
 			, out uint OperandIndex
 #endif
@@ -310,7 +310,7 @@ namespace RD_AAOW
 			}
 
 		// Функция обработки ссылочных операндов
-		private bool LoadLinkedOperand (uint Operand, out OperandTypes OperandType, out double LinkNumber)
+		private static bool LoadLinkedOperand (uint Operand, out OperandTypes OperandType, out double LinkNumber)
 			{
 			OperandType = OperandTypes.Link;
 			LinkNumber = Operand;

@@ -17,14 +17,23 @@ namespace RD_AAOW
 		// Состояние загрузки значений параметров в контролы
 		private bool loading = false, selectionMode = false;
 
-		// Аксессор конфигурации программы (загрузка или инициализация)
-		private ConfigAccessor ca = new ConfigAccessor ();
+		/*// Аксессор конфигурации программы (загрузка или инициализация)
+		private ConfigAccessor ca = new ConfigAccessor ();*/
 
-		private MarkersLoader ml = new MarkersLoader ();        // Загрузчик маркеров
-		private Graphics drawField;                             // Основное поле отрисовки программы
-		private List<int> selectedInidces = new List<int> ();   // Текущий список выбранных кривых
-		private bool selecting = false;                         // Состояние загрузки списка выбранных кривых
-		private int oldMouseX, oldMouseY;                       // Промежуточные координаты указателя мыши
+		// Загрузчик маркеров
+		private MarkersLoader ml = new MarkersLoader ();
+
+		// Основное поле отрисовки программы
+		private Graphics drawField;
+
+		// Текущий список выбранных кривых
+		private List<int> selectedInidces = [];
+
+		// Состояние загрузки списка выбранных кривых
+		private bool selecting = false;
+
+		// Промежуточные координаты указателя мыши
+		private int oldMouseX, oldMouseY;
 
 		#region Настройка и функционирование главной формы
 
@@ -132,7 +141,7 @@ namespace RD_AAOW
 			if (SentFileType == DataInputTypes.Unspecified)
 				{
 				// Загрузка стандартного файла данных при старте
-				if (ca.ForceUsingBackupDataFile)
+				if (ConfigAccessor.ForceUsingBackupDataFile)
 					{
 					dd = new DiagramData (RDGenerics.AppStartupPath + ConfigAccessor.BackupDataFileName,
 						DataInputTypes.GDD, 0);
@@ -141,7 +150,8 @@ namespace RD_AAOW
 			else
 				{
 				// Тестовое открытие файла данных
-				DiagramData ddt = null;
+				/*DiagramData ddt = null;*/
+				DiagramData ddt;
 				if (SentFileType == DataInputTypes.Unknown)
 					ddt = new DiagramData (SentFileName, 2, 0);
 				else
@@ -162,9 +172,9 @@ namespace RD_AAOW
 
 				// Контрольная загрузка файла, переданного из операционной системы
 				if (SentFileType == DataInputTypes.Unknown)
-					dd = new DiagramData (SentFileName, ca.ExpectedColumnsCount, ca.SkippedLinesCount);
+					dd = new DiagramData (SentFileName, ConfigAccessor.ExpectedColumnsCount, ConfigAccessor.SkippedLinesCount);
 				else
-					dd = new DiagramData (SentFileName, SentFileType, ca.SkippedLinesCount);
+					dd = new DiagramData (SentFileName, SentFileType, ConfigAccessor.SkippedLinesCount);
 				}
 
 			// Контроль результата
@@ -187,7 +197,7 @@ namespace RD_AAOW
 
 				ChangeControlsState (true);
 
-				if (ca.ForceShowDiagram && (SentFileType != DataInputTypes.GDD) &&
+				if (ConfigAccessor.ForceShowDiagram && (SentFileType != DataInputTypes.GDD) &&
 					(SentFileType != DataInputTypes.Unspecified))
 					{
 					AddFirstColumns ();
@@ -273,31 +283,33 @@ namespace RD_AAOW
 
 		// Метод вызывает формы настройки параметров загрузки файлов данных
 		// Возвращает false, если была нажата кнопка Cancel
-		private bool CheckFileLoadingParameters (DataInputTypes InputType)
+		private static bool CheckFileLoadingParameters (DataInputTypes InputType)
 			{
 			// Обработка случая извлечения данных
-			UnknownFileParametersSelector ufps = null;
+			/*UnknownFileParametersSelector ufps = null;*/
+			UnknownFileParametersSelector ufps;
 			if (InputType == DataInputTypes.Unknown)
 				{
-				ufps = new UnknownFileParametersSelector (ca.ExpectedColumnsCount, false);
+				ufps = new UnknownFileParametersSelector (ConfigAccessor.ExpectedColumnsCount, false);
 				if (ufps.Cancelled)
 					return false;
 
 				// Сохранение изменившегося значения
-				ca.ExpectedColumnsCount = ufps.DataColumnsCount;
+				ConfigAccessor.ExpectedColumnsCount = ufps.DataColumnsCount;
 				}
 
 			// Обработка случаев, требующих указания количества строк, используемых для поиска имён столбцов данных
-			ColumnsNamesSelector cns = null;
+			/*ColumnsNamesSelector cns = null;*/
+			ColumnsNamesSelector cns;
 			if (InputType != DataInputTypes.GDD)
 				{
-				cns = new ColumnsNamesSelector (ca.SkippedLinesCount);
+				cns = new ColumnsNamesSelector (ConfigAccessor.SkippedLinesCount);
 
 				if (cns.Cancelled)
 					return false;
 
 				// Сохранение изменившегося значения
-				ca.SkippedLinesCount = cns.SkippedRowsCount;
+				ConfigAccessor.SkippedLinesCount = cns.SkippedRowsCount;
 				}
 
 			return true;
@@ -667,7 +679,7 @@ namespace RD_AAOW
 		private void MainForm_FormClosing (object sender, FormClosingEventArgs e)
 			{
 			// Перезапись автосохраняемого файла данных
-			if (ca.ForceUsingBackupDataFile && (dd != null) && (dd.InitResult == DiagramDataInitResults.Ok))
+			if (ConfigAccessor.ForceUsingBackupDataFile && (dd != null) && (dd.InitResult == DiagramDataInitResults.Ok))
 				{
 				// Возвращаемый результат не имеет значения
 				dd.SaveDataFile (RDGenerics.AppStartupPath + ConfigAccessor.BackupDataFileName,
@@ -675,11 +687,11 @@ namespace RD_AAOW
 				}
 
 			// Подтверждение
-			if (ca.ForceExitConfirmation ||
-				!ca.ForceUsingBackupDataFile && (dd != null) && (dd.InitResult == DiagramDataInitResults.Ok))
+			if (ConfigAccessor.ForceExitConfirmation ||
+				!ConfigAccessor.ForceUsingBackupDataFile && (dd != null) && (dd.InitResult == DiagramDataInitResults.Ok))
 				{
-				if (RDInterface.LocalizedMessageBox (ca.ForceUsingBackupDataFile ? RDMessageTypes.Question_Center :
-					RDMessageTypes.Warning_Center, ca.ForceUsingBackupDataFile ? "ApplicationExit" :
+				if (RDInterface.LocalizedMessageBox (ConfigAccessor.ForceUsingBackupDataFile ? RDMessageTypes.Question_Center :
+					RDMessageTypes.Warning_Center, ConfigAccessor.ForceUsingBackupDataFile ? "ApplicationExit" :
 					"ApplicationExitNoBackup", RDLDefaultTexts.Button_YesNoFocus, RDLDefaultTexts.Button_No) ==
 					RDMessageButtons.ButtonTwo)
 					{
@@ -712,7 +724,8 @@ namespace RD_AAOW
 		private void OFDialog_FileOk (object sender, CancelEventArgs e)
 			{
 			// Тестовое открытие файла данных
-			DiagramData ddt = null;
+			/*DiagramData ddt = null;*/
+			DiagramData ddt;
 			if (OFDialog.FilterIndex == (int)DataInputTypes.Unknown)
 				ddt = new DiagramData (OFDialog.FileName, 2, 0);
 			else
@@ -732,9 +745,9 @@ namespace RD_AAOW
 
 			// Контрольное открытие
 			if (OFDialog.FilterIndex == (int)DataInputTypes.Unknown)
-				dd = new DiagramData (OFDialog.FileName, ca.ExpectedColumnsCount, ca.SkippedLinesCount);
+				dd = new DiagramData (OFDialog.FileName, ConfigAccessor.ExpectedColumnsCount, ConfigAccessor.SkippedLinesCount);
 			else
-				dd = new DiagramData (OFDialog.FileName, (DataInputTypes)OFDialog.FilterIndex, ca.SkippedLinesCount);
+				dd = new DiagramData (OFDialog.FileName, (DataInputTypes)OFDialog.FilterIndex, ConfigAccessor.SkippedLinesCount);
 
 			if (dd.InitResult != DiagramDataInitResults.Ok)
 				{
@@ -750,7 +763,7 @@ namespace RD_AAOW
 			// Загрузка
 			if (OFDialog.FilterIndex == (int)DataInputTypes.Unknown)
 				{
-				if (ca.ForceShowDiagram)
+				if (ConfigAccessor.ForceShowDiagram)
 					AddFirstColumns ();
 				}
 			else
@@ -777,7 +790,7 @@ namespace RD_AAOW
 				// Остальные
 				else
 					{
-					if (ca.ForceShowDiagram)
+					if (ConfigAccessor.ForceShowDiagram)
 						AddFirstColumns ();
 					}
 				}
@@ -854,7 +867,7 @@ namespace RD_AAOW
 			{
 			// Сохранение
 			if (dd.SaveDataFile (SFDialog.FileName, (DataOutputTypes)SFDialog.FilterIndex,
-				ca.ForceSavingColumnNames) < 0)
+				ConfigAccessor.ForceSavingColumnNames) < 0)
 				{
 				RDInterface.MessageBox (RDMessageTypes.Warning_Center,
 					string.Format (RDLocale.GetDefaultText (RDLDefaultTexts.Message_SaveFailure_Fmt),
@@ -865,7 +878,7 @@ namespace RD_AAOW
 		// Сохранение изображения
 		private void MSaveDiagramImage_Click (object sender, EventArgs e)
 			{
-			SavePicture sp = new SavePicture (dd, false);
+			_ = new SavePicture (dd, false);
 			}
 
 		// Настройки программы
@@ -875,8 +888,8 @@ namespace RD_AAOW
 			ProgramSettings ps = new ProgramSettings ();
 			ps.Dispose ();
 
-			// Перезагрузка параметров
-			ca = new ConfigAccessor ();
+			/*// Перезагрузка параметров
+			ca = new ConfigAccessor ();*/
 			}
 
 		// Выход из программы
@@ -916,7 +929,7 @@ namespace RD_AAOW
 			ChangeControlsState (true);
 
 			// Загрузка
-			if (ca.ForceShowDiagram)
+			if (ConfigAccessor.ForceShowDiagram)
 				AddFirstColumns ();
 
 			// Перерисовка
@@ -956,7 +969,7 @@ namespace RD_AAOW
 				return;
 
 			// Контрольное открытие
-			DiagramData ddt = new DiagramData (ca.ExpectedColumnsCount, ca.SkippedLinesCount);
+			DiagramData ddt = new DiagramData (ConfigAccessor.ExpectedColumnsCount, ConfigAccessor.SkippedLinesCount);
 			if (ddt.InitResult != DiagramDataInitResults.Ok)
 				{
 				// Файл точно с ошибками, или выбрано некорректное количество строк для поиска имён
@@ -965,7 +978,7 @@ namespace RD_AAOW
 				}
 
 			// Создание диаграммы
-			dd = new DiagramData (ca.ExpectedColumnsCount, ca.SkippedLinesCount);
+			dd = new DiagramData (ConfigAccessor.ExpectedColumnsCount, ConfigAccessor.SkippedLinesCount);
 
 			// Сброс списка кривых
 			LineNamesList.Items.Clear ();
@@ -974,7 +987,7 @@ namespace RD_AAOW
 			ChangeControlsState (true);
 
 			// Загрузка
-			if (ca.ForceShowDiagram)
+			if (ConfigAccessor.ForceShowDiagram)
 				AddFirstColumns ();
 
 			// Перерисовка
@@ -1027,7 +1040,7 @@ namespace RD_AAOW
 			ChangeControlsState (true);
 
 			// Загрузка
-			if (ca.ForceShowDiagram)
+			if (ConfigAccessor.ForceShowDiagram)
 				AddFirstColumns ();
 
 			// Перерисовка
@@ -1214,14 +1227,13 @@ namespace RD_AAOW
 		private void MRedactData_Click (object sender, EventArgs e)
 			{
 			// Сохранение стилей
-			List<DiagramStyle> linesStyles = new List<DiagramStyle> ();
-			List<DiagramStyle> objectsStyles = new List<DiagramStyle> ();
-			List<DiagramAdditionalObjects> objectsTypes = new List<DiagramAdditionalObjects> ();
+			List<DiagramStyle> linesStyles = [];
+			List<DiagramStyle> objectsStyles = [];
+			List<DiagramAdditionalObjects> objectsTypes = [];
 
 			for (int i = 0; i < dd.LinesCount; i++)
-				{
 				linesStyles.Add (new DiagramStyle (dd.GetStyle (i)));
-				}
+				
 			for (int i = 0; i < dd.AdditionalObjectsCount; i++)
 				{
 				objectsTypes.Add (dd.GetObjectType ((uint)i));
@@ -1244,7 +1256,6 @@ namespace RD_AAOW
 				for (int i = 0; i < linesStyles.Count; i++)
 					{
 					dd.AddDiagram (linesStyles[i].XColumnNumber, linesStyles[i].YColumnNumber);
-
 					dd.LoadStyle (i, linesStyles[i]);
 
 					LineNamesList.Items.Add (dd.GetDataColumnName (linesStyles[i].YColumnNumber) + " @ " +
@@ -1253,7 +1264,6 @@ namespace RD_AAOW
 				for (int i = 0; i < objectsStyles.Count; i++)
 					{
 					dd.AddObject (objectsTypes[i]);
-
 					dd.LoadStyle (i + (int)dd.LinesCount, objectsStyles[i]);
 
 					LineNamesList.Items.Add (objectsStyles[i].LineName);
@@ -1377,8 +1387,8 @@ namespace RD_AAOW
 				}
 
 			// Формирование массива удаляемых индексов
-			List<int> lineIndices = new List<int> ();
-			List<int> objectIndices = new List<int> ();
+			List<int> lineIndices = [];
+			List<int> objectIndices = [];
 			for (int i = 0; i < LineNamesList.SelectedIndices.Count; i++)
 				{
 				if (LineNamesList.SelectedIndices[i] < dd.LinesCount)
@@ -1950,11 +1960,9 @@ namespace RD_AAOW
 		private void AlignLines (bool InRow)
 			{
 			// Сохранение списка обрабатываемых индексов
-			List<int> indices = new List<int> ();
+			List<int> indices = [];
 			for (int i = 0; i < LineNamesList.SelectedIndices.Count; i++)
-				{
 				indices.Add (LineNamesList.SelectedIndices[i]);
-				}
 
 			// Обработка
 			for (int i = 1; i < indices.Count; i++)
@@ -1966,13 +1974,15 @@ namespace RD_AAOW
 				// Установка параметров
 				if (InRow)
 					{
-					LeftOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageLeftOffset + dd.GetStyle (indices[i - 1]).DiagramImageWidth;
+					LeftOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageLeftOffset +
+						dd.GetStyle (indices[i - 1]).DiagramImageWidth;
 					TopOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageTopOffset;
 					}
 				else
 					{
 					LeftOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageLeftOffset;
-					TopOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageTopOffset + dd.GetStyle (indices[i - 1]).DiagramImageHeight;
+					TopOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageTopOffset +
+						dd.GetStyle (indices[i - 1]).DiagramImageHeight;
 					}
 				}
 

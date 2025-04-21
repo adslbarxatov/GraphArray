@@ -10,10 +10,14 @@ namespace RD_AAOW
 	/// </summary>
 	public class MarkersLoader: IDisposable
 		{
-		// Переменные и константы
-		private List<Bitmap> markers = new List<Bitmap> (); // Массив маркеров
-		private const int standartMarkersSize = 7;          // Размеры стандартных маркеров
-		private const string markersDirectory = "Markers";  // Директория с маркерами
+		// Массив маркеров
+		private List<Bitmap> markers = [];
+
+		// Размеры стандартных маркеров
+		private const int standartMarkersSize = 7;
+
+		// Директория с маркерами
+		private const string markersDirectory = "Markers";
 
 		/// <summary>
 		/// Максимальное количество доступных маркеров
@@ -33,9 +37,7 @@ namespace RD_AAOW
 			// Контроль
 			int markerNumber = (int)MarkerNumber;
 			if (MarkerNumber >= markers.Count)
-				{
 				markerNumber = 0;
-				}
 
 			// Создание копии маркера
 			Bitmap b = (Bitmap)markers[markerNumber].Clone ();
@@ -44,9 +46,7 @@ namespace RD_AAOW
 				for (int w = 0; w < b.Width; w++)
 					{
 					if ((uint)(b.GetPixel (w, h).ToArgb ()) == 0xFF000000)
-						{
 						b.SetPixel (w, h, MarkerColor);
-						}
 					}
 				}
 
@@ -71,6 +71,7 @@ namespace RD_AAOW
 		public MarkersLoader ()
 			{
 			#region Добавление стандартных маркеров
+
 			Bitmap b = new Bitmap (standartMarkersSize, standartMarkersSize);
 			Brush backBrush = new SolidBrush (Color.FromArgb (0, 255, 255, 255)),
 				foreBrush = new SolidBrush (Color.FromArgb (0, 0, 0));
@@ -96,9 +97,7 @@ namespace RD_AAOW
 			b = new Bitmap (standartMarkersSize, standartMarkersSize);
 			g = Graphics.FromImage (b);
 			g.FillRectangle (backBrush, 0, 0, b.Width, b.Height);
-			Point[] pts = new Point[] {new Point (0, b.Height ),
-										new Point (b.Width /2 , 0),
-										new Point (b.Width ,b.Height )};
+			Point[] pts = [new Point (0, b.Height), new Point (b.Width / 2, 0), new Point (b.Width, b.Height)];
 			g.FillPolygon (foreBrush, pts);
 			markers.Add ((Bitmap)b.Clone ());
 			b.Dispose ();
@@ -135,6 +134,7 @@ namespace RD_AAOW
 			// Завершение
 			foreBrush.Dispose ();
 			backBrush.Dispose ();
+
 			#endregion
 
 			#region Загрузка дополнительных маркеров из файлов
@@ -182,13 +182,9 @@ namespace RD_AAOW
 					for (int x = 0; x < b.Width; x++)
 						{
 						if ((b.GetPixel (x, y).ToArgb () & 0xFFFFFF) == 0xFFFFFF)
-							{
 							b.SetPixel (x, y, Color.FromArgb (255, 255, 255));
-							}
 						else
-							{
 							b.SetPixel (x, y, Color.FromArgb (0, 0, 0));
-							}
 						}
 					}
 
@@ -210,9 +206,7 @@ namespace RD_AAOW
 		public void Dispose ()
 			{
 			for (int i = 0; i < markers.Count; i++)
-				{
 				markers[i].Dispose ();
-				}
 
 			markers.Clear ();
 			}

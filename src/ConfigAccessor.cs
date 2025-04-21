@@ -5,7 +5,7 @@ namespace RD_AAOW
 	/// <summary>
 	/// Класс обеспечивает доступ к конфигурации программы
 	/// </summary>
-	public class ConfigAccessor
+	public static class ConfigAccessor
 		{
 		/// <summary>
 		/// Возвращает минимально возможную ширину окна
@@ -30,7 +30,7 @@ namespace RD_AAOW
 		/// <summary>
 		/// Возвращает или задаёт необходимость подтверждения выхода из программы
 		/// </summary>
-		public bool ForceExitConfirmation
+		public static bool ForceExitConfirmation
 			{
 			get
 				{
@@ -46,7 +46,7 @@ namespace RD_AAOW
 		/// <summary>
 		/// Возвращает или задаёт необходимость использования автоматически сохраняемого файла данных
 		/// </summary>
-		public bool ForceUsingBackupDataFile
+		public static bool ForceUsingBackupDataFile
 			{
 			get
 				{
@@ -62,7 +62,7 @@ namespace RD_AAOW
 		/// <summary>
 		/// Возвращает или задаёт необходимость автоматического добавления первых столбцов на диаграмму
 		/// </summary>
-		public bool ForceShowDiagram
+		public static bool ForceShowDiagram
 			{
 			get
 				{
@@ -78,7 +78,7 @@ namespace RD_AAOW
 		/// <summary>
 		/// Возвращает или задаёт необходимость сохранения имён столбцов
 		/// </summary>
-		public bool ForceSavingColumnNames
+		public static bool ForceSavingColumnNames
 			{
 			get
 				{
@@ -94,7 +94,7 @@ namespace RD_AAOW
 		/// <summary>
 		/// Возвращает или задаёт количество первых строк файла, используемых для поиска подписей
 		/// </summary>
-		public uint SkippedLinesCount
+		public static uint SkippedLinesCount
 			{
 			get
 				{
@@ -116,7 +116,7 @@ namespace RD_AAOW
 		/// <summary>
 		/// Возвращает или задаёт предполагаемое количество столбцов для опции извлечения данных
 		/// </summary>
-		public uint ExpectedColumnsCount
+		public static uint ExpectedColumnsCount
 			{
 			get
 				{

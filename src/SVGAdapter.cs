@@ -142,7 +142,8 @@ namespace RD_AAOW
 				return false;
 
 			// Пересчёт координат
-			double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0;
+			/*double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0;*/
+			double x1, x2, y1, y2;
 			VectorAdapterSupport.InboundCoords (clipBoxX1, clipBoxX2, clipBoxY1, clipBoxY2,
 				X1, X2, Y1, Y2, out x1, out x2, out y1, out y2);
 
@@ -205,7 +206,8 @@ namespace RD_AAOW
 				return false;
 
 			// Пересчёт координат
-			double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0;
+			/*double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0;*/
+			double x1, x2, y1, y2;
 			VectorAdapterSupport.InboundCoords (clipBoxX1, clipBoxX2, clipBoxY1, clipBoxY2,
 				X1, X2, Y1, Y2, out x1, out x2, out y1, out y2);
 
@@ -280,7 +282,8 @@ namespace RD_AAOW
 				return false;
 
 			// Пересчёт координат
-			double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0;
+			/*double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0;*/
+			double x1, x2, y1, y2;
 			VectorAdapterSupport.InboundCoords (clipBoxX1, clipBoxX2, clipBoxY1, clipBoxY2,
 				X1, X2, Y1, Y2, out x1, out x2, out y1, out y2);
 
@@ -330,12 +333,12 @@ namespace RD_AAOW
 			}
 
 		// Переменная включает таблицу преобразования Base64
-		private string[] base64EncodingTable = new string[] {
+		private string[] base64EncodingTable = [
 			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
 			"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f",
 			"g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
 			"w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "/"
-			};
+			];
 
 		// Метод кодирует файл согласно стандарту Base64
 		private string Base64FileEncode (string FileName)
@@ -344,7 +347,8 @@ namespace RD_AAOW
 			string codeString = "";
 
 			// Попытка открытия файла
-			FileStream IFS = null;
+			/*FileStream IFS = null;*/
+			FileStream IFS;
 			try
 				{
 				IFS = new FileStream (FileName, FileMode.Open);
@@ -358,36 +362,26 @@ namespace RD_AAOW
 			while (IFS.Position < IFS.Length)
 				{
 				// Получение байтов
-				long b1 = IFS.ReadByte (),
-					b2 = IFS.ReadByte (),
-					b3 = IFS.ReadByte ();
+				long b1 = IFS.ReadByte ();
+				long b2 = IFS.ReadByte ();
+				long b3 = IFS.ReadByte ();
 
 				// Склеивание в цепочку
 				long ch;
 				if (b2 < 0)
-					{
 					ch = (b1 << 16);
-					}
 				else if (b3 < 0)
-					{
 					ch = (b1 << 16) | (b2 << 8);
-					}
 				else
-					{
 					ch = (b1 << 16) | (b2 << 8) | b3;
-					}
 
 				// Разделение на шестёрки
 				codeString += base64EncodingTable[(ch & 0xFC0000) >> 18];
 
 				if (b2 >= 0)
-					{
 					codeString += base64EncodingTable[(ch & 0x3F000) >> 12];
-					}
 				else
-					{
 					codeString += "=";
-					}
 
 				if (b3 >= 0)
 					{

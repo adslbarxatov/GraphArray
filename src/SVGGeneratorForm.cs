@@ -294,7 +294,8 @@ namespace RD_AAOW
 		private void SSDialog_FileOk (object sender, CancelEventArgs e)
 			{
 			// Попытка создания файла образца
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (SSDialog.FileName, FileMode.Create);
@@ -306,11 +307,9 @@ namespace RD_AAOW
 				}
 
 			if (RDLocale.IsCurrentLanguageRuRu)
-				FS.Write (RD_AAOW.Properties.GraphArray.Sample_ru_ru, 0,
-					RD_AAOW.Properties.GraphArray.Sample_ru_ru.Length);
+				FS.Write (GraphArrayResources.Sample_ru_ru, 0, GraphArrayResources.Sample_ru_ru.Length);
 			else
-				FS.Write (RD_AAOW.Properties.GraphArray.Sample_en_us, 0,
-					RD_AAOW.Properties.GraphArray.Sample_en_us.Length);
+				FS.Write (GraphArrayResources.Sample_en_us, 0, GraphArrayResources.Sample_en_us.Length);
 
 			FS.Close ();
 			}

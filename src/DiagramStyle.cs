@@ -297,6 +297,7 @@ namespace RD_AAOW
 		#endregion
 
 		#region Размеры изображения и смещение диаграммы
+
 		/// <summary>
 		/// Минимально допустимая ширина изображения диаграммы
 		/// </summary>
@@ -432,9 +433,11 @@ namespace RD_AAOW
 				}
 			}
 		private uint diagramImageTopOffset;
+
 		#endregion
 
 		#region Диапазон построения диаграммы
+
 		/// <summary>
 		/// Задаёт или возвращает максимальную абсциссу диапазона построения
 		/// </summary>
@@ -498,9 +501,11 @@ namespace RD_AAOW
 				}
 			}
 		private double minY;
+
 		#endregion
 
 		#region Толщина линий диаграммы
+
 		/// <summary>
 		/// Минимально допустимая толщина линий диаграммы
 		/// </summary>
@@ -585,9 +590,11 @@ namespace RD_AAOW
 				}
 			}
 		private uint lineWidth;
+
 		#endregion
 
 		#region Цвета диаграммы
+
 		/// <summary>
 		/// Задаёт или возвращает цвет осей диаграммы
 		/// </summary>
@@ -602,9 +609,7 @@ namespace RD_AAOW
 				axesColor = value;
 
 				if (axesColor.ToArgb () == Color.FromArgb (255, 255, 255).ToArgb ())
-					{
 					axesColor = imageBackColor;
-					}
 				}
 			}
 		private Color axesColor;
@@ -623,9 +628,7 @@ namespace RD_AAOW
 				primaryGridColor = value;
 
 				if (primaryGridColor.ToArgb () == Color.FromArgb (255, 255, 255).ToArgb ())
-					{
 					primaryGridColor = imageBackColor;
-					}
 				}
 			}
 		private Color primaryGridColor;
@@ -644,9 +647,7 @@ namespace RD_AAOW
 				secondaryGridColor = value;
 
 				if (secondaryGridColor.ToArgb () == Color.FromArgb (255, 255, 255).ToArgb ())
-					{
 					secondaryGridColor = imageBackColor;
-					}
 				}
 			}
 		private Color secondaryGridColor;
@@ -666,9 +667,11 @@ namespace RD_AAOW
 				}
 			}
 		private Color lineColor;
+
 		#endregion
 
 		#region Шрифт и цвет подписей
+
 		/// <summary>
 		/// Максимально допустимый размер шрифта для подписей диаграммы
 		/// </summary>
@@ -742,9 +745,11 @@ namespace RD_AAOW
 				}
 			}
 		private Color axesFontColor;
+
 		#endregion
 
 		#region Основные и дополнительные засечки на осях
+
 		/// <summary>
 		/// Минимально допустимое число основных делений
 		/// </summary>
@@ -766,7 +771,7 @@ namespace RD_AAOW
 		public const uint MaxSecondaryDivisions = 10;
 
 		// Метод рассчитывает оптимальное число засечек на оси (результат - от 4 до 10)
-		private uint GetPrimaryDivisions (double MinValue, double MaxValue)
+		private static uint GetPrimaryDivisions (double MinValue, double MaxValue)
 			{
 			// Вычисление числа единичных делений на оси
 			double roundPosition = 10.0;
@@ -779,6 +784,7 @@ namespace RD_AAOW
 					break;
 					}
 				}
+
 			uint length = (uint)(Math.Abs (MinValue - MaxValue) * Math.Pow (10.0, -roundPosition));
 
 			// Считаем 10 оптимальным для случая, когда length не позволяет использовать другие варианты
@@ -921,9 +927,11 @@ namespace RD_AAOW
 				}
 			}
 		private uint ySecondaryDivisions;
+
 		#endregion
 
 		#region Масштабирование
+
 		/// <summary>
 		/// Минимальная величина масштаба изображения
 		/// </summary>
@@ -1026,9 +1034,11 @@ namespace RD_AAOW
 				}
 			}
 		private AxesPlacements oyPlacement;
+
 		#endregion
 
 		#region Расположения подписей на осях
+
 		/// <summary>
 		/// Максимальное пользовательское смещение имени кривой относительно левого края изображения
 		/// </summary>
@@ -1061,13 +1071,9 @@ namespace RD_AAOW
 			set
 				{
 				if (value > (uint)(diagramImageHeight * MaxOxTextMargin))
-					{
 					oxTextOffset = (uint)(diagramImageHeight * MaxOxTextMargin);
-					}
 				else
-					{
 					oxTextOffset = value;
-					}
 				}
 			}
 		private uint oxTextOffset;
@@ -1084,13 +1090,9 @@ namespace RD_AAOW
 			set
 				{
 				if (value > (uint)(diagramImageWidth * MaxOyTextMargin))
-					{
 					oyTextOffset = (uint)(diagramImageWidth * MaxOyTextMargin);
-					}
 				else
-					{
 					oyTextOffset = value;
-					}
 				}
 			}
 		private uint oyTextOffset;
@@ -1145,13 +1147,9 @@ namespace RD_AAOW
 			set
 				{
 				if (value > (uint)(diagramImageWidth * MaxLineNameLeftMargin))
-					{
 					lineNameLeftOffset = (uint)(diagramImageWidth * MaxLineNameLeftMargin);
-					}
 				else
-					{
 					lineNameLeftOffset = value;
-					}
 				}
 			}
 		private uint lineNameLeftOffset;
@@ -1168,16 +1166,13 @@ namespace RD_AAOW
 			set
 				{
 				if (value > (uint)(diagramImageHeight * MaxLineNameTopMargin))
-					{
 					lineNameTopOffset = (uint)(diagramImageHeight * MaxLineNameTopMargin);
-					}
 				else
-					{
 					lineNameTopOffset = value;
-					}
 				}
 			}
 		private uint lineNameTopOffset;
+
 		#endregion
 
 		#region Представление чисел на диаграмме
@@ -1213,6 +1208,7 @@ namespace RD_AAOW
 				}
 			}
 		private NumbersFormat oyFormat;
+
 		#endregion
 		}
 	}

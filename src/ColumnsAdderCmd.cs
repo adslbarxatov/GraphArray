@@ -26,7 +26,7 @@ namespace RD_AAOW
 				return xColumnNumber;
 				}
 			}
-		private List<uint> xColumnNumber = new List<uint> ();
+		private List<uint> xColumnNumber = [];
 
 		/// <summary>
 		/// Возвращает номер столбца данных, интерпретируемого как столбец ординат
@@ -38,7 +38,7 @@ namespace RD_AAOW
 				return yColumnNumber;
 				}
 			}
-		private List<uint> yColumnNumber = new List<uint> ();
+		private List<uint> yColumnNumber = [];
 
 		/// <summary>
 		/// Возвращает ширину изображения новой диаграммы
@@ -50,7 +50,7 @@ namespace RD_AAOW
 				return imageWidth;
 				}
 			}
-		private List<uint> imageWidth = new List<uint> ();
+		private List<uint> imageWidth = [];
 
 		/// <summary>
 		/// Возвращает высоту изображения новой диаграммы
@@ -62,7 +62,7 @@ namespace RD_AAOW
 				return imageHeight;
 				}
 			}
-		private List<uint> imageHeight = new List<uint> ();
+		private List<uint> imageHeight = [];
 
 		/// <summary>
 		/// Возвращает смещение изображения новой диаграммы относительно левой границы экрана
@@ -74,7 +74,7 @@ namespace RD_AAOW
 				return imageLeft;
 				}
 			}
-		private List<uint> imageLeft = new List<uint> ();
+		private List<uint> imageLeft = [];
 
 		/// <summary>
 		/// Возвращает смещение изображения новой диаграммы относительно верхней границы экрана
@@ -86,7 +86,7 @@ namespace RD_AAOW
 				return imageTop;
 				}
 			}
-		private List<uint> imageTop = new List<uint> ();
+		private List<uint> imageTop = [];
 
 		/// <summary>
 		/// Возвращает подпись диаграммы
@@ -98,7 +98,7 @@ namespace RD_AAOW
 				return lineName;
 				}
 			}
-		private List<string> lineName = new List<string> ();
+		private List<string> lineName = [];
 
 		/// <summary>
 		/// Возвращает смещение подписи диаграммы относительно левой границы экрана
@@ -110,7 +110,7 @@ namespace RD_AAOW
 				return lineNameLeftOffset;
 				}
 			}
-		private List<uint> lineNameLeftOffset = new List<uint> ();
+		private List<uint> lineNameLeftOffset = [];
 
 		/// <summary>
 		/// Возвращает смещение подписи диаграммы относительно верхней границы экрана
@@ -122,7 +122,7 @@ namespace RD_AAOW
 				return lineNameTopOffset;
 				}
 			}
-		private List<uint> lineNameTopOffset = new List<uint> ();
+		private List<uint> lineNameTopOffset = [];
 
 		/// <summary>
 		/// Возвращает флаг, указывающий, следует ли определять автоматически положение подписи диаграммы
@@ -134,7 +134,7 @@ namespace RD_AAOW
 				return autoNameOffset;
 				}
 			}
-		private List<bool> autoNameOffset = new List<bool> ();
+		private List<bool> autoNameOffset = [];
 
 		/// <summary>
 		/// Возвращает true, если выбор данных был отменён
@@ -228,12 +228,18 @@ namespace RD_AAOW
 
 			// Предварительные значения
 			bool autoNameOffsetT = true;
-			uint xColumnNumberT = 0;
+			/*uint xColumnNumberT = 0;
 			uint yColumnNumberT = 1;
 			uint imageWidthT = 0;
 			uint imageHeightT = 0;
 			uint imageLeftT = 0;
-			uint imageTopT = 0;
+			uint imageTopT = 0;*/
+			uint xColumnNumberT;
+			uint yColumnNumberT;
+			uint imageWidthT;
+			uint imageHeightT;
+			uint imageLeftT;
+			uint imageTopT;
 			string lineNameT = "";
 			uint lineNameLeftOffsetT = 0;
 			uint lineNameTopOffsetT = 0;
@@ -418,7 +424,7 @@ namespace RD_AAOW
 			if (RDGenerics.StartedFromMSStore)
 				{
 				s = RDGenerics.GetEncoding (RDEncodings.UTF8).
-					GetString (RD_AAOW.Properties.GraphArray.LineParameters);
+					GetString (GraphArrayResources.LineParameters);
 				TR = new StringReader (s);
 				}
 			else
@@ -491,7 +497,8 @@ namespace RD_AAOW
 		public static bool CreateDefaultParametersFile (string FileName)
 			{
 			// Попытка открытия файла
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (FileName, FileMode.Create);
@@ -502,8 +509,7 @@ namespace RD_AAOW
 				}
 
 			// Запись и завершение
-			FS.Write (RD_AAOW.Properties.GraphArray.LineParameters, 0,
-				RD_AAOW.Properties.GraphArray.LineParameters.Length);
+			FS.Write (GraphArrayResources.LineParameters, 0, GraphArrayResources.LineParameters.Length);
 			FS.Close ();
 			return true;
 			}
@@ -543,7 +549,8 @@ namespace RD_AAOW
 		public static bool WriteParametersFile (DiagramData Data, string FileName)
 			{
 			// Попытка создания файла файла
-			FileStream FS = null;
+			/*FileStream FS = null;*/
+			FileStream FS;
 			try
 				{
 				FS = new FileStream (FileName, FileMode.Create);
@@ -575,6 +582,6 @@ namespace RD_AAOW
 			FS.Close ();
 			return true;
 			}
-		private static char[] parFileSplitter = new char[] { ';' };
+		private static char[] parFileSplitter = [';'];
 		}
 	}

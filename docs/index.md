@@ -243,6 +243,12 @@ which will correspond to the rotation of the axes abscissa and ordinate, respect
 option remains available. All this allows you to increase the flexibility and informativeness of the diagram,
 depending on the needs of a particular study.
 
+The plotting range can also be controlled using the mouse wheel:
+- Without keys, the wheel allows you to shift the plotting ranges along the `Oy` axis (vertically);
+- With the `[Shift]` key pressed, the wheel allows you to shift the ranges along the `Ox` axis (horizontally);
+- With the `[Ctrl]` key pressed, the wheel performs “zoom in / zoom out” – simultaneous getting closer / moving away
+of the range boundaries along all axes.
+
 [:arrow_double_up:](#contents)
 
 ---

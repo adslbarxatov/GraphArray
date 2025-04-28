@@ -14,9 +14,6 @@ namespace RD_AAOW
 		[STAThread]
 		public static void Main (string[] args)
 			{
-			/*// Загрузка конфигурации
-			ConfigAccessor ca = new ConfigAccessor ();*/
-
 			// Запуск программы в случае уникальности
 			Application.EnableVisualStyles ();
 			Application.SetCompatibleTextRenderingDefault (false);

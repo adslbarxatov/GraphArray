@@ -228,12 +228,6 @@ namespace RD_AAOW
 
 			// Предварительные значения
 			bool autoNameOffsetT = true;
-			/*uint xColumnNumberT = 0;
-			uint yColumnNumberT = 1;
-			uint imageWidthT = 0;
-			uint imageHeightT = 0;
-			uint imageLeftT = 0;
-			uint imageTopT = 0;*/
 			uint xColumnNumberT;
 			uint yColumnNumberT;
 			uint imageWidthT;
@@ -497,7 +491,6 @@ namespace RD_AAOW
 		public static bool CreateDefaultParametersFile (string FileName)
 			{
 			// Попытка открытия файла
-			/*FileStream FS = null;*/
 			FileStream FS;
 			try
 				{
@@ -549,7 +542,6 @@ namespace RD_AAOW
 		public static bool WriteParametersFile (DiagramData Data, string FileName)
 			{
 			// Попытка создания файла файла
-			/*FileStream FS = null;*/
 			FileStream FS;
 			try
 				{

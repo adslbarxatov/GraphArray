@@ -142,7 +142,6 @@ namespace RD_AAOW
 				return false;
 
 			// Пересчёт координат
-			/*double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0;*/
 			double x1, x2, y1, y2;
 			VectorAdapterSupport.InboundCoords (clipBoxX1, clipBoxX2, clipBoxY1, clipBoxY2,
 				X1, X2, Y1, Y2, out x1, out x2, out y1, out y2);
@@ -206,7 +205,6 @@ namespace RD_AAOW
 				return false;
 
 			// Пересчёт координат
-			/*double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0;*/
 			double x1, x2, y1, y2;
 			VectorAdapterSupport.InboundCoords (clipBoxX1, clipBoxX2, clipBoxY1, clipBoxY2,
 				X1, X2, Y1, Y2, out x1, out x2, out y1, out y2);
@@ -282,7 +280,6 @@ namespace RD_AAOW
 				return false;
 
 			// Пересчёт координат
-			/*double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0;*/
 			double x1, x2, y1, y2;
 			VectorAdapterSupport.InboundCoords (clipBoxX1, clipBoxX2, clipBoxY1, clipBoxY2,
 				X1, X2, Y1, Y2, out x1, out x2, out y1, out y2);
@@ -347,7 +344,6 @@ namespace RD_AAOW
 			string codeString = "";
 
 			// Попытка открытия файла
-			/*FileStream IFS = null;*/
 			FileStream IFS;
 			try
 				{

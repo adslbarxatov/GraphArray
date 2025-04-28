@@ -8,9 +8,6 @@ namespace RD_AAOW
 	/// </summary>
 	public partial class ProgramSettings: Form
 		{
-		/*// Переменные
-		private ConfigAccessor ca = new ConfigAccessor ();*/
-
 		/// <summary>
 		/// Конструктор. Запускает настройку программы
 		/// </summary>

@@ -294,7 +294,6 @@ namespace RD_AAOW
 		private void SSDialog_FileOk (object sender, CancelEventArgs e)
 			{
 			// Попытка создания файла образца
-			/*FileStream FS = null;*/
 			FileStream FS;
 			try
 				{

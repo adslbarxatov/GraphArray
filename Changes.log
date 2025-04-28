@@ -1,7 +1,11 @@
 GraphArray: changes log
 
-ToDo:
-- Add movement and zoom by mouse for the plotting range
+Version 6.1.5:
+• Added the mouse wheel control for plotting ranges;
+• Fixed the incorrect presentation of numbers under notches on axes;
+• Fixed some defects of bitmap drawing (the behavior of .NET method DrawLine may become
+  unpredictable when float values passed as coordinates have significant fractional part);
+• Videoguides have been updated
 
 Version 6.1:
 • The application has been migrated to .NET 9.0 from .NET Framework 4.8.1

@@ -17,9 +17,6 @@ namespace RD_AAOW
 		// Состояние загрузки значений параметров в контролы
 		private bool loading = false, selectionMode = false;
 
-		/*// Аксессор конфигурации программы (загрузка или инициализация)
-		private ConfigAccessor ca = new ConfigAccessor ();*/
-
 		// Загрузчик маркеров
 		private MarkersLoader ml = new MarkersLoader ();
 
@@ -134,6 +131,9 @@ namespace RD_AAOW
 			// Настройка эффекта выделения
 			MainSelector.Parent = DiagramBox;
 
+			// Подключение обработки колёсика мыши
+			DiagramBox.MouseWheel += DiagramBox_MouseWheel;
+
 			#endregion
 
 			#region Загрузка диаграммы
@@ -150,7 +150,6 @@ namespace RD_AAOW
 			else
 				{
 				// Тестовое открытие файла данных
-				/*DiagramData ddt = null;*/
 				DiagramData ddt;
 				if (SentFileType == DataInputTypes.Unknown)
 					ddt = new DiagramData (SentFileName, 2, 0);
@@ -286,7 +285,6 @@ namespace RD_AAOW
 		private static bool CheckFileLoadingParameters (DataInputTypes InputType)
 			{
 			// Обработка случая извлечения данных
-			/*UnknownFileParametersSelector ufps = null;*/
 			UnknownFileParametersSelector ufps;
 			if (InputType == DataInputTypes.Unknown)
 				{
@@ -299,7 +297,6 @@ namespace RD_AAOW
 				}
 
 			// Обработка случаев, требующих указания количества строк, используемых для поиска имён столбцов данных
-			/*ColumnsNamesSelector cns = null;*/
 			ColumnsNamesSelector cns;
 			if (InputType != DataInputTypes.GDD)
 				{
@@ -675,6 +672,38 @@ namespace RD_AAOW
 				}
 			}
 
+		// Смещение диапазонов и зум
+		private void DiagramBox_MouseWheel (object sender, MouseEventArgs e)
+			{
+			int sign = Math.Sign (e.Delta);
+
+			// Зум
+			if (ModifierKeys == Keys.Control)
+				{
+				decimal increment = sign * Math.Min (MinX.Increment, MinY.Increment);
+				MinX.Value += increment;
+				MinY.Value += increment;
+				MaxX.Value -= increment;
+				MaxY.Value -= increment;
+				}
+
+			// Горизонтальное смещение
+			else if (ModifierKeys == Keys.Shift)
+				{
+				decimal increment = sign * MinX.Increment;
+				MinX.Value += increment;
+				MaxX.Value += increment;
+				}
+
+			// Вертикальное смещение
+			else
+				{
+				decimal increment = sign * MinY.Increment;
+				MinY.Value += increment;
+				MaxY.Value += increment;
+				}
+			}
+
 		// Завершение работы
 		private void MainForm_FormClosing (object sender, FormClosingEventArgs e)
 			{
@@ -724,7 +753,6 @@ namespace RD_AAOW
 		private void OFDialog_FileOk (object sender, CancelEventArgs e)
 			{
 			// Тестовое открытие файла данных
-			/*DiagramData ddt = null;*/
 			DiagramData ddt;
 			if (OFDialog.FilterIndex == (int)DataInputTypes.Unknown)
 				ddt = new DiagramData (OFDialog.FileName, 2, 0);
@@ -887,9 +915,6 @@ namespace RD_AAOW
 			// Выполнение настройки
 			ProgramSettings ps = new ProgramSettings ();
 			ps.Dispose ();
-
-			/*// Перезагрузка параметров
-			ca = new ConfigAccessor ();*/
 			}
 
 		// Выход из программы

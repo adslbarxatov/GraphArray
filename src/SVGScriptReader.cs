@@ -493,9 +493,6 @@ namespace RD_AAOW
 			bool notIncluded = true;
 
 			// Дескрипторы файлов (входной, выходной, подключаемый)
-			/*FileStream FSI = null, FSO = null, FSInc = null;
-			StreamReader SR = null, SRInc = null;
-			StreamWriter SW = null;*/
 			FileStream FSI, FSO, FSInc;
 			StreamReader SR, SRInc;
 			StreamWriter SW;
@@ -593,8 +590,6 @@ namespace RD_AAOW
 						// Получение координат вставки
 						line = SR.ReadLine ();
 						string[] values = line.Split (splitters, StringSplitOptions.RemoveEmptyEntries);
-						/*float x = 0;
-						double y = 0;*/
 						float x;
 						double y;
 

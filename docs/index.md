@@ -1,9 +1,8 @@
 # GraphArray: complete user guide
-> **ƒ** &nbsp;Nicolay B. aka RD_AAOW, Соля́ников Я.; 14.03.2025; 14:20
+> **ƒ** &nbsp;Nicolay B. aka RD_AAOW, Соля́ников Я.; 28.04.2025; 17:42
 
 # Contents
 - [General information](#general-information)
-- [Video guide](https://youtube.com/watch?v=rNMALrRyM0g)
 - [Main app interface](#main-app-interface)
     - [Adding a curve or object to a diagram](#adding-a-curve-or-object-to-a-diagram)
     - [Removing curves and objects from diagram](#removing-curves-and-objects-from-diagram)

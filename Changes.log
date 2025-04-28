@@ -1,5 +1,8 @@
 GraphArray: changes log
 
+ToDo:
+- Add movement and zoom by mouse for the plotting range
+
 Version 6.1:
 • The application has been migrated to .NET 9.0 from .NET Framework 4.8.1
 

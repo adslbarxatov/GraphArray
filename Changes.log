@@ -1,5 +1,8 @@
 GraphArray: changes log
 
+ToDo:
+- lock ranges orientation on wheel event
+
 Version 6.1.5:
 • Added the mouse wheel control for plotting ranges;
 • Fixed the incorrect presentation of numbers under notches on axes;

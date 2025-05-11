@@ -681,10 +681,24 @@ namespace RD_AAOW
 			if (ModifierKeys == Keys.Control)
 				{
 				decimal increment = sign * Math.Min (MinX.Increment, MinY.Increment);
-				MinX.Value += increment;
-				MinY.Value += increment;
-				MaxX.Value -= increment;
-				MaxY.Value -= increment;
+
+				// Защита от разворота диапазона
+				decimal preXSign = Math.Sign(MaxX.Value - MinX.Value);
+				decimal postXSign = Math.Sign (MaxX.Value - MinX.Value - 2 * increment);
+				decimal preYSign = Math.Sign (MaxY.Value - MinY.Value);
+				decimal postYSign = Math.Sign (MaxY.Value - MinY.Value - 2 * increment);
+
+				if (preXSign == postXSign)
+					{
+					MinX.Value += increment;
+					MaxX.Value -= increment;
+					}
+
+				if (preYSign == postYSign)
+					{
+					MinY.Value += increment;
+					MaxY.Value -= increment;
+					}
 				}
 
 			// Горизонтальное смещение

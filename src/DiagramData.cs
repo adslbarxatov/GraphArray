@@ -140,7 +140,7 @@ namespace RD_AAOW
 				// Следующие обработки выполняются в дополнительных методах
 				case DataInputTypes.XLS:
 					// Контроль доступа к компонентам
-					if (!RDGenerics.CheckLibraries (ProgramDescription.CriticalComponents_New, false))
+					if (!RDGenerics.CheckLibrariesExistence (ProgramDescription.AssemblyLibraries, false))
 						{
 						initResult = DiagramDataInitResults.ExcelNotAvailable;
 						return;
@@ -1362,7 +1362,6 @@ namespace RD_AAOW
 				markersLoader = new MarkersLoader ();
 
 			Bitmap currentMarker = markersLoader.GetMarker (LineStyle.LineMarkerNumber - 1, LineStyle.LineColor);
-			/*ml.Dispose ();*/
 
 			// Отрисовка рамки, если кривая выделена на диаграмме
 			if (IsSelected)
@@ -2006,13 +2005,11 @@ namespace RD_AAOW
 			string txt;
 
 			// Получение текущего маркера
-			/*MarkersLoader ml = new MarkersLoader ();*/
 			if (markersLoader == null)
 				markersLoader = new MarkersLoader ();
 
 			Bitmap currentMarker = markersLoader.GetMarker (lineStyles[LineNumber].LineMarkerNumber - 1,
 				lineStyles[LineNumber].LineColor);
-			/*ml.Dispose ();*/
 
 			#region Транспонирование диапазонов при необходимости
 			if (!lineStyles[LineNumber].SwitchXY)
@@ -2461,7 +2458,6 @@ namespace RD_AAOW
 			// Готово
 			g.Dispose ();
 			b.Dispose ();
-			/*ml.Dispose ();*/
 			VectorAdapter.CloseGroup ();
 			}
 

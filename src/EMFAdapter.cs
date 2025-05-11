@@ -12,7 +12,6 @@ namespace RD_AAOW
 		{
 		// Переменные
 		private uint width, height;
-		/*private string fileName;*/
 		private Metafile mf = null;
 		private Graphics g = null;
 
@@ -34,7 +33,6 @@ namespace RD_AAOW
 			// Сохранение параметров
 			width = MaxWidth;
 			height = MaxHeight;
-			/*fileName = FileName;*/
 
 			// Попытка создания файла
 			try

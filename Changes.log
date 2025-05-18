@@ -1,5 +1,8 @@
 GraphArray: changes log
 
+Version 6.1.7:
+• Added support for new offline help provider
+
 Version 6.1.6:
 • Added protection against of ranges flipping when the mouse wheel is in use;
 • Added support for DPZ packages

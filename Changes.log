@@ -1,7 +1,8 @@
 GraphArray: changes log
 
-ToDo:
-- no name on the third button in the image extraction interface
+Version 6.1.8:
+• Internal assemblies have been updated;
+• Fixed some missing tips
 
 Version 6.1.7:
 • Added support for new offline help provider

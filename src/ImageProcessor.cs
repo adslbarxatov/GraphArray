@@ -208,7 +208,8 @@ namespace RD_AAOW
 		// Быстрая справка
 		private void BHelp_Click (object sender, EventArgs e)
 			{
-			RDInterface.LocalizedMessageBox (RDMessageTypes.Information_Left, "ImageExtractionGuide");
+			RDInterface.LocalizedMessageBox (RDMessageFlags.Information | RDMessageFlags.NoSound,
+				"ImageExtractionGuide");
 			}
 
 		// Указание отрезка

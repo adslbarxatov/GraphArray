@@ -93,7 +93,8 @@ namespace RD_AAOW
 		// Обработка ошибки ввода данных
 		private void MainDataGrid_DataError (object sender, DataGridViewDataErrorEventArgs e)
 			{
-			RDInterface.LocalizedMessageBox (RDMessageTypes.Warning_Center, "IncorrectValueError");
+			RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
+				"IncorrectValueError");
 			}
 
 		// Добавление строки
@@ -123,7 +124,8 @@ namespace RD_AAOW
 			// Контроль количества строк
 			if (MainDataGrid.Rows.Count <= 2)
 				{
-				RDInterface.LocalizedMessageBox (RDMessageTypes.Warning_Center, "NotEnoughRowsError");
+				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
+					"NotEnoughRowsError");
 				return;
 				}
 
@@ -231,8 +233,8 @@ namespace RD_AAOW
 			if (cancelled)
 				{
 				// Проверка на отмену изменений
-				if (RDInterface.LocalizedMessageBox (RDMessageTypes.Question_Center, "AbortChanges",
-					RDLDefaultTexts.Button_YesNoFocus, RDLDefaultTexts.Button_No) ==
+				if (RDInterface.LocalizedMessageBox (RDMessageFlags.Question | RDMessageFlags.CenterText,
+					"AbortChanges", RDLDefaultTexts.Button_YesNoFocus, RDLDefaultTexts.Button_No) ==
 					RDMessageButtons.ButtonTwo)
 					{
 					e.Cancel = true;
@@ -242,8 +244,9 @@ namespace RD_AAOW
 			else
 				{
 				// Проверка на применение изменений
-				if (RDInterface.LocalizedMessageBox (RDMessageTypes.Question_Center, "ApplyChanges",
-					RDLDefaultTexts.Button_Yes, RDLDefaultTexts.Button_No) == RDMessageButtons.ButtonTwo)
+				if (RDInterface.LocalizedMessageBox (RDMessageFlags.Question | RDMessageFlags.CenterText,
+					"ApplyChanges", RDLDefaultTexts.Button_Yes, RDLDefaultTexts.Button_No) ==
+					RDMessageButtons.ButtonTwo)
 					{
 					e.Cancel = true;
 					return;
@@ -254,7 +257,7 @@ namespace RD_AAOW
 
 				if (ddt.InitResult != DiagramDataInitResults.Ok)
 					{
-					RDInterface.MessageBox (RDMessageTypes.Warning_Center,
+					RDInterface.MessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 						string.Format (RDLocale.GetText ("DataProcessingError"),
 						RDLocale.GetText ("BrokenTableError")));
 					e.Cancel = true;

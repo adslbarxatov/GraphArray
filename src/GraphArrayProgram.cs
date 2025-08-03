@@ -39,7 +39,7 @@ namespace RD_AAOW
 				// Справка по командной строке
 				if (args[0].Contains ('?'))
 					{
-					RDInterface.LocalizedMessageBox (RDMessageTypes.Information_Left, "CommandLineHelp");
+					RDInterface.LocalizedMessageBox (RDMessageFlags.Information, "CommandLineHelp");
 					return;
 					}
 
@@ -144,7 +144,7 @@ namespace RD_AAOW
 				// Контроль результата
 				if (dd.InitResult != DiagramDataInitResults.Ok)
 					{
-					RDInterface.MessageBox (RDMessageTypes.Warning_Left,
+					RDInterface.MessageBox (RDMessageFlags.Warning,
 						DiagramData.GetDataLoadError (dd.InitResult, args[0]));
 					return;
 					}
@@ -154,7 +154,7 @@ namespace RD_AAOW
 					{
 					if (dd.SaveDataFile (args[1], (DataOutputTypes)outputType, true) < 0)
 						{
-						RDInterface.MessageBox (RDMessageTypes.Warning_Center,
+						RDInterface.MessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 							string.Format (RDLocale.GetDefaultText (RDLDefaultTexts.Message_SaveFailure_Fmt),
 							args[1]));
 						return;

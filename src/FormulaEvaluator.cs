@@ -97,7 +97,8 @@ namespace RD_AAOW
 				((uint)(Math.Abs (EndValue.Value - StartValue.Value) / StepValue.Value) + 1 >
 				DiagramData.MaxDataRows) || (EndValue.Value == StartValue.Value))
 				{
-				RDInterface.LocalizedMessageBox (RDMessageTypes.Warning_Center, "IncorrectRangeError");
+				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
+					"IncorrectRangeError");
 				return;
 				}
 

@@ -186,7 +186,8 @@ namespace RD_AAOW
 					}
 				catch
 					{
-					RDInterface.LocalizedMessageBox (RDMessageTypes.Warning_Center, "ImageSaveError");
+					RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
+						"ImageSaveError");
 					}
 				b.Dispose ();
 				g.Dispose ();
@@ -208,7 +209,8 @@ namespace RD_AAOW
 						if ((emfa.InitResult != VectorAdapterInitResults.Opened) ||
 							(diagramData.DrawAllDiagrams (emfa) < 0))
 							{
-							RDInterface.LocalizedMessageBox (RDMessageTypes.Warning_Center, "ImageSaveError");
+							RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
+								"ImageSaveError");
 							}
 						break;
 
@@ -220,7 +222,8 @@ namespace RD_AAOW
 						if ((svga.InitResult != VectorAdapterInitResults.Opened) ||
 							(diagramData.DrawAllDiagrams (svga) < 0))
 							{
-							RDInterface.LocalizedMessageBox (RDMessageTypes.Warning_Center, "ImageSaveError");
+							RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
+								"ImageSaveError");
 							}
 						break;
 					}

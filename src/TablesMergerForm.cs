@@ -135,7 +135,8 @@ namespace RD_AAOW
 			// Контроль
 			if (dataTables.Count < 2)
 				{
-				RDInterface.LocalizedMessageBox (RDMessageTypes.Warning_Center, "NotEnoughFilesToMerge");
+				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
+					"NotEnoughFilesToMerge");
 				return;
 				}
 
@@ -176,7 +177,7 @@ namespace RD_AAOW
 				for (int r = 0; r < dataTables[f][(int)abscissasColumnsNumbers[f]].Count; r++)
 					{
 					// Возврат прогресса
-					bw.ReportProgress ((int)(r * HardWorkExecutor.ProgressBarSize /
+					bw.ReportProgress ((int)(r * RDWorkerForm.ProgressBarSize /
 						dataTables[f][(int)abscissasColumnsNumbers[f]].Count),
 						string.Format (RDLocale.GetText ("TablesAssembling"), f + 1, r));
 
@@ -210,7 +211,7 @@ namespace RD_AAOW
 				}
 
 			// Сортировка
-			bw.ReportProgress ((int)HardWorkExecutor.ProgressBarSize, RDLocale.GetText ("TablesSorting"));
+			bw.ReportProgress ((int)RDWorkerForm.ProgressBarSize, RDLocale.GetText ("TablesSorting"));
 			dataRows.Sort ();
 
 			// Сборка итоговой таблицы
@@ -218,7 +219,7 @@ namespace RD_AAOW
 			for (int r = 0; r < dataRows.Count; r++)
 				{
 				// Возврат прогресса
-				bw.ReportProgress ((int)(r * HardWorkExecutor.ProgressBarSize / dataRows.Count),
+				bw.ReportProgress ((int)(r * RDWorkerForm.ProgressBarSize / dataRows.Count),
 					string.Format (RDLocale.GetText ("TablesMerging"), r));
 
 				// Добавление строк в таблицу
@@ -270,7 +271,8 @@ namespace RD_AAOW
 			// Финальный контроль
 			if (mergedTable.Count < 2)
 				{
-				RDInterface.LocalizedMessageBox (RDMessageTypes.Warning_Center, "TablesMergeError");
+				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
+					"TablesMergeError");
 				return;
 				}
 
@@ -287,8 +289,9 @@ namespace RD_AAOW
 
 		private void TableMergerForm_FormClosing (object sender, FormClosingEventArgs e)
 			{
-			e.Cancel = (RDInterface.LocalizedMessageBox (RDMessageTypes.Warning_Center, "TablesMerger_Exit",
-				RDLDefaultTexts.Button_Yes, RDLDefaultTexts.Button_No) != RDMessageButtons.ButtonOne);
+			e.Cancel = (RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
+				"TablesMerger_Exit", RDLDefaultTexts.Button_Yes, RDLDefaultTexts.Button_No) !=
+				RDMessageButtons.ButtonOne);
 			}
 
 		// Сохранение таблицы
@@ -302,7 +305,7 @@ namespace RD_AAOW
 			DiagramData dd = new DiagramData (mergedTable, mergedColumnNames);
 			if (dd.SaveDataFile (SFDialog.FileName, (DataOutputTypes)(SFDialog.FilterIndex + 1), true) != 0)
 				{
-				RDInterface.MessageBox (RDMessageTypes.Warning_Center,
+				RDInterface.MessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 					string.Format (RDLocale.GetDefaultText (RDLDefaultTexts.Message_SaveFailure_Fmt),
 					SFDialog.FileName));
 				return;

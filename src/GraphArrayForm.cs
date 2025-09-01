@@ -723,7 +723,7 @@ namespace RD_AAOW
 			{
 			// Перезапись автосохраняемого файла данных
 			bool fub = ConfigAccessor.ForceUsingBackupDataFile;
-			if (fub /*ConfigAccessor. ForceUsingBackupDataFile*/ && (dd != null) && (dd.InitResult == DiagramDataInitResults.Ok))
+			if (fub && (dd != null) && (dd.InitResult == DiagramDataInitResults.Ok))
 				{
 				// Возвращаемый результат не имеет значения
 				dd.SaveDataFile (RDGenerics.AppStartupPath + ConfigAccessor.BackupDataFileName,
@@ -731,12 +731,10 @@ namespace RD_AAOW
 				}
 
 			// Подтверждение
-			if (ConfigAccessor.ForceExitConfirmation ||
-				!fub /*ConfigAccessor. ForceUsingBackupDataFile*/ && (dd != null) && (dd.InitResult == DiagramDataInitResults.Ok))
+			if (ConfigAccessor.ForceExitConfirmation || !fub && (dd != null) && (dd.InitResult == DiagramDataInitResults.Ok))
 				{
-				if (RDInterface.LocalizedMessageBox (/*ConfigAccessor. ForceUsingBackupDataFile ? RDMessageTypes.Question_Center :
-					RDMessageTypes.Warning_Center*/ (fub ? RDMessageFlags.Question : RDMessageFlags.Warning) | RDMessageFlags.CenterText,
-					fub /*ConfigAccessor. ForceUsingBackupDataFile*/ ? "ApplicationExit" : "ApplicationExitNoBackup",
+				if (RDInterface.LocalizedMessageBox ((fub ? RDMessageFlags.Question : RDMessageFlags.Warning) | RDMessageFlags.CenterText,
+					fub ? "ApplicationExit" : "ApplicationExitNoBackup",
 					RDLDefaultTexts.Button_YesNoFocus, RDLDefaultTexts.Button_No) == RDMessageButtons.ButtonTwo)
 					{
 					e.Cancel = true;    // Отмена закрытия окна
@@ -929,9 +927,6 @@ namespace RD_AAOW
 		// Настройки программы
 		private void MProgramSettings_Click (object sender, EventArgs e)
 			{
-			/*// Выполнение настройки
-			ProgramSettings ps = new ProgramSettings ();
-			ps.Dispose ();*/
 			_ = new ProgramSettings ();
 			}
 

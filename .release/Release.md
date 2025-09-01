@@ -1,3 +1,3 @@
-_Changes for v 6.1.9_:
+_Changes for v 6.2_:
 - Internal assemblies have been updated;
-- Fixed some missing tips
+- XPUN / IOP update has been applied

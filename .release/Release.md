@@ -1,3 +1,2 @@
-_Changes for v 6.2_:
-- Internal assemblies have been updated;
-- XPUN / IOP update has been applied
+_Changes for v 6.2.1_:
+- Internal assemblies have been updated

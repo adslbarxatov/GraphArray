@@ -115,6 +115,7 @@ namespace RD_AAOW
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
 			RDLocale.SetControlsText (this);
+			RDGenerics.LoadWindowDimensions (this);
 
 			// Загрузка параметров
 			for (uint col = 0; col < SourceData.DataColumnsCount; col++)
@@ -160,6 +161,12 @@ namespace RD_AAOW
 			{
 			XCombo.Enabled = YCombo.Enabled = Radio01.Checked;
 			ObjectCombo.Enabled = Radio02.Checked;
+			}
+
+		// Закрытие окна
+		private void ColumnsAdder_FormClosing (object sender, FormClosingEventArgs e)
+			{
+			RDGenerics.SaveWindowDimensions (this);
 			}
 		}
 	}

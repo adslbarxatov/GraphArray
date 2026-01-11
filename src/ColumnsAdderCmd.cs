@@ -161,6 +161,7 @@ namespace RD_AAOW
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
 			this.Text = RDLocale.GetText (this.Name + "_T");
+			RDGenerics.LoadWindowDimensions (this);
 
 			// Настройка контролов
 			OFDialog.Filter = SFDialog.Filter = RDLocale.GetText (this.Name + "_OFDialog_F");
@@ -575,5 +576,11 @@ namespace RD_AAOW
 			return true;
 			}
 		private static char[] parFileSplitter = [';'];
+
+		// Закрытие окна
+		private void ColumnsAdderCmd_FormClosing (object sender, FormClosingEventArgs e)
+			{
+			RDGenerics.SaveWindowDimensions (this);
+			}
 		}
 	}

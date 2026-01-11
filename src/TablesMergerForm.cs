@@ -42,7 +42,10 @@ namespace RD_AAOW
 			ProcessingResults.SelectedIndex = ProcessingResults.Items.Count - 1;
 
 			// Запуск
-			this.Text = ProgramDescription.AssemblyTitle;
+			/*this.Text = ProgramDescription.AssemblyTitle;*/
+			this.Text = RDLocale.GetText ("MAdditional_MMergeTables").Replace (".", "");
+			RDGenerics.LoadWindowDimensions (this);
+
 			LocalizeForm ();
 
 			this.ShowDialog ();
@@ -292,6 +295,8 @@ namespace RD_AAOW
 			e.Cancel = (RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 				"TablesMerger_Exit", RDLDefaultTexts.Button_Yes, RDLDefaultTexts.Button_No) !=
 				RDMessageButtons.ButtonOne);
+
+			RDGenerics.SaveWindowDimensions (this);
 			}
 
 		// Сохранение таблицы

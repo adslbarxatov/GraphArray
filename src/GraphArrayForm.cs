@@ -65,7 +65,7 @@ namespace RD_AAOW
 					}
 				}
 
-			MLanguage.Items.AddRange (RDLocale.LanguagesNames);
+			/*MLanguage.Items.AddRange (RDLocale.LanguagesNames);
 			try
 				{
 				MLanguage.SelectedIndex = (int)RDLocale.CurrentLanguage;
@@ -73,10 +73,12 @@ namespace RD_AAOW
 			catch
 				{
 				MLanguage.SelectedIndex = 0;
-				}
+				}*/
+			LocalizeForm ();
 
 			// Установка заголовка программы и параметров окна
-			this.Text = ProgramDescription.AssemblyTitle;
+			/*this.Text = ProgramDescription.AssemblyTitle;*/
+			this.Text = RDGenerics.DefaultAssemblyVisibleName;
 			this.MinimumSize = new Size ((int)ConfigAccessor.MinWidth, (int)ConfigAccessor.MinHeight);
 			RDGenerics.LoadWindowDimensions (this);
 
@@ -234,6 +236,7 @@ namespace RD_AAOW
 			ConfigAccessor.SetControlsText (MUpperHelp);
 			MAdditional.Text = RDLocale.GetText (GraphArrayFormMenuStrip.Name + "_" + MAdditional.Name);
 			ConfigAccessor.SetControlsText (MAdditional);
+			MLanguage2.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Control_InterfaceLanguageNC);
 
 			// Кнопки управления
 			ConfigAccessor.SetControlsText (this, MainToolTip);
@@ -247,10 +250,10 @@ namespace RD_AAOW
 
 			// Контролы и диалоги
 			OFDialog.Filter = string.Format (RDLocale.GetText (this.Name + "_OFDialog_F"),
-				ProgramDescription.AssemblyTitle, ProgramDescription.AppDataExtension);
+				ProgramDescription.AssemblyMainName, ProgramDescription.AppDataExtension);
 			OFDialog.Title = RDLocale.GetText (this.Name + "_OFDialog");
 			SFDialog.Filter = string.Format (RDLocale.GetText (this.Name + "_SFDialog_F"),
-				ProgramDescription.AssemblyTitle, ProgramDescription.AppDataExtension);
+				ProgramDescription.AssemblyMainName, ProgramDescription.AppDataExtension);
 			SFDialog.Title = RDLocale.GetText (this.Name + "_SFDialog");
 			OpenImageDialog.Filter = RDLocale.GetText (this.Name + "_OIDialog_F");
 			OpenImageDialog.Title = RDLocale.GetText (this.Name + "_OIDialog");
@@ -1110,13 +1113,15 @@ namespace RD_AAOW
 			}
 
 		// Изменение языка интерфейса
-		private void MLanguage_SelectedIndexChanged (object sender, EventArgs e)
+		private void MLanguage_Click (object sender, EventArgs e)
 			{
-			// Обновление конфигурации
+			/*// Обновление конфигурации
 			RDLocale.CurrentLanguage = (RDLanguages)MLanguage.SelectedIndex;
 
 			// Релокализация формы
-			LocalizeForm ();
+			LocalizeForm ();*/
+			if (RDInterface.MessageBox ())
+				LocalizeForm ();
 			}
 
 		#endregion

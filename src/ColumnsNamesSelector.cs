@@ -21,6 +21,7 @@ namespace RD_AAOW
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
 			this.Text = RDLocale.GetText (this.Name + "_T");
+			RDGenerics.LoadWindowDimensions (this);
 
 			// Настройка контролов
 			ColumnsCount.Maximum = ConfigAccessor.MaxSkippedLinesCount;
@@ -73,6 +74,12 @@ namespace RD_AAOW
 			// Завершение
 			cancelled = false;
 			this.Close ();
+			}
+
+		// Закрытие окна
+		private void ColumnsNamesSelector_FormClosing (object sender, FormClosingEventArgs e)
+			{
+			RDGenerics.SaveWindowDimensions (this);
 			}
 		}
 	}

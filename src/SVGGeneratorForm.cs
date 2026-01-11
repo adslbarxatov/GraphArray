@@ -21,7 +21,9 @@ namespace RD_AAOW
 			InitializeComponent ();
 
 			// Настройка контролов
-			this.Text = ProgramDescription.AssemblyTitle;
+			/*this.Text = ProgramDescription.AssemblyTitle;*/
+			this.Text = RDLocale.GetText ("MAdditional_MGenerateVI").Replace (".", "");
+			RDGenerics.LoadWindowDimensions (this);
 
 			// Запуск
 			LocalizeForm ();
@@ -332,6 +334,12 @@ namespace RD_AAOW
 			SaveSample.Text = RDLocale.GetText ("VIG_SaveSampleText");
 			GenerateImage.Text = RDLocale.GetText ("VIG_GenerateImageText");
 			BExit.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Exit);
+			}
+
+		// Закрытие окна
+		private void SVGGeneratorForm_FormClosing (object sender, FormClosingEventArgs e)
+			{
+			RDGenerics.SaveWindowDimensions (this);
 			}
 		}
 	}

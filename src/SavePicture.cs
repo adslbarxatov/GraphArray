@@ -31,10 +31,12 @@ namespace RD_AAOW
 			{
 			// Инициализация и локализация формы
 			InitializeComponent ();
+
 			RDLocale.SetControlsText (this);
 			SaveButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Save);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
 			this.Text = RDLocale.GetText (this.Name + "_T");
+			RDGenerics.LoadWindowDimensions (this);
 
 			// Передача значений
 			for (int i = 0; i < DiagramData.LinesCount; i++)
@@ -267,6 +269,12 @@ namespace RD_AAOW
 			{
 			ImageScale.Enabled = false;
 			SFDialog.Filter = RDLocale.GetText (this.Name + "_SFDialog_FV");
+			}
+
+		// Закрытие окна
+		private void SavePicture_FormClosing (object sender, FormClosingEventArgs e)
+			{
+			RDGenerics.SaveWindowDimensions (this);
 			}
 		}
 	}

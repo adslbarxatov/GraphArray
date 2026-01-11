@@ -48,6 +48,7 @@ namespace RD_AAOW
 			// Инициализация и локализация формы
 			InitializeComponent ();
 			sourceData = SourceData;
+			RDGenerics.LoadWindowDimensions (this);
 
 			// Кнопки
 			RDLocale.SetControlsText (this);
@@ -267,6 +268,8 @@ namespace RD_AAOW
 				// Успешно
 				resultTable = (DataTable)MainDataGrid.DataSource;
 				}
+
+			RDGenerics.SaveWindowDimensions (this);
 			}
 
 		// Изменение названия столбца

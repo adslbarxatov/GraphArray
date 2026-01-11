@@ -18,10 +18,12 @@ namespace RD_AAOW
 			{
 			// Инициализация и локализация формы
 			InitializeComponent ();
+
 			RDLocale.SetControlsText (this);
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
 			this.Text = RDLocale.GetText (this.Name + "_T");
+			RDGenerics.LoadWindowDimensions (this);
 
 			// Настройка контролов
 			ColumnsCount.Maximum = ConfigAccessor.MaxExpectedColumnsCount;
@@ -97,6 +99,12 @@ namespace RD_AAOW
 		private void ColumnsCount_ValueChanged (object sender, EventArgs e)
 			{
 			Abscissas.Maximum = ColumnsCount.Value;
+			}
+
+		// Закрытие окна
+		private void UnknownFileParametersSelector_FormClosing (object sender, FormClosingEventArgs e)
+			{
+			RDGenerics.SaveWindowDimensions (this);
 			}
 		}
 	}

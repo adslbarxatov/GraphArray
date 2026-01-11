@@ -1,3 +1,4 @@
-_Changes for v 6.3_:
-- App has been migrated to `.NET 10`;
-- Internal assemblies have been updated
+_Changes for v 6.3.2_:
+- Internal assemblies have been updated;
+- All internal windows can now remember their positions;
+- App has been migrated to `.NET 10`

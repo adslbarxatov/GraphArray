@@ -65,6 +65,7 @@ namespace RD_AAOW
 			{
 			// Инициализация и локализация формы
 			InitializeComponent ();
+			RDGenerics.LoadWindowDimensions (this);
 
 			// Кнопки
 			RDLocale.SetControlsText (this);
@@ -123,6 +124,12 @@ namespace RD_AAOW
 			// Выход
 			cancelled = false;
 			this.Close ();
+			}
+
+		// Закрытие окна
+		private void DiagramMerger_FormClosing (object sender, FormClosingEventArgs e)
+			{
+			RDGenerics.SaveWindowDimensions (this);
 			}
 		}
 	}

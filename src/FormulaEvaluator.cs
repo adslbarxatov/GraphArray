@@ -65,6 +65,7 @@ namespace RD_AAOW
 			{
 			// Инициализация и локазизация формы
 			InitializeComponent ();
+			RDGenerics.LoadWindowDimensions (this);
 
 			this.Text = RDLocale.GetText (this.Name + "_T");
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
@@ -313,6 +314,12 @@ namespace RD_AAOW
 					StepValue.Value) + 1).ToString ());
 
 			Label05.Text += (" / " + DiagramData.MaxDataRows.ToString ());
+			}
+
+		// Закрытие окна
+		private void FormulaEvaluator_FormClosing (object sender, FormClosingEventArgs e)
+			{
+			RDGenerics.SaveWindowDimensions (this);
 			}
 		}
 	}

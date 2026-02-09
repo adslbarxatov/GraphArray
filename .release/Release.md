@@ -1,4 +1,4 @@
-_Changes for v 6.3.2_:
+_Changes for v 6.3.3_:
+- Offline help has been replaced with the PDF format;
 - Internal assemblies have been updated;
-- All internal windows can now remember their positions;
-- App has been migrated to `.NET 10`
+- All internal windows can now remember their positions

@@ -21,7 +21,6 @@ namespace RD_AAOW
 			InitializeComponent ();
 
 			// Настройка контролов
-			/*this.Text = ProgramDescription.AssemblyTitle;*/
 			this.Text = RDLocale.GetText ("MAdditional_MGenerateVI").Replace (".", "");
 			RDGenerics.LoadWindowDimensions (this);
 

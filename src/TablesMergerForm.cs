@@ -42,7 +42,6 @@ namespace RD_AAOW
 			ProcessingResults.SelectedIndex = ProcessingResults.Items.Count - 1;
 
 			// Запуск
-			/*this.Text = ProgramDescription.AssemblyTitle;*/
 			this.Text = RDLocale.GetText ("MAdditional_MMergeTables").Replace (".", "");
 			RDGenerics.LoadWindowDimensions (this);
 

@@ -1,5 +1,8 @@
 GraphArray: changes log
 
+Version 6.3.3:
+• Offline help has been replaced with the PDF format
+
 Version 6.3.2:
 • Internal assemblies have been updated;
 • All internal windows can now remember their positions

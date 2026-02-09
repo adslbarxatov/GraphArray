@@ -65,19 +65,9 @@ namespace RD_AAOW
 					}
 				}
 
-			/*MLanguage.Items.AddRange (RDLocale.LanguagesNames);
-			try
-				{
-				MLanguage.SelectedIndex = (int)RDLocale.CurrentLanguage;
-				}
-			catch
-				{
-				MLanguage.SelectedIndex = 0;
-				}*/
 			LocalizeForm ();
 
 			// Установка заголовка программы и параметров окна
-			/*this.Text = ProgramDescription.AssemblyTitle;*/
 			this.Text = RDGenerics.DefaultAssemblyVisibleName;
 			this.MinimumSize = new Size ((int)ConfigAccessor.MinWidth, (int)ConfigAccessor.MinHeight);
 			RDGenerics.LoadWindowDimensions (this);
@@ -1115,11 +1105,6 @@ namespace RD_AAOW
 		// Изменение языка интерфейса
 		private void MLanguage_Click (object sender, EventArgs e)
 			{
-			/*// Обновление конфигурации
-			RDLocale.CurrentLanguage = (RDLanguages)MLanguage.SelectedIndex;
-
-			// Релокализация формы
-			LocalizeForm ();*/
 			if (RDInterface.MessageBox ())
 				LocalizeForm ();
 			}

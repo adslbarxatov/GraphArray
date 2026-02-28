@@ -1,5 +1,9 @@
 GraphArray: changes log
 
+Version 6.3.4:
+• Upgraded the update checking method;
+• Package format has been updated
+
 Version 6.3.3:
 • Offline help has been replaced with the PDF format
 

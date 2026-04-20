@@ -310,10 +310,21 @@ namespace RD_AAOW
 				return;
 				}
 
-			if (RDLocale.IsCurrentLanguageRuRu)
+			/*if (RDLocale.IsCurrentLanguageRuRu)
 				FS.Write (GraphArrayResources.Sample_ru_ru, 0, GraphArrayResources.Sample_ru_ru.Length);
 			else
-				FS.Write (GraphArrayResources.Sample_en_us, 0, GraphArrayResources.Sample_en_us.Length);
+				FS.Write (GraphArrayResources.Sample_en_us, 0, GraphArrayResources.Sample_en_us.Length);*/
+			switch (RDLocale.CurrentLanguage)
+				{
+				case RDLanguages.ru_ru:
+					FS.Write (GraphArrayResources.Sample_ru_ru, 0, GraphArrayResources.Sample_ru_ru.Length);
+					break;
+
+				case RDLanguages.pt_br:
+				case RDLanguages.en_us:
+					FS.Write (GraphArrayResources.Sample_en_us, 0, GraphArrayResources.Sample_en_us.Length);
+					break;
+				}
 
 			FS.Close ();
 			}

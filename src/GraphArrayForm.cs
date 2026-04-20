@@ -226,7 +226,7 @@ namespace RD_AAOW
 			ConfigAccessor.SetControlsText (MUpperHelp);
 			MAdditional.Text = RDLocale.GetText (GraphArrayFormMenuStrip.Name + "_" + MAdditional.Name);
 			ConfigAccessor.SetControlsText (MAdditional);
-			MLanguage2.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Control_InterfaceLanguageNC);
+			MLanguage2.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Control_InterfaceLanguage);
 
 			// Кнопки управления
 			ConfigAccessor.SetControlsText (this, MainToolTip);

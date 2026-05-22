@@ -114,7 +114,10 @@ namespace RD_AAOW
 			// Локазизация формы
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
-			RDLocale.SetControlsText (this);
+
+			/*RDLocale.SetControlsText (this);*/
+			RDLocale.SetControlText (this.Name, Radio01);
+			RDLocale.SetControlText (this.Name, Radio02);
 			RDGenerics.LoadWindowDimensions (this);
 
 			// Загрузка параметров

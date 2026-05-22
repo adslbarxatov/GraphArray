@@ -68,11 +68,17 @@ namespace RD_AAOW
 			RDGenerics.LoadWindowDimensions (this);
 
 			// Кнопки
-			RDLocale.SetControlsText (this);
+			/*RDLocale.SetControlsText (this);*/
+			RDLocale.SetControlText (this.Name, PaintingAxes);
 
 			// Панели
-			RDLocale.SetControlsText (MergingAxes);
-			RDLocale.SetControlsText (MergingVariant);
+			/*RDLocale.SetControlsText (MergingAxes);*/
+			RDLocale.SetControlText (MergingAxes.Name, Label01);
+			RDLocale.SetControlText (MergingAxes.Name, OxOy);
+
+			/*RDLocale.SetControlsText (MergingVariant);*/
+			RDLocale.SetControlText (MergingVariant.Name, Label02);
+			/*RDLocale.SetControlText (MergingVariant.Name, Line);*/
 
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);

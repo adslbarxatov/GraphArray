@@ -673,9 +673,6 @@
   <data name="ProgramSettings_ConfirmExit" xml:space="preserve">
     <value>Требовать подтверждение выхода из программы</value>
   </data>
-  <data name="ProgramSettings_DisableMousePlacing" xml:space="preserve">
-    <value>Отключить позиционирование изображений мышью (рекомендуется при работе на планшетных ПК)</value>
-  </data>
   <data name="ProgramSettings_ForceSavingColumnNames" xml:space="preserve">
     <value>Сохранять имена столбцов в файлах данных</value>
   </data>
@@ -1225,7 +1222,7 @@ GraphArray.exe &lt;имя_файла&gt; &lt;имя_файла_2&gt; [SLC] [ECC]
   <data name="NotAnImageError" xml:space="preserve">
     <value>Указанный файл недоступен или не является поддерживаемым файлом изображения</value>
   </data>
-  <data name="ExtractButton" xml:space="preserve">
+  <data name="BExtract" xml:space="preserve">
     <value>Извлечь</value>
   </data>
   <data name="ImageProcessor_T" xml:space="preserve">

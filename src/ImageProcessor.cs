@@ -80,8 +80,10 @@ namespace RD_AAOW
 			RDGenerics.LoadWindowDimensions (this);
 			img = LoadedImage;
 
-			RDLocale.SetControlsText (this);
-			BExtract.Text = RDLocale.GetText ("ExtractButton");
+			/*RDLocale.SetControlsText (this);
+			BExtract.Text = RDLocale.GetText ("ExtractButton");*/
+			RDLocale.SetControlText (BExtract);
+
 			BAbort.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
 			BHelp.Text = RDLocale.GetText ("GraphArrayFormMenuStrip_MUpperHelp");
 			this.Text = RDLocale.GetText (this.Name + "_T");

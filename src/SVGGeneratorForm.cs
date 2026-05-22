@@ -322,6 +322,7 @@ namespace RD_AAOW
 
 				case RDLanguages.pt_br:
 				case RDLanguages.en_us:
+				default:
 					FS.Write (GraphArrayResources.Sample_en_us, 0, GraphArrayResources.Sample_en_us.Length);
 					break;
 				}

@@ -13,7 +13,7 @@ namespace RD_AAOW
 	public partial class ColumnsAdderCmd: Form
 		{
 		// Переменные
-		private uint dataColumnsCount = 0;  // Число столбцов в исходном массиве данных
+		private uint dataColumnsCount = 0;	// Число столбцов в исходном массиве данных
 		private string correctLine;
 
 		/// <summary>
@@ -157,9 +157,18 @@ namespace RD_AAOW
 			{
 			// Инициализация и локализация формы
 			InitializeComponent ();
-			RDLocale.SetControlsText (this);
+			/*RDLocale.SetControlsText (this);*/
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
+
+			RDLocale.SetControlText (this.Name, DescrLabel);
+			RDLocale.SetControlText (this.Name, Label01);
+			RDLocale.SetControlText (this.Name, MultiCmd);
+			RDLocale.SetControlText (this.Name, ProcessingMsg);
+			RDLocale.SetControlText (this.Name, ProcessingResults);
+			RDLocale.SetControlText (this.Name, SelectFile);
+			RDLocale.SetControlText (this.Name, SingleCmd);
+
 			this.Text = RDLocale.GetText (this.Name + "_T");
 			RDGenerics.LoadWindowDimensions (this);
 

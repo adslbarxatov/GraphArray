@@ -1221,7 +1221,7 @@ All unsaved data will be lost!</value>
   <data name="NotAnImageError" xml:space="preserve">
     <value>The specified file is not available or is not a supported image file</value>
   </data>
-  <data name="ExtractButton" xml:space="preserve">
+  <data name="BExtract" xml:space="preserve">
     <value>Extract</value>
   </data>
   <data name="ImageProcessor_T" xml:space="preserve">

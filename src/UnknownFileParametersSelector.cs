@@ -18,10 +18,14 @@ namespace RD_AAOW
 			{
 			// Инициализация и локализация формы
 			InitializeComponent ();
-
-			RDLocale.SetControlsText (this);
+			/*RDLocale.SetControlsText (this);*/
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
+
+			RDLocale.SetControlText (this.Name, Label01);
+			RDLocale.SetControlText (this.Name, Label02);
+			RDLocale.SetControlText (this.Name, Label03);
+
 			this.Text = RDLocale.GetText (this.Name + "_T");
 			RDGenerics.LoadWindowDimensions (this);
 

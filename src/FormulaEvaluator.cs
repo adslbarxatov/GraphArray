@@ -70,7 +70,13 @@ namespace RD_AAOW
 			this.Text = RDLocale.GetText (this.Name + "_T");
 			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
 			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
-			RDLocale.SetControlsText (this);
+
+			/*RDLocale.SetControlsText (this);*/
+			RDLocale.SetControlText (this.Name, Label01);
+			RDLocale.SetControlText (this.Name, Label02);
+			RDLocale.SetControlText (this.Name, Label03);
+			RDLocale.SetControlText (this.Name, Label04);
+			/*RDLocale.SetControlText (this.Name, Label05W);*/
 
 			StartValue.Maximum = EndValue.Maximum = (decimal)ExpressionEvaluator.EvaluationLimit;
 			StartValue.Minimum = EndValue.Minimum = (decimal)-ExpressionEvaluator.EvaluationLimit;

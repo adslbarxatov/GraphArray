@@ -211,7 +211,16 @@ namespace RD_AAOW
 			// Поля настройки
 			for (int i = 0; i < MainTabControl.TabPages.Count; i++)
 				{
-				RDLocale.SetControlsText (MainTabControl.TabPages[i]);
+				/*RDLocale.SetControlsText (MainTabControl.TabPages[i]);*/
+				string s;
+				for (int j = 0; j < MainTabControl.TabPages[i].Controls.Count; j++)
+					{
+					Control ctrl = MainTabControl.TabPages[i].Controls[j];
+					s = RDLocale.GetText (MainTabControl.TabPages[i].Name + "_" + ctrl.Name);
+					if (!string.IsNullOrWhiteSpace (s))
+						ctrl.Text = s;
+					}
+
 				ConfigAccessor.SetControlsText (MainTabControl.TabPages[i], MainToolTip);
 				}
 

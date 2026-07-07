@@ -17,15 +17,12 @@ namespace RD_AAOW
 			InitializeComponent ();
 			RDGenerics.LoadWindowDimensions (this);
 
-			/*RDLocale.SetControlsText (this);*/
 			RDLocale.SetControlText (this.Name, ConfirmExit);
-			/*RDLocale.SetControlText (this.Name, DisableMousePlacing);*/
 			RDLocale.SetControlText (this.Name, ForceSavingColumnNames);
 			RDLocale.SetControlText (this.Name, ForceShowDiagram);
 			RDLocale.SetControlText (this.Name, ForceUsingBackupFile);
-
-			SaveButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Save);
-			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
+			RDLocale.SetDefaultControlText (SaveButton, RDLDefaultTexts.Button_Save);
+			RDLocale.SetDefaultControlText (AbortButton, RDLDefaultTexts.Button_Cancel);
 			this.Text = RDLocale.GetText (this.Name + "_T");
 
 			// Настройка контролов

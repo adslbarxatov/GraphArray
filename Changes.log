@@ -1,5 +1,8 @@
 GraphArray: changes log
 
+Version 6.3.7:
+• Applied the updated GitHub markup for version numbers
+
 Version 6.3.6:
 • Internal assemblies have been updated;
 • Fixed some form resizing bugs in the data editing form

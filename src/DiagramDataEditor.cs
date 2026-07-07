@@ -52,17 +52,14 @@ namespace RD_AAOW
 			RDGenerics.LoadWindowDimensions (this);
 			DiagramDataEditor_Resize (null, null);
 
-			/*// Кнопки
-			RDLocale.SetControlsText (this);*/
-
 			// Панель имени столбца
 			ConfigAccessor.SetControlsText (ColumnNameInput, MainToolTip);
 
 			// Подсказки
 			ConfigAccessor.SetControlsText (this, MainToolTip);
 
-			SaveButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Save);
-			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
+			RDLocale.SetDefaultControlText (SaveButton, RDLDefaultTexts.Button_Save);
+			RDLocale.SetDefaultControlText (AbortButton, RDLDefaultTexts.Button_Cancel);
 			this.Text = RDLocale.GetText (this.Name + "_T");
 
 			// Запуск
@@ -215,11 +212,9 @@ namespace RD_AAOW
 			ColumnNameInput.Width = this.Width - 39;
 			MainDataGrid.Height = this.Height - 135;
 
-			/*MoveRowUp.Top = MoveRowDown.Top = AddRowBefore.Top = AddRowAfter.Top = DeleteRow.Top = this.Height - 115;*/
 			MoveRowUp.Top = MoveRowDown.Top = AddRowBefore.Top = AddRowAfter.Top = DeleteRow.Top =
 				MainDataGrid.Top + MainDataGrid.Height + 9;
 
-			/*SaveButton.Top = AbortButton.Top = this.Height - SaveButton.Height - 12;*/
 			SaveButton.Top = AbortButton.Top = MoveRowUp.Top + MoveRowUp.Height + 9;
 			SaveButton.Left = this.Width / 2 - 3 - SaveButton.Width;
 			AbortButton.Left = this.Width / 2 + 3;

@@ -45,7 +45,6 @@ namespace RD_AAOW
 			this.Text = RDLocale.GetText ("MAdditional_MMergeTables").Replace (".", "");
 			RDGenerics.LoadWindowDimensions (this);
 
-			/*LocalizeForm ();*/
 			// Локализация
 			OFDialog.Filter = RDLocale.GetText (this.Name + "_OFDialog_F");
 			OFDialog.Title = RDLocale.GetText ("GraphArrayForm_OFDialog");
@@ -57,11 +56,10 @@ namespace RD_AAOW
 				MergeType.Items.Add ("");
 				MergeType.SelectedIndex = 0;
 				}
+
 			for (int i = 0; i < MergeType.Items.Count; i++)
-				/*MergeType.Items[i] = RDLocale.GetText ("TablesMergerForm_MergeType" + i.ToString ());*/
 				MergeType.Items[i] = RDLocale.GetText (this.Name + "_MergeType" + i.ToString ());
 
-			/*RDLocale.SetControlsText (this);*/
 			RDLocale.SetControlText (this.Name, AddFiles);
 			RDLocale.SetControlText (this.Name, BeginProcessing);
 			RDLocale.SetControlText (this.Name, ClearFiles);
@@ -69,32 +67,10 @@ namespace RD_AAOW
 			RDLocale.SetControlText (this.Name, MergeLabel);
 			RDLocale.SetControlText (this.Name, ProcessingLabel);
 			RDLocale.SetControlText (this.Name, SaveResult);
-
-			BExit.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Exit);
+			RDLocale.SetDefaultControlText (BExit, RDLDefaultTexts.Button_Exit);
 
 			this.ShowDialog ();
 			}
-
-		/*// Локализация интерфейса
-		private void LocalizeForm ()
-			{
-			// Локализация
-			OFDialog.Filter = RDLocale.GetText (this.Name + "_OFDialog_F");
-			OFDialog.Title = RDLocale.GetText ("GraphArrayForm_OFDialog");
-			SFDialog.Filter = RDLocale.GetText (this.Name + "_SFDialog_F");
-			SFDialog.Title = RDLocale.GetText ("GraphArrayForm_SFDialog");
-
-			while (MergeType.Items.Count < 2)
-				{
-				MergeType.Items.Add ("");
-				MergeType.SelectedIndex = 0;
-				}
-			for (int i = 0; i < MergeType.Items.Count; i++)
-				MergeType.Items[i] = RDLocale.GetText ("TablesMergerForm_MergeType" + i.ToString ());
-
-			RDLocale.SetControlsText (this);
-			BExit.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Exit);
-			}*/
 
 		// Добавление файлов в обработку
 		private void AddFiles_Click (object sender, EventArgs e)

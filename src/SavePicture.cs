@@ -32,10 +32,8 @@ namespace RD_AAOW
 			// Инициализация и локализация формы
 			InitializeComponent ();
 
-			/*RDLocale.SetControlsText (this);*/
-			SaveButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Save);
-			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
-
+			RDLocale.SetDefaultControlText (SaveButton, RDLDefaultTexts.Button_Save);
+			RDLocale.SetDefaultControlText (AbortButton, RDLDefaultTexts.Button_Cancel);
 			RDLocale.SetControlText (this.Name, A3Horiz);
 			RDLocale.SetControlText (this.Name, A3Vert);
 			RDLocale.SetControlText (this.Name, A4Horiz);

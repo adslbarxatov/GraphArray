@@ -112,10 +112,8 @@ namespace RD_AAOW
 		private void ColumnsAdderConstructor (DiagramData SourceData, int OldXColumnNumber, int OldYColumnNumber)
 			{
 			// Локазизация формы
-			ApplyButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_OK);
-			AbortButton.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Cancel);
-
-			/*RDLocale.SetControlsText (this);*/
+			RDLocale.SetDefaultControlText (ApplyButton, RDLDefaultTexts.Button_OK);
+			RDLocale.SetDefaultControlText (AbortButton, RDLDefaultTexts.Button_Cancel);
 			RDLocale.SetControlText (this.Name, Radio01);
 			RDLocale.SetControlText (this.Name, Radio02);
 			RDGenerics.LoadWindowDimensions (this);

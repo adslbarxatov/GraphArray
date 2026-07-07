@@ -310,10 +310,6 @@ namespace RD_AAOW
 				return;
 				}
 
-			/*if (RDLocale.IsCurrentLanguageRuRu)
-				FS.Write (GraphArrayResources.Sample_ru_ru, 0, GraphArrayResources.Sample_ru_ru.Length);
-			else
-				FS.Write (GraphArrayResources.Sample_en_us, 0, GraphArrayResources.Sample_en_us.Length);*/
 			switch (RDLocale.CurrentLanguage)
 				{
 				case RDLanguages.ru_ru:
@@ -342,9 +338,9 @@ namespace RD_AAOW
 
 			SSDialog.Title = RDLocale.GetText ("VIG_SSDialogTitle");
 
-			SaveSample.Text = RDLocale.GetText ("VIG_SaveSampleText");
-			GenerateImage.Text = RDLocale.GetText ("VIG_GenerateImageText");
-			BExit.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Button_Exit);
+			RDLocale.SetControlText (SaveSample, "VIG_SaveSampleText");
+			RDLocale.SetControlText (GenerateImage, "VIG_GenerateImageText");
+			RDLocale.SetDefaultControlText (BExit, RDLDefaultTexts.Button_Exit);
 			}
 
 		// Закрытие окна

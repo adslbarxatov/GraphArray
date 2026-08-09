@@ -135,7 +135,8 @@ namespace RD_AAOW
 				// Загрузка стандартного файла данных при старте
 				if (ConfigAccessor.ForceUsingBackupDataFile)
 					{
-					dd = new DiagramData (RDGenerics.AppStartupPath + ConfigAccessor.BackupDataFileName,
+					/*dd = new DiagramData (RDGenerics.AppStartupPath + ConfigAccessor.BackupDataFileName,*/
+					dd = new DiagramData (RDGenerics.GetStoragePath (true) + ConfigAccessor.BackupDataFileName,
 						DataInputTypes.GDD, 0);
 					}
 				}
@@ -248,19 +249,19 @@ namespace RD_AAOW
 
 			// Контролы и диалоги
 			OFDialog.Filter = string.Format (RDLocale.GetText (this.Name + "_OFDialog_F"),
-				ProgramDescription.AssemblyMainName, ProgramDescription.AppDataExtension);
-			OFDialog.Title = RDLocale.GetText (this.Name + "_OFDialog");
+				ProgramDescription.AssemblyMainName, DiagramData.AppDataExtension2);
+			/*OFDialog. Title = RDLocale.GetText (this.Name + "_OFDialog");*/
 			SFDialog.Filter = string.Format (RDLocale.GetText (this.Name + "_SFDialog_F"),
-				ProgramDescription.AssemblyMainName, ProgramDescription.AppDataExtension);
-			SFDialog.Title = RDLocale.GetText (this.Name + "_SFDialog");
+				ProgramDescription.AssemblyMainName, DiagramData.AppDataExtension2);
+			/*SFDialog. Title = RDLocale.GetText (this.Name + "_SFDialog");*/
 			OpenImageDialog.Filter = RDLocale.GetText (this.Name + "_OIDialog_F");
-			OpenImageDialog.Title = RDLocale.GetText (this.Name + "_OIDialog");
+			/*OpenImageDialog. Title = RDLocale.GetText (this.Name + "_OIDialog");*/
 
 
 			LoadStyleDialog.Filter = SaveStyleDialog.Filter = string.Format (RDLocale.GetText (this.Name +
-				"_StyleDialog_F"), ProgramDescription.AppStyleExtension);
-			LoadStyleDialog.Title = RDLocale.GetText (this.Name + "_LoadStyleDialog");
-			SaveStyleDialog.Title = RDLocale.GetText (this.Name + "_SaveStyleDialog");
+				"_StyleDialog_F"), DiagramData.AppStyleExtension2);
+			/*LoadStyleDialog. Title = RDLocale.GetText (this.Name + "_LoadStyleDialog");
+			SaveStyleDialog. Title = RDLocale.GetText (this.Name + "_SaveStyleDialog");*/
 
 			MainToolTip.ToolTipTitle = RDLocale.GetText (this.Name + "_MainToolTip");
 
@@ -727,7 +728,8 @@ namespace RD_AAOW
 			if (fub && (dd != null) && (dd.InitResult == DiagramDataInitResults.Ok))
 				{
 				// Возвращаемый результат не имеет значения
-				dd.SaveDataFile (RDGenerics.AppStartupPath + ConfigAccessor.BackupDataFileName,
+				/*dd.SaveDataFile (RDGenerics.AppStartupPath + ConfigAccessor.BackupDataFileName,*/
+				dd.SaveDataFile (RDGenerics.GetStoragePath (true) + ConfigAccessor.BackupDataFileName,
 					DataOutputTypes.GDD, true);
 				}
 
@@ -738,7 +740,7 @@ namespace RD_AAOW
 					fub ? "ApplicationExit" : "ApplicationExitNoBackup",
 					RDLDefaultTexts.Button_YesNoFocus, RDLDefaultTexts.Button_No) == RDMessageButtons.ButtonTwo)
 					{
-					e.Cancel = true;    // Отмена закрытия окна
+					e.Cancel = true;	// Отмена закрытия окна
 					}
 				}
 
@@ -851,12 +853,20 @@ namespace RD_AAOW
 			{
 			// Получение параметров
 			ColumnsAdderCmd cad = new ColumnsAdderCmd (dd.DataColumnsCount, true);
-			if (!cad.LoadParametersFile (RDGenerics.AppStartupPath + ConfigAccessor.LineParametersFileName))
+			string parametersFile = RDGenerics.GetStoragePath (true) + ConfigAccessor.LineParametersFileName;
+			/*if (!cad.LoadParametersFile (RDGenerics.AppStartupPath + ConfigAccessor.LineParametersFileName))
 				{
 				if (!cad.CreateParametersFile (RDGenerics.AppStartupPath + ConfigAccessor.LineParametersFileName))
 					return;
 
 				cad.LoadParametersFile (RDGenerics.AppStartupPath + ConfigAccessor.LineParametersFileName);
+				}*/
+			if (!cad.LoadParametersFile (parametersFile))
+				{
+				if (!cad.CreateParametersFile (parametersFile))
+					return;
+
+				cad.LoadParametersFile (parametersFile);
 				}
 
 			// Контроль
@@ -1264,11 +1274,14 @@ namespace RD_AAOW
 				return;
 				}
 
-			if (!ColumnsAdderCmd.WriteParametersFile (dd, RDGenerics.AppStartupPath +
+			/*if (!ColumnsAdderCmd.WriteParametersFile (dd, RDGenerics.AppStartupPath +*/
+			if (!ColumnsAdderCmd.WriteParametersFile (dd, RDGenerics.GetStoragePath (true) +
 				ConfigAccessor.LineParametersFileName))
+				{
 				RDInterface.MessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 					string.Format (RDLocale.GetDefaultText (RDLDefaultTexts.Message_SaveFailure_Fmt),
 					ConfigAccessor.LineParametersFileName));
+				}
 			}
 
 		// Восстановление шаблона добавления кривых
@@ -1281,11 +1294,14 @@ namespace RD_AAOW
 				return;
 				}
 
-			if (!ColumnsAdderCmd.CreateDefaultParametersFile (RDGenerics.AppStartupPath +
+			/*if (!ColumnsAdderCmd.CreateDefaultParametersFile (RDGenerics.AppStartupPath +*/
+			if (!ColumnsAdderCmd.CreateDefaultParametersFile (RDGenerics.GetStoragePath (true) +
 				ConfigAccessor.LineParametersFileName))
+				{
 				RDInterface.MessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 					string.Format (RDLocale.GetDefaultText (RDLDefaultTexts.Message_SaveFailure_Fmt),
 					ConfigAccessor.LineParametersFileName));
+				}
 			}
 
 		// Редактирование данных диаграммы

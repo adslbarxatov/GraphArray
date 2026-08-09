@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 
 namespace RD_AAOW
@@ -70,9 +71,106 @@ namespace RD_AAOW
 		/// </summary>
 		public MarkersLoader ()
 			{
+			#region Загрузка дополнительных маркеров из файлов
+
+			/*// Проверка наличия папки
+			if (!Directory.Exists (RDGenerics.AppStartupPath + markersDirectory))
+				{
+				try
+					{
+					Directory.CreateDirectory (RDGenerics.AppStartupPath + markersDirectory);
+					}
+				catch { }
+				return;
+				}*/
+			// Получение списка файлов
+			string markersPath = RDGenerics.GetStoragePath (true, markersDirectory);
+			string[] markersImages;
+			try
+				{
+				/*markersImages = Directory.GetFiles (RDGenerics.AppStartupPath + markersDirectory, "*.png");*/
+				markersImages = Directory.GetFiles (markersPath, "*.png");
+				}
+			catch
+				{
+				return;
+				}
+
+			// Загрузка изображений
+			Bitmap b;
+			for (int i = 0; (i < markersImages.Length) && (i < MaxMarkers); i++)
+				{
+				// Попытка открытия
+				try
+					{
+					b = (Bitmap)Image.FromFile (markersImages[i]);
+					}
+				catch
+					{
+					continue;
+					}
+
+				// Применение обработок, если они не были применены ранее
+				bool needsUpdate = !Path.GetFileName (markersImages[i]).StartsWith ('@');
+				if (needsUpdate)
+					{
+					/*if ((b.Width < 3) || (b.Height < 3) || (b.Width > 17) || (b.Height > 17) || (b.Width != b.Height))*/
+					if (b.Width != b.Height)
+						{
+						b.Dispose ();
+						continue;
+						}
+
+					if ((b.Width < 3) || (b.Width > 17))
+						{
+						b.Dispose ();
+						continue;
+						}
+
+					// Замещение цветов
+					for (int y = 0; y < b.Height; y++)
+						{
+						for (int x = 0; x < b.Width; x++)
+							{
+							Color c = b.GetPixel (x, y);
+							/*if ((b.GetPixel (x, y).ToArgb () & 0xFFFFFF) == 0xFFFFFF)*/
+							if (c.R + c.G + c.B > 128 * 3)
+								b.SetPixel (x, y, Color.FromArgb (255, 255, 255));
+							else
+								b.SetPixel (x, y, Color.FromArgb (0, 0, 0));
+							}
+						}
+
+					// Установка белого как прозрачного
+					b.MakeTransparent (Color.FromArgb (255, 255, 255));
+					}
+
+				markers.Add ((Bitmap)b.Clone ());
+				b.Dispose ();
+
+				if (needsUpdate)
+					{
+					// Перезапись и добавление
+					try
+						{
+						markers[markers.Count - 1].Save (markersPath + "@" + Path.GetFileName (markersImages[i]), ImageFormat.Png);
+						File.Move (markersImages[i], markersImages[i] + ".bak");
+						}
+					catch { }
+					}
+				}
+
+			// Завершение
+			#endregion
+
 			#region Добавление стандартных маркеров
 
-			Bitmap b = new Bitmap (standartMarkersSize, standartMarkersSize);
+			// Стандартные маркеры уже созданы
+			if (File.Exists (markersPath + "@0.png"))
+				return;
+
+			/*Bitmap b = new Bitmap (standartMarkersSize, standartMarkersSize);*/
+			b = new Bitmap (standartMarkersSize, standartMarkersSize);
 			Brush backBrush = new SolidBrush (Color.FromArgb (0, 255, 255, 255)),
 				foreBrush = new SolidBrush (Color.FromArgb (0, 0, 0));
 
@@ -80,7 +178,14 @@ namespace RD_AAOW
 			Graphics g = Graphics.FromImage (b);
 			g.FillRectangle (backBrush, 0, 0, b.Width, b.Height);
 			g.FillRectangle (foreBrush, 1, 1, b.Width - 2, b.Height - 2);
-			markers.Add ((Bitmap)b.Clone ());   // Нужно отвязать картинку от объекта b, иначе правка сохранится в ней
+
+			markers.Insert (0, (Bitmap)b.Clone ());   // Нужно отвязать картинку от объекта b, иначе правка сохранится в ней
+			try
+				{
+				b.Save (markersPath + "@0.png", ImageFormat.Png);
+				}
+			catch { }
+
 			b.Dispose ();
 			g.Dispose ();
 
@@ -89,7 +194,14 @@ namespace RD_AAOW
 			g = Graphics.FromImage (b);
 			g.FillRectangle (backBrush, 0, 0, b.Width, b.Height);
 			g.FillEllipse (foreBrush, 0, 0, b.Width, b.Height);
-			markers.Add ((Bitmap)b.Clone ());
+
+			markers.Insert (1, (Bitmap)b.Clone ());
+			try
+				{
+				b.Save (markersPath + "@1.png", ImageFormat.Png);
+				}
+			catch { }
+
 			b.Dispose ();
 			g.Dispose ();
 
@@ -99,7 +211,14 @@ namespace RD_AAOW
 			g.FillRectangle (backBrush, 0, 0, b.Width, b.Height);
 			Point[] pts = [new Point (0, b.Height), new Point (b.Width / 2, 0), new Point (b.Width, b.Height)];
 			g.FillPolygon (foreBrush, pts);
-			markers.Add ((Bitmap)b.Clone ());
+
+			markers.Insert (2, (Bitmap)b.Clone ());
+			try
+				{
+				b.Save (markersPath + "@2.png", ImageFormat.Png);
+				}
+			catch { }
+
 			b.Dispose ();
 			g.Dispose ();
 
@@ -108,7 +227,14 @@ namespace RD_AAOW
 			g = Graphics.FromImage (b);
 			g.FillRectangle (backBrush, 0, 0, b.Width, b.Height);
 			g.DrawRectangle (new Pen (foreBrush), 1, 1, b.Width - 2, b.Height - 2);
-			markers.Add ((Bitmap)b.Clone ());
+			
+			markers.Insert (3, (Bitmap)b.Clone ());
+			try
+				{
+				b.Save (markersPath + "@3.png", ImageFormat.Png);
+				}
+			catch { }
+
 			b.Dispose ();
 			g.Dispose ();
 
@@ -117,7 +243,14 @@ namespace RD_AAOW
 			g = Graphics.FromImage (b);
 			g.FillRectangle (backBrush, 0, 0, b.Width, b.Height);
 			g.DrawEllipse (new Pen (foreBrush), 1, 1, b.Width - 3, b.Height - 3);
-			markers.Add ((Bitmap)b.Clone ());
+			
+			markers.Insert (4, (Bitmap)b.Clone ());
+			try
+				{
+				b.Save (markersPath + "@4.png", ImageFormat.Png);
+				}
+			catch { }
+
 			b.Dispose ();
 			g.Dispose ();
 
@@ -127,7 +260,14 @@ namespace RD_AAOW
 			g.FillRectangle (backBrush, 0, 0, b.Width, b.Height);
 			g.DrawLine (new Pen (foreBrush), 1, 1, b.Width - 2, b.Height - 2);
 			g.DrawLine (new Pen (foreBrush), 1, b.Height - 2, b.Width - 2, 1);
-			markers.Add ((Bitmap)b.Clone ());
+			
+			markers.Insert (5, (Bitmap)b.Clone ());
+			try
+				{
+				b.Save (markersPath + "@5.png", ImageFormat.Png);
+				}
+			catch { }
+
 			b.Dispose ();
 			g.Dispose ();
 
@@ -135,68 +275,6 @@ namespace RD_AAOW
 			foreBrush.Dispose ();
 			backBrush.Dispose ();
 
-			#endregion
-
-			#region Загрузка дополнительных маркеров из файлов
-
-			// Проверка наличия папки
-			if (!Directory.Exists (RDGenerics.AppStartupPath + markersDirectory))
-				{
-				try
-					{
-					Directory.CreateDirectory (RDGenerics.AppStartupPath + markersDirectory);
-					}
-				catch { }
-				return;
-				}
-
-			// Получение списка файлов
-			string[] markersImages;
-			try
-				{
-				markersImages = Directory.GetFiles (RDGenerics.AppStartupPath + markersDirectory, "*.png");
-				}
-			catch
-				{
-				return;
-				}
-
-			// Загрузка изображений
-			for (int i = 0; (i < markersImages.Length) && (i < MaxMarkers); i++)
-				{
-				// Попытка открытия
-				try
-					{
-					b = (Bitmap)Image.FromFile (markersImages[i]);
-					if ((b.Width < 3) || (b.Height < 3) || (b.Width > 17) || (b.Height > 17) || (b.Width != b.Height))
-						throw new Exception ();
-					}
-				catch
-					{
-					continue;
-					}
-
-				// Замещение цветов
-				for (int y = 0; y < b.Height; y++)
-					{
-					for (int x = 0; x < b.Width; x++)
-						{
-						if ((b.GetPixel (x, y).ToArgb () & 0xFFFFFF) == 0xFFFFFF)
-							b.SetPixel (x, y, Color.FromArgb (255, 255, 255));
-						else
-							b.SetPixel (x, y, Color.FromArgb (0, 0, 0));
-						}
-					}
-
-				// Установка белого как прозрачного
-				b.MakeTransparent (Color.FromArgb (255, 255, 255));
-
-				// Добавление
-				markers.Add ((Bitmap)b.Clone ());
-				b.Dispose ();
-				}
-
-			// Завершение
 			#endregion
 			}
 

@@ -192,14 +192,8 @@
   <data name="GraphArrayForm_LineStyle_2" xml:space="preserve">
     <value>Markers only</value>
   </data>
-  <data name="GraphArrayForm_LoadStyleDialog" xml:space="preserve">
-    <value>Choose diagram style file</value>
-  </data>
-  <data name="GraphArrayForm_OFDialog" xml:space="preserve">
-    <value>Choose data file</value>
-  </data>
   <data name="GraphArrayForm_OFDialog_F" xml:space="preserve">
-    <value>{0:S} data files (*.{1:S})|*.{1:S}|Microsoft Excel format ’97 и ’07|*.xls;*.xlsx|Windows CSV tables|*.csv|Extracting data from text files|*.*</value>
+    <value>{0:S} data files (*{1:S})|*{1:S}|Microsoft Excel format ’97 и ’07|*.xls;*.xlsx|Windows CSV tables|*.csv|Extracting data from text files|*.*</value>
   </data>
   <data name="GraphArrayForm_OxFormat_0" xml:space="preserve">
     <value>Simple</value>
@@ -231,17 +225,11 @@
   <data name="GraphArrayForm_OyPlacement_3" xml:space="preserve">
     <value>Middle</value>
   </data>
-  <data name="GraphArrayForm_SaveStyleDialog" xml:space="preserve">
-    <value>Specify the location of new style file</value>
-  </data>
-  <data name="GraphArrayForm_SFDialog" xml:space="preserve">
-    <value>Specify the location of new data file</value>
-  </data>
   <data name="GraphArrayForm_SFDialog_F" xml:space="preserve">
-    <value>{0:S} data files (*.{1:S})|*.{1:S}|Random data set diagrams (*.dat)|*.dat|Windows CSV tables|*.csv</value>
+    <value>{0:S} data files (*{1:S})|*{1:S}|Random data set diagrams (*.dat)|*.dat|Windows CSV tables|*.csv</value>
   </data>
   <data name="GraphArrayForm_StyleDialog_F" xml:space="preserve">
-    <value>Diagram style files (*.{0:S})|*.{0:S}</value>
+    <value>Diagram style files (*{0:S})|*{0:S}</value>
   </data>
   <data name="MainTabControl_AxesTab_TT" xml:space="preserve">
     <value>Axes panel</value>
@@ -438,9 +426,6 @@
   <data name="ColumnsAdderCmd_ODSError" xml:space="preserve">
     <value>One of image dimensions is out of range: [{0:D}; {1:D}] and [{2:D}; {3:D}]</value>
   </data>
-  <data name="ColumnsAdderCmd_OFDialog" xml:space="preserve">
-    <value>Choose the template file</value>
-  </data>
   <data name="ColumnsAdderCmd_OFDialog_F" xml:space="preserve">
     <value>Curves addition templates (*.txt)|*.txt</value>
   </data>
@@ -455,9 +440,6 @@
   </data>
   <data name="ColumnsAdderCmd_SelectFile" xml:space="preserve">
     <value>File</value>
-  </data>
-  <data name="ColumnsAdderCmd_SFDialog" xml:space="preserve">
-    <value>Specify the location of the new template file</value>
   </data>
   <data name="ColumnsAdderCmd_SingleCmd" xml:space="preserve">
     <value>Enter parameters of new curve:</value>
@@ -725,9 +707,6 @@
   </data>
   <data name="SavePicture_Label01" xml:space="preserve">
     <value>Choose saving variant:</value>
-  </data>
-  <data name="SavePicture_SFDialog" xml:space="preserve">
-    <value>Specify the location of new diagram image file</value>
   </data>
   <data name="SavePicture_SFDialog_FR" xml:space="preserve">
     <value>PNG image|*.png</value>
@@ -1170,9 +1149,6 @@ All unsaved data will be lost!</value>
   <data name="VIG_OFDialogFilter" xml:space="preserve">
     <value>Script files (*.sc)|*.sc</value>
   </data>
-  <data name="VIG_OFDialogTitle" xml:space="preserve">
-    <value>Specify the script file for image generation</value>
-  </data>
   <data name="VIG_SaveSampleText" xml:space="preserve">
     <value>Example...</value>
   </data>
@@ -1181,12 +1157,6 @@ All unsaved data will be lost!</value>
   </data>
   <data name="VIG_SFDialogFilter" xml:space="preserve">
     <value>SVG vector image files|*.svg|EMF vector image files|*.emf</value>
-  </data>
-  <data name="VIG_SFDialogTitle" xml:space="preserve">
-    <value>Specify the placement for the new image</value>
-  </data>
-  <data name="VIG_SSDialogTitle" xml:space="preserve">
-    <value>Specify the placement for the example script</value>
   </data>
   <data name="TemplateReset" xml:space="preserve">
     <value>Do you want to reset the default preview template to default settings?</value>
@@ -1212,9 +1182,6 @@ All unsaved data will be lost!</value>
   <data name="MFile_MProcessImage_TT" xml:space="preserve">
     <value>Extract data from image gradients</value>
   </data>
-  <data name="GraphArrayForm_OIDialog" xml:space="preserve">
-    <value>Choose image file</value>
-  </data>
   <data name="GraphArrayForm_OIDialog_F" xml:space="preserve">
     <value>Image files (PNG, JPEG, GIF, BMP)|*.bmp;*.gif;*.jpe;*.jpeg;*.jpg;*.png</value>
   </data>
@@ -1231,5 +1198,11 @@ All unsaved data will be lost!</value>
     <value>Use the left and right mouse buttons to specify the ends of the control line segment.
 
 The line that the resulting segment overlaps will be used to extract color information, which in turn will serve as the source of data for plotting the diagram</value>
+  </data>
+  <data name="VIG_OFDialogTitle" xml:space="preserve">
+    <value>Specify the script file for image creation:</value>
+  </data>
+  <data name="VIG_SFDialogTitle" xml:space="preserve">
+    <value>Specify the placement for the new image:</value>
   </data>
 </root>

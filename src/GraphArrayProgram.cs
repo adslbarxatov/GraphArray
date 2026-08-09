@@ -51,7 +51,8 @@ namespace RD_AAOW
 					{
 					switch (args[0].Substring (args[0].Length - 4).ToLower ())
 						{
-						case "." + ProgramDescription.AppDataExtension:
+						/*case "." + ProgramDescription.AppDataExtension:*/
+						case DiagramData.AppDataExtension2:
 							inputType = DataInputTypes.GDD;
 							break;
 
@@ -79,13 +80,13 @@ namespace RD_AAOW
 
 				if (args.Length > 2)
 					{
-					uint.TryParse (args[2], out skippedLinesCount);
+					_ = uint.TryParse (args[2], out skippedLinesCount);
 					if (skippedLinesCount > ConfigAccessor.MaxSkippedLinesCount)
 						skippedLinesCount = ConfigAccessor.MaxSkippedLinesCount;
 
 					if (args.Length > 3)
 						{
-						uint.TryParse (args[3], out expectedColumnsCount);
+						_ = uint.TryParse (args[3], out expectedColumnsCount);
 						if (expectedColumnsCount > ConfigAccessor.MaxExpectedColumnsCount)
 							expectedColumnsCount = ConfigAccessor.MaxExpectedColumnsCount;
 
@@ -102,7 +103,8 @@ namespace RD_AAOW
 					switch (args[1].Substring (args[1].Length - 4).ToLower ())
 						{
 						// Файлы данных
-						case "." + ProgramDescription.AppDataExtension:
+						/*case "." + ProgramDescription.AppDataExtension:*/
+						case DiagramData.AppDataExtension2:
 							outputType = (int)DataOutputTypes.GDD;
 							break;
 
@@ -165,13 +167,21 @@ namespace RD_AAOW
 					{
 					// Применение шаблона отображения
 					ColumnsAdderCmd cad = new ColumnsAdderCmd (dd.DataColumnsCount, true);
-					if (!cad.LoadParametersFile (RDGenerics.AppStartupPath + ConfigAccessor.LineParametersFileName))
+					string parametersFile = RDGenerics.GetStoragePath (true) + ConfigAccessor.LineParametersFileName;
+					/*if (!cad.LoadParametersFile (RDGenerics.AppStartupPath + ConfigAccessor.LineParametersFileName))
 						{
 						if (!cad.CreateParametersFile (RDGenerics.AppStartupPath +
 							ConfigAccessor.LineParametersFileName))
 							return;
 
 						cad.LoadParametersFile (RDGenerics.AppStartupPath + ConfigAccessor.LineParametersFileName);
+						}*/
+					if (!cad.LoadParametersFile (parametersFile))
+						{
+						if (!cad.CreateParametersFile (parametersFile))
+							return;
+
+						cad.LoadParametersFile (parametersFile);
 						}
 
 					// Добавление кривых

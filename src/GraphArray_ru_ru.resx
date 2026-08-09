@@ -192,14 +192,8 @@
   <data name="GraphArrayForm_LineStyle_2" xml:space="preserve">
     <value>Только маркеры</value>
   </data>
-  <data name="GraphArrayForm_LoadStyleDialog" xml:space="preserve">
-    <value>Выберите файл стиля</value>
-  </data>
-  <data name="GraphArrayForm_OFDialog" xml:space="preserve">
-    <value>Выберите файл данных</value>
-  </data>
   <data name="GraphArrayForm_OFDialog_F" xml:space="preserve">
-    <value>Файлы данных {0:S} (*.{1:S})|*.{1:S}|Файлы Microsoft Excel '97 и '07|*.xls;*.xlsx|Файлы табличных данных Windows CSV|*.csv|Извлечение данных из текстовых файлов|*.*</value>
+    <value>Файлы данных {0:S} (*{1:S})|*{1:S}|Файлы Microsoft Excel '97 и '07|*.xls;*.xlsx|Файлы табличных данных Windows CSV|*.csv|Извлечение данных из текстовых файлов|*.*</value>
   </data>
   <data name="GraphArrayForm_OxFormat_0" xml:space="preserve">
     <value>Простой</value>
@@ -231,17 +225,11 @@
   <data name="GraphArrayForm_OyPlacement_3" xml:space="preserve">
     <value>Посередине</value>
   </data>
-  <data name="GraphArrayForm_SaveStyleDialog" xml:space="preserve">
-    <value>Укажите расположение для сохранения файла стиля</value>
-  </data>
-  <data name="GraphArrayForm_SFDialog" xml:space="preserve">
-    <value>Укажите расположение для сохранения файла данных</value>
-  </data>
   <data name="GraphArrayForm_SFDialog_F" xml:space="preserve">
-    <value>Файлы данных {0:S} (*.{1:S})|*.{1:S}|Диаграммы с произвольным набором данных (*.dat)|*.dat|Файлы табличных данных Windows CSV|*.csv</value>
+    <value>Файлы данных {0:S} (*{1:S})|*{1:S}|Диаграммы с произвольным набором данных (*.dat)|*.dat|Файлы табличных данных Windows CSV|*.csv</value>
   </data>
   <data name="GraphArrayForm_StyleDialog_F" xml:space="preserve">
-    <value>Файлы стилей диаграмм (*.{0:S})|*.{0:S}</value>
+    <value>Файлы стилей диаграмм (*{0:S})|*{0:S}</value>
   </data>
   <data name="MainTabControl_AxesTab_TT" xml:space="preserve">
     <value>Панель настройки координатных осей</value>
@@ -438,9 +426,6 @@
   <data name="ColumnsAdderCmd_ODSError" xml:space="preserve">
     <value>Один из размеров диаграммы выходит за допустимый диапазон: [{0:D}; {1:D}] и [{2:D}; {3:D}]</value>
   </data>
-  <data name="ColumnsAdderCmd_OFDialog" xml:space="preserve">
-    <value>Выберите файл шаблона</value>
-  </data>
   <data name="ColumnsAdderCmd_OFDialog_F" xml:space="preserve">
     <value>Шаблоны добавления кривых (*.txt)|*.txt</value>
   </data>
@@ -455,9 +440,6 @@
   </data>
   <data name="ColumnsAdderCmd_SelectFile" xml:space="preserve">
     <value>Файл</value>
-  </data>
-  <data name="ColumnsAdderCmd_SFDialog" xml:space="preserve">
-    <value>Укажите расположение нового файла шаблона</value>
   </data>
   <data name="ColumnsAdderCmd_SingleCmd" xml:space="preserve">
     <value>Введите параметры новой кривой:</value>
@@ -726,9 +708,6 @@
   </data>
   <data name="SavePicture_Label01" xml:space="preserve">
     <value>Выберите вариант сохранения:</value>
-  </data>
-  <data name="SavePicture_SFDialog" xml:space="preserve">
-    <value>Укажите расположение для сохранения изображения</value>
   </data>
   <data name="SavePicture_SFDialog_FR" xml:space="preserve">
     <value>Изображение PNG|*.png</value>
@@ -1171,9 +1150,6 @@ GraphArray.exe &lt;имя_файла&gt; &lt;имя_файла_2&gt; [SLC] [ECC]
   <data name="VIG_OFDialogFilter" xml:space="preserve">
     <value>Файлы скриптов (*.sc)|*.sc</value>
   </data>
-  <data name="VIG_OFDialogTitle" xml:space="preserve">
-    <value>Выберите скрипт для формирования изображения</value>
-  </data>
   <data name="VIG_SaveSampleText" xml:space="preserve">
     <value>Образец...</value>
   </data>
@@ -1182,12 +1158,6 @@ GraphArray.exe &lt;имя_файла&gt; &lt;имя_файла_2&gt; [SLC] [ECC]
   </data>
   <data name="VIG_SFDialogFilter" xml:space="preserve">
     <value>Файлы векторных изображений SVG|*.svg|Файлы векторных изображений EMF|*.emf</value>
-  </data>
-  <data name="VIG_SFDialogTitle" xml:space="preserve">
-    <value>Укажите место для сохранения изображения</value>
-  </data>
-  <data name="VIG_SSDialogTitle" xml:space="preserve">
-    <value>Укажите место для сохранения образца скрипта</value>
   </data>
   <data name="TemplateReset" xml:space="preserve">
     <value>Сбросить стандартный шаблон предпросмотра к начальным установкам?</value>
@@ -1213,9 +1183,6 @@ GraphArray.exe &lt;имя_файла&gt; &lt;имя_файла_2&gt; [SLC] [ECC]
   <data name="MFile_MProcessImage_TT" xml:space="preserve">
     <value>Извлечь данные из градиентов изображения</value>
   </data>
-  <data name="GraphArrayForm_OIDialog" xml:space="preserve">
-    <value>Выберите файл изображения</value>
-  </data>
   <data name="GraphArrayForm_OIDialog_F" xml:space="preserve">
     <value>Файлы изображений (PNG, JPEG, GIF, BMP)|*.bmp;*.gif;*.jpe;*.jpeg;*.jpg;*.png</value>
   </data>
@@ -1232,5 +1199,11 @@ GraphArray.exe &lt;имя_файла&gt; &lt;имя_файла_2&gt; [SLC] [ECC]
     <value>Используйте левую и правую кнопки мыши, чтобы указать концы контрольного отрезка.
 
 Линия, которую перекроет полученный отрезок, будет использована для извлечения цветовой информации, которая, в свою очередь, послужит источником данных для построения диаграммы</value>
+  </data>
+  <data name="VIG_OFDialogTitle" xml:space="preserve">
+    <value>Выберите скрипт для формирования изображения:</value>
+  </data>
+  <data name="VIG_SFDialogTitle" xml:space="preserve">
+    <value>Укажите расположение для сохранения изображения:</value>
   </data>
 </root>

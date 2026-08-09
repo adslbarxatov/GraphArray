@@ -14,7 +14,7 @@ namespace RD_AAOW
 	public class DiagramData
 		{
 		// ПЕРЕМЕННЫЕ
-		private char[] anyDataSplitters = [' ', '\t', ';'];    // Массивы сплиттеров
+		private char[] anyDataSplitters = [' ', '\t', ';'];		// Массивы сплиттеров
 		private char[] anyHeadersSplitters = ['\t', ';'];
 		private char[] csvSplitters = [';'];
 		private char[] dateSplitters = ['.', '/', '-'];
@@ -74,6 +74,16 @@ namespace RD_AAOW
 
 		// Обработчик маркеров для кривых
 		private MarkersLoader markersLoader;
+
+		/// <summary>
+		/// Возвращает расширение файла данных приложения
+		/// </summary>
+		public const string AppDataExtension2 = ".gdd";
+
+		/// <summary>
+		/// Возвращает расширения файла стиля приложения
+		/// </summary>
+		public const string AppStyleExtension2 = ".gds";
 
 		/// <summary>
 		/// Метод возвращает ссылку на стиль указанной кривой или заданного объекта
@@ -583,9 +593,10 @@ namespace RD_AAOW
 			// Файл открыт
 			BinaryReader BR = new BinaryReader (FS, RDGenerics.GetEncoding (RDEncodings.UTF8));
 
+			RDFormatSignatures version;
 			try
 				{
-				BR.ReadString ();   // Версия файла
+				version = (RDFormatSignatures)BR.ReadUInt16 ();
 				}
 			catch
 				{
@@ -593,6 +604,22 @@ namespace RD_AAOW
 				FS.Close ();
 				initResult = DiagramDataInitResults.BrokenFile;
 				return;
+				}
+
+			switch (version)
+				{
+				case RDFormatSignatures.GDDv3:
+					break;
+
+				default:
+					version = RDFormatSignatures.GDDv2;
+					FS.Position = 0;
+					try
+						{
+						_ = BR.ReadString ();
+						}
+					catch { }
+					break;
 				}
 
 			#region Чтение блока данных
@@ -603,13 +630,13 @@ namespace RD_AAOW
 			try
 				{
 				if ((rows = BR.ReadUInt16 ()) > MaxDataRows)
-					throw new Exception (); // Значит, файл повреждён (не NotEnoughData)
+					throw new Exception ();	// Значит, файл повреждён (не NotEnoughData)
 				if ((dataColumnsCount = BR.ReadUInt16 ()) > MaxDataColumns)
 					throw new Exception ();
 
 
 				// Контроль
-				if ((rows < 2) || (dataColumnsCount < 2))   // Программа так делать не умеет
+				if ((rows < 2) || (dataColumnsCount < 2))	// Программа так делать не умеет
 					throw new Exception ();
 
 				// Разметка массива и чтение имён столбцов
@@ -2602,8 +2629,10 @@ namespace RD_AAOW
 
 			// Начало записи
 			BinaryWriter BW = new BinaryWriter (FS, RDGenerics.GetEncoding (RDEncodings.UTF8));
-			BW.Write ("Geomag data drawer file format. File version: " + ProgramDescription.AssemblyVersion +
-				". Creation date: " + DateTime.Now.ToString ("dd.MM.yyyy, HH:mm:ss"));  // Запись версии и даты
+
+			/*BW.Write ("Geomag data drawer file format. File version: " + ProgramDescription.AssemblyVersion +
+				". Creation date: " + DateTime.Now.ToString ("dd.MM.yyyy, HH:mm:ss"));  // Запись версии и даты*/
+			BW.Write ((UInt16)RDFormatSignatures.GDDActual);
 
 			// ЗАПИСЬ БЛОКА ДАННЫХ
 			// Запись размерности
@@ -2847,13 +2876,41 @@ namespace RD_AAOW
 			// Файл открыт
 			BinaryReader BR = new BinaryReader (FS, RDGenerics.GetEncoding (RDEncodings.UTF8));
 
+			RDFormatSignatures version;
+			try
+				{
+				version = (RDFormatSignatures)BR.ReadUInt16 ();
+				}
+			catch
+				{
+				BR.Close ();
+				FS.Close ();
+				return -4;
+				}
+
+			switch (version)
+				{
+				case RDFormatSignatures.GDSv3:
+					break;
+
+				default:
+					version = RDFormatSignatures.GDSv2;
+					FS.Position = 0;
+					try
+						{
+						_ = BR.ReadString ();
+						}
+					catch { }
+					break;
+				}
+
 			// Получение количества стилей в файле
 			uint stylesCount;
 			try
 				{
-				BR.ReadString ();       // Версия файла
+				/*BR.ReadString ();       // Версия файла*/
 				stylesCount = BR.ReadUInt16 ();
-				uint i = 1 / stylesCount;   // В случае нулевого значения вызовет исключение
+				uint i = 1 / stylesCount;	// В случае нулевого значения вызовет исключение
 				}
 			catch
 				{
@@ -3025,8 +3082,9 @@ namespace RD_AAOW
 
 			// Файл открыт
 			BinaryWriter BW = new BinaryWriter (FS, RDGenerics.GetEncoding (RDEncodings.UTF8));
-			BW.Write ("Geomag data drawer style file. File version: " + ProgramDescription.AssemblyVersion +
-				". Creation date: " + DateTime.Now.ToString ("dd.MM.yyyy, HH:mm:ss"));  // Запись версии и даты
+			/*BW.Write ("Geomag data drawer style file. File version: " + ProgramDescription.AssemblyVersion +
+				". Creation date: " + DateTime.Now.ToString ("dd.MM.yyyy, HH:mm:ss"));  // Запись версии и даты*/
+			BW.Write ((UInt16)RDFormatSignatures.GDSActual);
 
 			// Запись числа стилей
 			BW.Write ((UInt16)LineNumbers.Count);
@@ -3038,7 +3096,7 @@ namespace RD_AAOW
 					{
 					if (!FlushStyle (BW, lineStyles[LineNumbers[i]]))
 						{
-						BW.Close ();    // Функция FlushStyle всегда возвращает true. Этот фрагмент оставлен до лучших времён
+						BW.Close ();	// Функция FlushStyle всегда возвращает true. Этот фрагмент оставлен до лучших времён
 						FS.Close ();
 						return -4;
 						}

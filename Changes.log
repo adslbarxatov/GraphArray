@@ -1,5 +1,10 @@
 GraphArray: changes log
 
+Version 6.4:
+• Markers loader has been rewritten: it can now properly work in MSStore version;
+• Preview templates are now available in MSStore version too;
+• File formats are now properly versioned
+
 Version 6.3.7:
 • Applied the updated GitHub markup for version numbers
 

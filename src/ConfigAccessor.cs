@@ -20,7 +20,7 @@ namespace RD_AAOW
 		/// <summary>
 		/// Возвращает имя автоматически сохраняемого файла данных
 		/// </summary>
-		public const string BackupDataFileName = "Backup." + ProgramDescription.AppDataExtension;
+		public const string BackupDataFileName = "Backup" + DiagramData.AppDataExtension2;
 
 		/// <summary>
 		/// Возвращает имя стандартного файла параметров предпросмотра диаграммы

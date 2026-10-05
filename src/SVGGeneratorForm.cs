@@ -330,13 +330,10 @@ namespace RD_AAOW
 		private void LocalizeForm ()
 			{
 			// Локализация
-			/*OFDialog. Title =*/ OFLabel.Text = RDLocale.GetText ("VIG_OFDialogTitle");
+			OFLabel.Text = RDLocale.GetText ("VIG_OFDialogTitle");
 			OFDialog.Filter = SSDialog.Filter = RDLocale.GetText ("VIG_OFDialogFilter");
-
-			/*SFDialog. Title =*/ SFLabel.Text = RDLocale.GetText ("VIG_SFDialogTitle");
+			SFLabel.Text = RDLocale.GetText ("VIG_SFDialogTitle");
 			SFDialog.Filter = RDLocale.GetText ("VIG_SFDialogFilter");
-
-			/*SSDialog. Title = RDLocale.GetText ("VIG_SSDialogTitle");*/
 
 			RDLocale.SetControlText (SaveSample, "VIG_SaveSampleText");
 			RDLocale.SetControlText (GenerateImage, "VIG_GenerateImageText");

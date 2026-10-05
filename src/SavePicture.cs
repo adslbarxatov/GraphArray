@@ -57,8 +57,6 @@ namespace RD_AAOW
 			imageHeight = DiagramData.DiagramHeight;
 
 			// Настройка контролов
-			/*SFDialog. Title = RDLocale.GetText (this.Name + "_SFDialog");*/
-
 			ImageScale.Minimum = (decimal)DiagramStyle.MinScale;
 			ImageScale.Maximum = (decimal)DiagramStyle.MaxScale;
 

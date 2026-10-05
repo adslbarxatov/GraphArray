@@ -47,9 +47,7 @@ namespace RD_AAOW
 
 			// Локализация
 			OFDialog.Filter = RDLocale.GetText (this.Name + "_OFDialog_F");
-			/*OFDialog. Title = RDLocale.GetText ("GraphArrayForm_OFDialog");*/
 			SFDialog.Filter = RDLocale.GetText (this.Name + "_SFDialog_F");
-			/*SFDialog. Title = RDLocale.GetText ("GraphArrayForm_SFDialog");*/
 
 			while (MergeType.Items.Count < 2)
 				{

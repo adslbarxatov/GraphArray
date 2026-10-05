@@ -73,22 +73,11 @@ namespace RD_AAOW
 			{
 			#region Загрузка дополнительных маркеров из файлов
 
-			/*// Проверка наличия папки
-			if (!Directory.Exists (RDGenerics.AppStartupPath + markersDirectory))
-				{
-				try
-					{
-					Directory.CreateDirectory (RDGenerics.AppStartupPath + markersDirectory);
-					}
-				catch { }
-				return;
-				}*/
 			// Получение списка файлов
 			string markersPath = RDGenerics.GetStoragePath (true, markersDirectory);
 			string[] markersImages;
 			try
 				{
-				/*markersImages = Directory.GetFiles (RDGenerics.AppStartupPath + markersDirectory, "*.png");*/
 				markersImages = Directory.GetFiles (markersPath, "*.png");
 				}
 			catch
@@ -114,7 +103,6 @@ namespace RD_AAOW
 				bool needsUpdate = !Path.GetFileName (markersImages[i]).StartsWith ('@');
 				if (needsUpdate)
 					{
-					/*if ((b.Width < 3) || (b.Height < 3) || (b.Width > 17) || (b.Height > 17) || (b.Width != b.Height))*/
 					if (b.Width != b.Height)
 						{
 						b.Dispose ();
@@ -133,7 +121,6 @@ namespace RD_AAOW
 						for (int x = 0; x < b.Width; x++)
 							{
 							Color c = b.GetPixel (x, y);
-							/*if ((b.GetPixel (x, y).ToArgb () & 0xFFFFFF) == 0xFFFFFF)*/
 							if (c.R + c.G + c.B > 128 * 3)
 								b.SetPixel (x, y, Color.FromArgb (255, 255, 255));
 							else
@@ -169,7 +156,6 @@ namespace RD_AAOW
 			if (File.Exists (markersPath + "@0.png"))
 				return;
 
-			/*Bitmap b = new Bitmap (standartMarkersSize, standartMarkersSize);*/
 			b = new Bitmap (standartMarkersSize, standartMarkersSize);
 			Brush backBrush = new SolidBrush (Color.FromArgb (0, 255, 255, 255)),
 				foreBrush = new SolidBrush (Color.FromArgb (0, 0, 0));
@@ -179,7 +165,7 @@ namespace RD_AAOW
 			g.FillRectangle (backBrush, 0, 0, b.Width, b.Height);
 			g.FillRectangle (foreBrush, 1, 1, b.Width - 2, b.Height - 2);
 
-			markers.Insert (0, (Bitmap)b.Clone ());   // Нужно отвязать картинку от объекта b, иначе правка сохранится в ней
+			markers.Insert (0, (Bitmap)b.Clone ());	// Нужно отвязать картинку от объекта b, иначе правка сохранится в ней
 			try
 				{
 				b.Save (markersPath + "@0.png", ImageFormat.Png);

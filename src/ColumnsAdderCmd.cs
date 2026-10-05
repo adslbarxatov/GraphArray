@@ -172,8 +172,6 @@ namespace RD_AAOW
 
 			// Настройка контролов
 			OFDialog.Filter = SFDialog.Filter = RDLocale.GetText (this.Name + "_OFDialog_F");
-			/*OFDialog. Title = RDLocale.GetText (this.Name + "_OFDialog");
-			SFDialog. Title = RDLocale.GetText (this.Name + "_SFDialog");*/
 
 			correctLine = RDLocale.GetText (this.Name + "_Correct");
 
@@ -419,19 +417,9 @@ namespace RD_AAOW
 			ProcessingResults.Text = "";
 
 			// Попытка открытия файла
-			/*TextReader TR;*/
 			string s;
-			/*FileStream FS = null;*/
 			FileStream FS;
 
-			/*if (RDGenerics.StartedFromMS Store)
-				{
-				s = RDGenerics.GetEncoding (RDEncodings.UTF8).
-					GetString (GraphArrayResources.LineParameters);
-				TR = new StringReader (s);
-				}
-			else
-				{*/
 			try
 				{
 				FS = new FileStream (FileName, FileMode.Open);
@@ -445,7 +433,6 @@ namespace RD_AAOW
 
 			// Файл открыт
 			StreamReader TR = new StreamReader (FS, RDGenerics.GetEncoding (RDEncodings.UTF8));
-			/*}*/
 
 			// Чтение и обработка
 			uint line = 0;

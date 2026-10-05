@@ -2630,8 +2630,6 @@ namespace RD_AAOW
 			// Начало записи
 			BinaryWriter BW = new BinaryWriter (FS, RDGenerics.GetEncoding (RDEncodings.UTF8));
 
-			/*BW.Write ("Geomag data drawer file format. File version: " + ProgramDescription.AssemblyVersion +
-				". Creation date: " + DateTime.Now.ToString ("dd.MM.yyyy, HH:mm:ss"));  // Запись версии и даты*/
 			BW.Write ((UInt16)RDFormatSignatures.GDDActual);
 
 			// ЗАПИСЬ БЛОКА ДАННЫХ
@@ -2908,7 +2906,6 @@ namespace RD_AAOW
 			uint stylesCount;
 			try
 				{
-				/*BR.ReadString ();       // Версия файла*/
 				stylesCount = BR.ReadUInt16 ();
 				uint i = 1 / stylesCount;	// В случае нулевого значения вызовет исключение
 				}
@@ -3082,8 +3079,7 @@ namespace RD_AAOW
 
 			// Файл открыт
 			BinaryWriter BW = new BinaryWriter (FS, RDGenerics.GetEncoding (RDEncodings.UTF8));
-			/*BW.Write ("Geomag data drawer style file. File version: " + ProgramDescription.AssemblyVersion +
-				". Creation date: " + DateTime.Now.ToString ("dd.MM.yyyy, HH:mm:ss"));  // Запись версии и даты*/
+
 			BW.Write ((UInt16)RDFormatSignatures.GDSActual);
 
 			// Запись числа стилей

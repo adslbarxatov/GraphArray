@@ -44,14 +44,13 @@ namespace RD_AAOW
 					}
 
 				// Входной файл
-				DataInputTypes inputType = DataInputTypes.Unknown;  // Извлечение по умолчанию
+				DataInputTypes inputType = DataInputTypes.Unknown;	// Извлечение по умолчанию
 
 				// Расширение (не менее 3-х символов) + '.' + имя (не менее одного символа)
 				if (args[0].Length >= 5)
 					{
 					switch (args[0].Substring (args[0].Length - 4).ToLower ())
 						{
-						/*case "." + ProgramDescription.AppDataExtension:*/
 						case DiagramData.AppDataExtension2:
 							inputType = DataInputTypes.GDD;
 							break;
@@ -96,14 +95,13 @@ namespace RD_AAOW
 					}
 
 				// Выходной файл
-				int outputType = (int)DataOutputTypes.ANY;  // По умолчанию - файл свободной топологии
+				int outputType = (int)DataOutputTypes.ANY;	// По умолчанию - файл свободной топологии
 
 				if (args[1].Length >= 5)
 					{
 					switch (args[1].Substring (args[1].Length - 4).ToLower ())
 						{
 						// Файлы данных
-						/*case "." + ProgramDescription.AppDataExtension:*/
 						case DiagramData.AppDataExtension2:
 							outputType = (int)DataOutputTypes.GDD;
 							break;
@@ -168,14 +166,7 @@ namespace RD_AAOW
 					// Применение шаблона отображения
 					ColumnsAdderCmd cad = new ColumnsAdderCmd (dd.DataColumnsCount, true);
 					string parametersFile = RDGenerics.GetStoragePath (true) + ConfigAccessor.LineParametersFileName;
-					/*if (!cad.LoadParametersFile (RDGenerics.AppStartupPath + ConfigAccessor.LineParametersFileName))
-						{
-						if (!cad.CreateParametersFile (RDGenerics.AppStartupPath +
-							ConfigAccessor.LineParametersFileName))
-							return;
 
-						cad.LoadParametersFile (RDGenerics.AppStartupPath + ConfigAccessor.LineParametersFileName);
-						}*/
 					if (!cad.LoadParametersFile (parametersFile))
 						{
 						if (!cad.CreateParametersFile (parametersFile))

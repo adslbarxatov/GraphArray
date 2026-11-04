@@ -1205,4 +1205,40 @@ The line that the resulting segment overlaps will be used to extract color infor
   <data name="VIG_SFDialogTitle" xml:space="preserve">
     <value>Specify the placement for the new image:</value>
   </data>
+  <data name="SizeTab_AlignLeftTopButton" xml:space="preserve">
+    <value>Align to top-left corner</value>
+  </data>
+  <data name="SizeTab_AlignLeftTopButton_TT" xml:space="preserve">
+    <value>Button allows you to align selected objects with the top-left corner of the diagram area</value>
+  </data>
+  <data name="SizeTab_AlignFieldButton" xml:space="preserve">
+    <value>Fit to window size</value>
+  </data>
+  <data name="SizeTab_AlignFieldButton_TT" xml:space="preserve">
+    <value>Button allows you to align selected objects to size of the window</value>
+  </data>
+  <data name="RangeTab_MergeRangesButton" xml:space="preserve">
+    <value>Merge ranges</value>
+  </data>
+  <data name="RangeTab_MergeRangesButton_TT" xml:space="preserve">
+    <value>Button allows you to set identical plotting ranges that include all the selected curves</value>
+  </data>
+  <data name="FontTab_TextColorFromCurveButton" xml:space="preserve">
+    <value>Color of curve</value>
+  </data>
+  <data name="FontTab_TextColorFromCurveButton_TT" xml:space="preserve">
+    <value>Button allows you to set the color of curve as the font color</value>
+  </data>
+  <data name="MList" xml:space="preserve">
+    <value>Curves and objects</value>
+  </data>
+  <data name="MSelectAll" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="MDeselectAll" xml:space="preserve">
+    <value>Clear selection</value>
+  </data>
+  <data name="MOperations_MHideShow" xml:space="preserve">
+    <value>Hide / show curve or object</value>
+  </data>
 </root>

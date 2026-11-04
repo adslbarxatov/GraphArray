@@ -969,7 +969,7 @@ namespace RD_AAOW
 				case DiagramAdditionalObjects.LineV:
 				case DiagramAdditionalObjects.LineNWtoSE:
 				case DiagramAdditionalObjects.LineSWtoNE:
-				case DiagramAdditionalObjects.OldLine:      // Изоляция исключений
+				case DiagramAdditionalObjects.OldLine:		// Изоляция исключений
 					type = "L. ";
 					break;
 
@@ -1949,7 +1949,7 @@ namespace RD_AAOW
 		/// <param name="CurrentLines">Список кривых, выделяемых на диаграмме; может быть null</param>
 		/// <returns>Возвращает 0 в случае успеха; -1, если класс не был успешно инициализирован; 
 		/// -2, если входные параметры некорректны</returns>
-		public int DrawAllDiagrams (Graphics DrawField, ListBox.SelectedIndexCollection CurrentLines)
+		public int DrawAllDiagrams (Graphics DrawField, /*ListBox.SelectedIndexCollection*/int[] CurrentLines)
 			{
 			return DrawAllDiagrams (DiagramWidth, DiagramHeight, lineStyles, additionalObjectsStyles, DrawField, CurrentLines);
 			}
@@ -1967,7 +1967,7 @@ namespace RD_AAOW
 		/// <returns>Возвращает 0 в случае успеха; -1, если класс не был успешно инициализирован; 
 		/// -2, если входные параметры некорректны</returns>
 		public int DrawAllDiagrams (uint WidthValue, uint HeightValue, List<DiagramStyle> NewLinesStyles,
-			List<DiagramStyle> NewObjectsStyles, Graphics DrawField, ListBox.SelectedIndexCollection CurrentLines)
+			List<DiagramStyle> NewObjectsStyles, Graphics DrawField, /*ListBox.SelectedIndexCollection*/int[] CurrentLines)
 			{
 			// Контроль значений
 			if ((WidthValue < DiagramStyle.MinImageWidth) || (HeightValue < DiagramStyle.MinImageHeight) ||
@@ -2805,7 +2805,7 @@ namespace RD_AAOW
 		/// -2, если входные параметры некорректны;
 		/// -3, если файл стиля недоступен;
 		/// -4, если файл стиля повреждён</returns>
-		public int LoadStyle (string StyleFileName, ListBox.SelectedIndexCollection LineNumbers)
+		public int LoadStyle (string StyleFileName, /*ListBox.SelectedIndexCollection*/int[] LineNumbers)
 			{
 			return StyleLoadingExecutor (StyleFileName, true, LineNumbers);
 			}
@@ -2851,13 +2851,13 @@ namespace RD_AAOW
 		// Метод загружает файл стиля и применяет его к имеющимся кривым (Update = true)
 		// или добавляет новые кривые (Update = false)
 		private int StyleLoadingExecutor (string StyleFileName, bool Update,
-			ListBox.SelectedIndexCollection LineNumbers)
+			/*ListBox.SelectedIndexCollection*/int[] LineNumbers)
 			{
 			// Контроль состояния
 			if (initResult != DiagramDataInitResults.Ok)
 				return -1;
 
-			if (Update && ((LineNumbers == null) || (LineNumbers.Count == 0)))
+			if (Update && ((LineNumbers == null) || (LineNumbers.Length < 1)))
 				return -2;
 
 			// Попытка открытия файла
@@ -2919,7 +2919,7 @@ namespace RD_AAOW
 			// Обновление стилей (насколько это возможно)
 			if (Update)
 				{
-				for (int i = 0; (i < stylesCount) && (i < LineNumbers.Count); i++)
+				for (int i = 0; (i < stylesCount) && (i < LineNumbers.Length); i++)
 					{
 					// Извлечение стиля
 					DiagramStyle style;
@@ -3057,13 +3057,13 @@ namespace RD_AAOW
 		/// <returns>Возвращает 0 в случае успеха; -1, если класс не был успешно инициализирован; 
 		/// -2, если входные параметры некорректны;
 		/// -3, если не удалось записать файл стиля</returns>
-		public int SaveStyle (string StyleFileName, ListBox.SelectedIndexCollection LineNumbers)
+		public int SaveStyle (string StyleFileName, /*ListBox.SelectedIndexCollection*/int[] LineNumbers)
 			{
 			// Контроль состояния
 			if (initResult != DiagramDataInitResults.Ok)
 				return -1;
 
-			if ((LineNumbers == null) || (LineNumbers.Count == 0))
+			if ((LineNumbers == null) || (LineNumbers.Length == 0))
 				return -2;
 
 			// Попытка открытия файла
@@ -3083,10 +3083,10 @@ namespace RD_AAOW
 			BW.Write ((UInt16)RDFormatSignatures.GDSActual);
 
 			// Запись числа стилей
-			BW.Write ((UInt16)LineNumbers.Count);
+			BW.Write ((UInt16)LineNumbers.Length);
 
 			// Сохранение стилей
-			for (int i = 0; i < LineNumbers.Count; i++)
+			for (int i = 0; i < LineNumbers.Length; i++)
 				{
 				if (LineNumbers[i] < lineStyles.Count)
 					{

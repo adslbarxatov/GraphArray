@@ -1206,4 +1206,40 @@ GraphArray.exe &lt;имя_файла&gt; &lt;имя_файла_2&gt; [SLC] [ECC]
   <data name="VIG_SFDialogTitle" xml:space="preserve">
     <value>Укажите расположение для сохранения изображения:</value>
   </data>
+  <data name="SizeTab_AlignLeftTopButton" xml:space="preserve">
+    <value>Выровнять на верхний левый угол</value>
+  </data>
+  <data name="SizeTab_AlignLeftTopButton_TT" xml:space="preserve">
+    <value>Кнопка позволяет выровнять выбранные объекты на верхний левый угол поля диаграммы</value>
+  </data>
+  <data name="SizeTab_AlignFieldButton" xml:space="preserve">
+    <value>Выровнять по размеру окна</value>
+  </data>
+  <data name="SizeTab_AlignFieldButton_TT" xml:space="preserve">
+    <value>Кнопка позволяет выровнять выбранные объекты по размеру окна</value>
+  </data>
+  <data name="RangeTab_MergeRangesButton" xml:space="preserve">
+    <value>Объединить диапазоны</value>
+  </data>
+  <data name="RangeTab_MergeRangesButton_TT" xml:space="preserve">
+    <value>Кнопка позволяет задать одинаковые диапазоны построения, включающие все выбранные кривые</value>
+  </data>
+  <data name="FontTab_TextColorFromCurveButton" xml:space="preserve">
+    <value>Цвет кривой</value>
+  </data>
+  <data name="FontTab_TextColorFromCurveButton_TT" xml:space="preserve">
+    <value>Кнопка позволяет назначить шрифту цвет кривой</value>
+  </data>
+  <data name="MList" xml:space="preserve">
+    <value>Кривые и объекты</value>
+  </data>
+  <data name="MSelectAll" xml:space="preserve">
+    <value>Выбрать все</value>
+  </data>
+  <data name="MDeselectAll" xml:space="preserve">
+    <value>Снять выделение</value>
+  </data>
+  <data name="MOperations_MHideShow" xml:space="preserve">
+    <value>Скрыть / вернуть кривую или объект</value>
+  </data>
 </root>

@@ -1,5 +1,17 @@
 GraphArray: changes log
 
+Version 7.0:
+• Implemented the completely new method of objects selection in the interface. It now
+  uses the window menu with checkable lines for it;
+• Added new user videoguides;
+• Added the option to aling selected objects to the top-left corner of the diagram
+  field or fit them to the diagram box;
+• Added the option to merge plotting ranges for selected curves;
+• Added the option to copy the color of curve to font colors;
+• Added hotkeys for selecting all objects and clearing the selection;
+• Added hotkey for hiding / showing objects on diagram;
+• Fixed the selection of hidden objects by the middle mouse button
+
 Version 6.4.1:
 • Internal assemblies have been updated
 

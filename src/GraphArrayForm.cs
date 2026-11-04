@@ -23,14 +23,21 @@ namespace RD_AAOW
 		// Основное поле отрисовки программы
 		private Graphics drawField;
 
-		// Текущий список выбранных кривых
-		private List<int> selectedInidces = [];
+		/*// Текущий список выбранных кривых
+		private List<int> selectedInidces = [];*/
 
-		// Состояние загрузки списка выбранных кривых
-		private bool selecting = false;
+		/*// Состояние загрузки списка выбранных кривых
+		private bool selecting = false;*/
 
 		// Промежуточные координаты указателя мыши
 		private int oldMouseX, oldMouseY;
+
+		// Список индексов выбранных объектов
+		private List<int> selectedIndices = [];
+		private int selectedIndex = -1;
+
+		// Отступ списка объектов в пункте меню
+		private byte objectsOffset = 3;
 
 		#region Настройка и функционирование главной формы
 
@@ -171,7 +178,7 @@ namespace RD_AAOW
 			// Контроль результата
 			if (dd.InitResult == DiagramDataInitResults.Ok)
 				{
-				for (int i = 0; i < dd.LinesCount; i++)
+				/*for (int i = 0; i < dd.LinesCount; i++)
 					{
 					LineNamesList.Items.Add (dd.GetDataColumnName (dd.GetStyle (i).YColumnNumber) + " @ " +
 						dd.GetDataColumnName (dd.GetStyle (i).XColumnNumber));
@@ -184,7 +191,28 @@ namespace RD_AAOW
 					{
 					LineNamesList.SelectedItems.Clear ();
 					LineNamesList.SelectedIndex = 0;
+					}*/
+				for (int i = 0; i < dd.LinesCount; i++)
+					{
+					DiagramStyle ds = dd.GetStyle (i);
+					/*string name = dd.GetDataColumnName (ds.YColumnNumber) +
+						" @ " + dd.GetDataColumnName (ds.XColumnNumber);
+					ToolStripMenuItem item = (ToolStripMenuItem)MList. DropDownItems.Add (name, null,
+						LineNames_ SelectedIndexChanged);
+					item.Check OnClick = true;*/
+					AddObject (dd.GetDataColumnName (ds.YColumnNumber) +
+						" @ " + dd.GetDataColumnName (ds.XColumnNumber));
 					}
+				for (int i = 0; i < dd.AdditionalObjectsCount; i++)
+					{
+					/*string name = dd.GetStyle (i + (int)dd.LinesCount).LineName;
+					ToolStripMenuItem item = (ToolStripMenuItem)MList. DropDownItems.Add (name, null,
+						LineNames_S electedIndexChanged);
+					item.Check OnClick = true;*/
+					AddObject (dd.GetStyle (i + (int)dd.LinesCount).LineName);
+					}
+				if (MList.DropDownItems.Count > objectsOffset)
+					SelectIndex (0);
 
 				ChangeControlsState (true);
 
@@ -223,6 +251,9 @@ namespace RD_AAOW
 				ConfigAccessor.SetControlsText (MainTabControl.TabPages[i], MainToolTip);
 				}
 
+			AxeColorFromCurveButton.Text = TextColorFromCurveButton.Text;
+			MainToolTip.SetToolTip (AxeColorFromCurveButton, MainToolTip.GetToolTip (TextColorFromCurveButton));
+
 			// Меню программы
 			MFile.Text = RDLocale.GetText (GraphArrayFormMenuStrip.Name + "_" + MFile.Name);
 			ConfigAccessor.SetControlsText (MFile);
@@ -236,6 +267,10 @@ namespace RD_AAOW
 			ConfigAccessor.SetControlsText (MAdditional);
 			MLanguage2.Text = RDLocale.GetDefaultText (RDLDefaultTexts.Control_InterfaceLanguage);
 
+			RDLocale.SetControlText (MList);
+			RDLocale.SetControlText (MSelectAll);
+			RDLocale.SetControlText (MDeselectAll);
+
 			// Кнопки управления
 			ConfigAccessor.SetControlsText (this, MainToolTip);
 
@@ -243,7 +278,8 @@ namespace RD_AAOW
 			for (int i = 0; i < MainTabControl.TabPages.Count; i++)
 				{
 				string s = RDLocale.GetText (MainTabControl.Name + "_" + MainTabControl.TabPages[i].Name + "_TT");
-				MainTabControl.TabPages[i].ToolTipText = s;
+				if (!string.IsNullOrWhiteSpace (s))
+					MainTabControl.TabPages[i].ToolTipText = s;
 				}
 
 			// Контролы и диалоги
@@ -325,7 +361,7 @@ namespace RD_AAOW
 		private void MainForm_Click (object sender, EventArgs e)
 			{
 			MainTabControl_Leave (MainTabControl, null);
-			LineNamesList_Leave (LineNamesList, null);
+			/*LineNamesList_Leave (LineNamesList, null);*/
 			}
 
 		// Активация/деактивация контролов при старте программы/закрытии диаграммы
@@ -336,9 +372,10 @@ namespace RD_AAOW
 				{
 				AddColumn.Enabled = MAddColumn.Enabled = MAddColumnCmd.Enabled = MMergeLines.Enabled =
 
-				DeleteColumn.Enabled = MReplaceColumn.Enabled = MDeleteColumn.Enabled =
+				MHideShow.Enabled = DeleteColumn.Enabled = MReplaceColumn.Enabled = MDeleteColumn.Enabled =
 
-				LineNamesList.Enabled = DrawLine.Enabled =
+				/*LineNamesList.Enabled*/
+				MList.Enabled = DrawLine.Enabled =
 				DiagramBox.Enabled = HorScroll.Enabled = VertScroll.Enabled =
 				MLoadStyle.Enabled = MSaveStyle.Enabled = MResetStyle.Enabled = MSaveTemplate.Enabled =
 				MSaveDataFile.Enabled = MSaveDiagramImage.Enabled = MRedactData.Enabled = NewState;
@@ -347,20 +384,25 @@ namespace RD_AAOW
 					RDGenerics.AppHasAccessRights (false, false);
 				}
 
-			bool isAnObject = LineNamesList.SelectedIndex >= dd.LinesCount;
-			DiagramAdditionalObjects objectType = (isAnObject ? dd.GetObjectType ((uint)LineNamesList.SelectedIndex -
+			GetSelectedIndices ();
+
+			/*bool isAnObject = LineNamesList.SelectedIndex >= dd.LinesCount;*/
+			bool isAnObject = (selectedIndex >= dd.LinesCount);
+			DiagramAdditionalObjects objectType = (isAnObject ? dd.GetObjectType ((uint)/*LineNamesList.SelectedIndex*/selectedIndex -
 				dd.LinesCount) : DiagramAdditionalObjects.Text);
-			bool hasItems = (LineNamesList.Items.Count != 0);
+			/*bool hasItems = (LineNamesList.Items.Count != 0);*/
+			bool hasItems = (MList.DropDownItems.Count > objectsOffset);
 
 			// Основные
 			AutoTextOffset.Enabled = SwitchXY.Enabled = (NewState && !isAnObject && hasItems);
 
 			SwapX.Enabled = SwapY.Enabled = Label01.Enabled = MaxX.Enabled = MinX.Enabled = MaxY.Enabled =
-				MinY.Enabled = (NewState && hasItems && !isAnObject);
+				MinY.Enabled = MergeRangesButton.Enabled = (NewState && hasItems && !isAnObject);
 
 			Label02.Enabled = Label03.Enabled = Label04.Enabled = Label05.Enabled =
 			Label06.Enabled = LeftOffset.Enabled = TopOffset.Enabled = ImageHeight.Enabled = ImageWidth.Enabled =
-			AlignAsRow.Enabled = AlignAsColumn.Enabled = (NewState && hasItems);
+			AlignAsRow.Enabled = AlignAsColumn.Enabled = AlignLeftTopButton.Enabled =
+				AlignFieldButton.Enabled = (NewState && hasItems);
 
 			// Оси
 			OxSecondaryDiv.Enabled = OySecondaryDiv.Enabled = OxPlacementCombo.Enabled = OyPlacementCombo.Enabled =
@@ -370,10 +412,11 @@ namespace RD_AAOW
 			OxPrimaryDiv.Enabled = OyPrimaryDiv.Enabled = (!AutoDivisions.Checked && hasItems);
 
 			// Шрифты
-			AxesFont.Enabled = AxesFontColor.Enabled = (NewState && !isAnObject && hasItems);
+			AxesFont.Enabled = AxesFontColor.Enabled = AxeColorFromCurveButton.Enabled =
+				(NewState && !isAnObject && hasItems);
 
-			Label27.Enabled = TextFont.Enabled = TextFontColor.Enabled = (NewState && hasItems &&
-				(!isAnObject || isAnObject && (objectType == DiagramAdditionalObjects.Text)));
+			Label27.Enabled = TextFont.Enabled = TextFontColor.Enabled = TextColorFromCurveButton.Enabled =
+				(NewState && hasItems && (!isAnObject || isAnObject && (objectType == DiagramAdditionalObjects.Text)));
 
 			// Текстовая подпись
 			Label07.Enabled = Label08.Enabled = Label09.Enabled = Label10.Enabled =
@@ -381,9 +424,7 @@ namespace RD_AAOW
 			LineNameLeftOffset.Enabled = LineNameTopOffset.Enabled = (!AutoTextOffset.Checked && hasItems);
 
 			if (isAnObject && (objectType == DiagramAdditionalObjects.Text))
-				{
 				Label09.Enabled = LineName.Enabled = (NewState && hasItems);
-				}
 
 			// Сетка
 			GridWidth.Enabled = GridPrimaryColor.Enabled = GridSecondaryColor.Enabled =
@@ -425,19 +466,15 @@ namespace RD_AAOW
 			{
 			// Контроль на наличие источника изображения
 			if (dd == null)
-				{
 				return;
-				}
 
 			// Создание изображения, если оно не было создано
 			if (DiagramBox.BackgroundImage != null)
-				{
 				DiagramBox.BackgroundImage.Dispose ();
-				}
+				
 			if (drawField != null)
-				{
 				drawField.Dispose ();
-				}
+				
 			DiagramBox.BackgroundImage = new Bitmap ((int)dd.DiagramWidth, (int)dd.DiagramHeight);
 			drawField = Graphics.FromImage (DiagramBox.BackgroundImage);
 
@@ -446,9 +483,10 @@ namespace RD_AAOW
 			VertScroll.Maximum = ((dd.DiagramHeight - DiagramBox.Height < 0) ? 0 : (int)(dd.DiagramHeight - DiagramBox.Height));
 
 			// Перерисовка
-			if (dd != null)     // Предотвращение перерисовки при запуске программы
+			if (dd != null)		// Предотвращение перерисовки при запуске программы
 				{
-				dd.DrawAllDiagrams (drawField, LineNamesList.SelectedIndices);
+				/*dd.DrawAllDiagrams (drawField, LineNamesList.SelectedIndices);*/
+				dd.DrawAllDiagrams (drawField, GetSelectedIndices ());
 				Image im = (Image)DiagramBox.BackgroundImage.Clone ();
 				drawField.Clear (DiagramStyle.ImageBackColor);
 				drawField.DrawImage (im, -HorScroll.Value, -VertScroll.Value);
@@ -460,17 +498,13 @@ namespace RD_AAOW
 		private void HorScroll_Scroll (object sender, ScrollEventArgs e)
 			{
 			if (e.Type == ScrollEventType.EndScroll)
-				{
 				Redraw ();
-				}
 			}
 
 		private void VertScroll_Scroll (object sender, ScrollEventArgs e)
 			{
 			if (e.Type == ScrollEventType.EndScroll)
-				{
 				Redraw ();
-				}
 			}
 
 		// Смещение кривой "перетаскиванием" или выделение группы кривых
@@ -483,25 +517,34 @@ namespace RD_AAOW
 				MainSelector.Visible = false;
 
 				// Сброс списка
-				LineNamesList.SelectedItems.Clear ();
+				/*LineNamesList.SelectedItems.Clear ();*/
+				ClearSelectedIndices ();
 
 				// Поиск подходящих кривых
 				Rectangle r1 = new Rectangle (Math.Min (e.X, oldMouseX) + HorScroll.Value, Math.Min (e.Y, oldMouseY) +
 					VertScroll.Value, Math.Max (e.X, oldMouseX) - Math.Min (e.X, oldMouseX),
 					Math.Max (e.Y, oldMouseY) - Math.Min (e.Y, oldMouseY));
-				for (int i = 0; i < LineNamesList.Items.Count; i++)
+
+				for (int i = 0; i < MList.DropDownItems.Count - objectsOffset; i++)
 					{
-					Rectangle r2 = new Rectangle ((int)dd.GetStyle (i).DiagramImageLeftOffset,
-						(int)dd.GetStyle (i).DiagramImageTopOffset,
-						(int)dd.GetStyle (i).DiagramImageWidth, (int)dd.GetStyle (i).DiagramImageHeight);
+					DiagramStyle ds = dd.GetStyle (i);
+					if (!ds.AllowDrawing)
+						continue;
+
+					Rectangle r2 = new Rectangle ((int)ds.DiagramImageLeftOffset,
+						(int)ds.DiagramImageTopOffset,
+						(int)ds.DiagramImageWidth, (int)ds.DiagramImageHeight);
 
 					if (r1.IntersectsWith (r2))
-						LineNamesList.SelectedIndices.Add (i);
+						/*LineNamesList.SelectedIndices.Add (i);*/
+						SelectIndex (i);
 					}
 
 				// Отображение списка
-				LineNamesList_MouseClick (sender, e);
-				LineNamesList.Select ();
+				/*LineNamesList_MouseClick (sender, e);
+				LineNamesList.Select ();*/
+				Redraw ();
+				MList.ShowDropDown ();
 				}
 
 			// Смещение по полю
@@ -509,51 +552,37 @@ namespace RD_AAOW
 				{
 				// Смещение по горизонтали
 				if (HorScroll.Value + oldMouseX - e.X > HorScroll.Maximum)
-					{
 					HorScroll.Value = HorScroll.Maximum;
-					}
 				else if (HorScroll.Value + oldMouseX - e.X < HorScroll.Minimum)
-					{
 					HorScroll.Value = HorScroll.Minimum;
-					}
 				else
-					{
 					HorScroll.Value += (oldMouseX - e.X);
-					}
-
+				
 				// Смещение по вертикали
 				if (VertScroll.Value + oldMouseY - e.Y > VertScroll.Maximum)
-					{
 					VertScroll.Value = VertScroll.Maximum;
-					}
 				else if (VertScroll.Value + oldMouseY - e.Y < VertScroll.Minimum)
-					{
 					VertScroll.Value = VertScroll.Minimum;
-					}
 				else
-					{
 					VertScroll.Value += (oldMouseY - e.Y);
-					}
 
 				// Перерисовка (не пересекается с заданием положения изображения
 				// и случайными нажатиями)
 				if ((oldMouseX != e.X) || (oldMouseY != e.Y))
-					{
 					Redraw ();
-					}
 				}
 			}
 
 		// Изменение эффекта выделения
 		private void DiagramBox_MouseMove (object sender, MouseEventArgs e)
 			{
-			if (selectionMode)
-				{
-				MainSelector.Left = Math.Min (oldMouseX, e.X);
-				MainSelector.Top = Math.Min (oldMouseY, e.Y);
-				MainSelector.Width = Math.Max (oldMouseX, e.X) - MainSelector.Left;
-				MainSelector.Height = Math.Max (oldMouseY, e.Y) - MainSelector.Top;
-				}
+			if (!selectionMode)
+				return;
+
+			MainSelector.Left = Math.Min (oldMouseX, e.X);
+			MainSelector.Top = Math.Min (oldMouseY, e.Y);
+			MainSelector.Width = Math.Max (oldMouseX, e.X) - MainSelector.Left;
+			MainSelector.Height = Math.Max (oldMouseY, e.Y) - MainSelector.Top;
 			}
 
 		// Задание положения и размера изображения кривой, а также положения его подписей или начало выделения
@@ -561,7 +590,7 @@ namespace RD_AAOW
 			{
 			// Потеря фокуса
 			MainTabControl_Leave (MainTabControl, null);
-			LineNamesList_Leave (LineNamesList, null);
+			/*LineNamesList_Leave (LineNamesList, null);*/
 
 			if (e.Button == MouseButtons.Middle)
 				selectionMode = true;
@@ -796,7 +825,8 @@ namespace RD_AAOW
 				}
 
 			// Сброс списка кривых
-			LineNamesList.Items.Clear ();
+			/*LineNamesList.Items.Clear ();*/
+			ClearObjects ();
 
 			// Загрузка
 			if (OFDialog.FilterIndex == (int)DataInputTypes.Unknown)
@@ -811,18 +841,33 @@ namespace RD_AAOW
 					{
 					for (int i = 0; i < dd.LinesCount; i++)
 						{
-						LineNamesList.Items.Add (dd.GetDataColumnName (dd.GetStyle (i).YColumnNumber) + " @ " +
-							dd.GetDataColumnName (dd.GetStyle (i).XColumnNumber));
+						/*LineNamesList.Items.Add (dd.GetDataColumnName (dd.GetStyle (i).YColumnNumber) + " @ " +
+							dd.GetDataColumnName (dd.GetStyle (i).XColumnNumber));*/
+						DiagramStyle ds = dd.GetStyle (i);
+						/*string name = dd.GetDataColumnName (ds.YColumnNumber) + " @ " +
+							dd.GetDataColumnName (ds.XColumnNumber);
+						ToolStripMenuItem item = (ToolStripMenuItem)MList. DropDownItems.Add (name, null,
+							LineNames_ SelectedIndexChanged);
+						item.Check OnClick = true;*/
+						AddObject (dd.GetDataColumnName (ds.YColumnNumber) + " @ " +
+							dd.GetDataColumnName (ds.XColumnNumber));
 						}
 					for (int i = 0; i < dd.AdditionalObjectsCount; i++)
 						{
-						LineNamesList.Items.Add (dd.GetStyle (i + (int)dd.LinesCount).LineName);
+						/*LineNamesList.Items.Add (dd.GetStyle (i + (int)dd.LinesCount).LineName);
+						string name = dd.GetStyle (i + (int)dd.LinesCount).LineName;
+						ToolStripMenuItem item = (ToolStripMenuItem)MList. DropDownItems.Add (name, null,
+							LineNames_ SelectedIndexChanged);
+						item.Check OnClick = true;*/
+						AddObject (dd.GetStyle (i + (int)dd.LinesCount).LineName);
 						}
-					if (LineNamesList.Items.Count != 0)
+					/*if (LineNamesList.Items.Count != 0)
 						{
 						LineNamesList.SelectedItems.Clear ();
 						LineNamesList.SelectedIndex = 0;
-						}
+						}*/
+					if (MList.DropDownItems.Count > objectsOffset)
+						SelectIndex (0);
 					}
 
 				// Остальные
@@ -875,10 +920,20 @@ namespace RD_AAOW
 					}
 
 				// Обновление списка названий кривых
-				LineNamesList.Items.Add (dd.GetDataColumnName (cad.YColumnNumber[i]) + " @ " +
+				/*LineNamesList.Items.Add (dd.GetDataColumnName (cad.YColumnNumber[i]) + " @ " +
+					dd.GetDataColumnName (cad.XColumnNumber[i]));*/
+				/*string name = dd.GetDataColumnName (cad.YColumnNumber[i]) + " @ " +
+					dd.GetDataColumnName (cad.XColumnNumber[i]);
+				ToolStripMenuItem item = (ToolStripMenuItem)MList. DropDownItems.Add (name, null,
+					LineNames_ SelectedIndexChanged);
+				item.Check OnClick = true;*/
+				AddObject (dd.GetDataColumnName (cad.YColumnNumber[i]) + " @ " +
 					dd.GetDataColumnName (cad.XColumnNumber[i]));
-				LineNamesList.SelectedItems.Clear ();
-				LineNamesList.SelectedIndex = LineNamesList.Items.Count - 1;
+
+				/*LineNamesList.SelectedItems.Clear ();*/
+				ClearSelectedIndices ();
+				/*LineNamesList.SelectedIndex = LineNamesList.Items.Count - 1;*/
+				SelectIndex (MList.DropDownItems.Count - 1 - objectsOffset);
 
 				// Установка параметров
 				ImageWidth.Value = cad.ImageWidth[i];
@@ -961,7 +1016,8 @@ namespace RD_AAOW
 				throw new Exception (RDLocale.GetText ("ExceptionMessage") + " (2)");
 
 			// Сброс списка кривых
-			LineNamesList.Items.Clear ();
+			/*LineNamesList.Items.Clear ();*/
+			ClearObjects ();
 
 			// Включение заблокированных контролов
 			ChangeControlsState (true);
@@ -991,7 +1047,8 @@ namespace RD_AAOW
 				return;
 
 			dd = new DiagramData ("", DataInputTypes.Unknown, 0);
-			LineNamesList.Items.Clear ();
+			/*LineNamesList.Items.Clear ();*/
+			ClearObjects ();
 			ChangeControlsState (false);
 			Redraw ();
 			}
@@ -1026,7 +1083,8 @@ namespace RD_AAOW
 			dd = new DiagramData (ConfigAccessor.ExpectedColumnsCount, ConfigAccessor.SkippedLinesCount);
 
 			// Сброс списка кривых
-			LineNamesList.Items.Clear ();
+			/*LineNamesList.Items.Clear ();*/
+			ClearObjects ();
 
 			// Включение заблокированных контролов
 			ChangeControlsState (true);
@@ -1083,7 +1141,8 @@ namespace RD_AAOW
 				throw new Exception (RDLocale.GetText ("ExceptionMessage") + " (3)");
 
 			// Сброс списка кривых
-			LineNamesList.Items.Clear ();
+			/*LineNamesList.Items.Clear ();*/
+			ClearObjects ();
 
 			// Включение заблокированных контролов
 			ChangeControlsState (true);
@@ -1134,7 +1193,8 @@ namespace RD_AAOW
 				// Применение к выделенным кривым
 				case RDMessageButtons.ButtonOne:
 					// Контроль
-					if (LineNamesList.SelectedIndices.Count == 0)
+					/*if (LineNamesList.SelectedIndices.Count == 0)*/
+					if (selectedIndices.Count < 1)
 						{
 						RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 							"LinesForLoadingStylesNSError");
@@ -1142,7 +1202,7 @@ namespace RD_AAOW
 						}
 
 					// Загрузка
-					if (dd.LoadStyle (LoadStyleDialog.FileName, LineNamesList.SelectedIndices) < 0)
+					if (dd.LoadStyle (LoadStyleDialog.FileName, /*LineNamesList.SelectedIndices*/GetSelectedIndices () ) < 0)
 						{
 						RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 							"BrokenStyleError");
@@ -1153,7 +1213,7 @@ namespace RD_AAOW
 				// Добавление кривых
 				case RDMessageButtons.ButtonTwo:
 					// Загрузка
-					int oldLinesCount = LineNamesList.Items.Count;
+					int oldLinesCount = MList.DropDownItems.Count - objectsOffset;
 
 					if (dd.LoadStyle (LoadStyleDialog.FileName) < 0)
 						RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
@@ -1162,11 +1222,16 @@ namespace RD_AAOW
 					// Обновление списка названий кривых (файл стиля заведомо непустой)
 					for (int i = oldLinesCount; i < dd.LinesCount; i++)
 						{
-						LineNamesList.Items.Insert (i, dd.GetDataColumnName (dd.GetStyle (i).YColumnNumber) + " @ " +
+						/*LineNamesList.Items.Insert (i, dd.GetDataColumnName (dd.GetStyle (i).YColumnNumber) + " @ " +
+							dd.GetDataColumnName (dd.GetStyle (i).XColumnNumber));*/
+						InsertObject (i, dd.GetDataColumnName (dd.GetStyle (i).YColumnNumber) + " @ " +
 							dd.GetDataColumnName (dd.GetStyle (i).XColumnNumber));
 						}
-					LineNamesList.SelectedItems.Clear ();
-					LineNamesList.SelectedIndex = (int)dd.LinesCount - 1;
+
+					/*LineNamesList.SelectedItems.Clear ();*/
+					ClearSelectedIndices ();
+					/*LineNamesList.SelectedIndex = (int)dd.LinesCount - 1;*/
+					SelectIndex ((int)dd.LinesCount - 1);
 
 					break;
 
@@ -1176,14 +1241,15 @@ namespace RD_AAOW
 				}
 
 			// Перерисовка
-			LineNames_SelectedIndexChanged (LineNamesList, null);
+			LineNames_SelectedIndexChanged (/*LineNamesList*/ null, null);
 			}
 
 		// Сохранение стиля в файл
 		private void MSaveStyle_Click (object sender, EventArgs e)
 			{
 			// Контроль
-			if (LineNamesList.SelectedIndices.Count == 0)
+			/*if (LineNamesList.SelectedIndices.Count == 0)*/
+			if (selectedIndices.Count < 1)
 				{
 				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 					"LinesForSavingStylesNSError");
@@ -1197,7 +1263,7 @@ namespace RD_AAOW
 
 		private void SaveStyleDialog_FileOk (object sender, CancelEventArgs e)
 			{
-			if (dd.SaveStyle (SaveStyleDialog.FileName, LineNamesList.SelectedIndices) < 0)
+			if (dd.SaveStyle (SaveStyleDialog.FileName, GetSelectedIndices ()) < 0)
 				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 					"StyleSaveError");
 			}
@@ -1206,7 +1272,8 @@ namespace RD_AAOW
 		private void MResetStyle_Click (object sender, EventArgs e)
 			{
 			// Контроль
-			if (LineNamesList.SelectedIndices.Count == 0)
+			/*if (LineNamesList.SelectedIndices.Count == 0)*/
+			if (selectedIndices.Count < 1)
 				{
 				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 					"LinesForResetStylesNSError");
@@ -1218,11 +1285,11 @@ namespace RD_AAOW
 				RDMessageButtons.ButtonOne)
 				{
 				// Сброс
-				for (int i = 0; i < LineNamesList.SelectedIndices.Count; i++)
-					dd.ResetStyle ((uint)LineNamesList.SelectedIndices[i]);
+				for (int i = 0; i < selectedIndices.Count; i++)
+					dd.ResetStyle ((uint)selectedIndices[i]);
 
 				// Перерисовка
-				LineNames_SelectedIndexChanged (LineNamesList, null);
+				LineNames_SelectedIndexChanged (/*LineNamesList*/null, null);
 				}
 			}
 
@@ -1312,7 +1379,8 @@ namespace RD_AAOW
 			if (!dde.Cancelled)
 				{
 				// Сброс списка кривых
-				LineNamesList.Items.Clear ();
+				/*LineNamesList.Items.Clear ();*/
+				ClearObjects ();
 
 				// Загрузка данных
 				dd = new DiagramData (dde.ResultTable);
@@ -1323,7 +1391,9 @@ namespace RD_AAOW
 					dd.AddDiagram (linesStyles[i].XColumnNumber, linesStyles[i].YColumnNumber);
 					dd.LoadStyle (i, linesStyles[i]);
 
-					LineNamesList.Items.Add (dd.GetDataColumnName (linesStyles[i].YColumnNumber) + " @ " +
+					/*LineNamesList.Items.Add (dd.GetDataColumnName (linesStyles[i].YColumnNumber) + " @ " +
+						dd.GetDataColumnName (linesStyles[i].XColumnNumber));*/
+					AddObject (dd.GetDataColumnName (linesStyles[i].YColumnNumber) + " @ " +
 						dd.GetDataColumnName (linesStyles[i].XColumnNumber));
 					}
 				for (int i = 0; i < objectsStyles.Count; i++)
@@ -1331,14 +1401,17 @@ namespace RD_AAOW
 					dd.AddObject (objectsTypes[i]);
 					dd.LoadStyle (i + (int)dd.LinesCount, objectsStyles[i]);
 
-					LineNamesList.Items.Add (objectsStyles[i].LineName);
+					/*LineNamesList.Items.Add (objectsStyles[i].LineName);*/
+					AddObject (objectsStyles[i].LineName);
 					}
 
 				// Обновление состояния
-				if (LineNamesList.Items.Count != 0)
+				/*if (LineNamesList.Items.Count != 0)*/
+				if (MList.DropDownItems.Count > objectsOffset)
 					{
-					LineNamesList.SelectedItems.Clear ();
-					LineNamesList.SelectedIndex = LineNamesList.Items.Count - 1;
+					/*LineNamesList.SelectedItems.Clear ();
+					LineNamesList.SelectedIndex = LineNamesList.Items.Count - 1;*/
+					SelectIndex (MList.DropDownItems.Count - 1 - objectsOffset);
 
 					// Перерисовка
 					Redraw ();
@@ -1359,16 +1432,14 @@ namespace RD_AAOW
 		private void MMergeTables_Click (object sender, EventArgs e)
 			{
 			// Вызов диалога
-			TablesMergerForm tmf = new TablesMergerForm ();
-			tmf.Dispose ();
+			_ = new TablesMergerForm ();
 			}
 
 		// Генерация векторного изображения
 		private void MGenerateVI_Click (object sender, EventArgs e)
 			{
 			// Вызов диалога
-			SVGGeneratorForm svggf = new SVGGeneratorForm ();
-			svggf.Dispose ();
+			_ = new SVGGeneratorForm ();
 			}
 
 		#endregion
@@ -1417,17 +1488,24 @@ namespace RD_AAOW
 				// Обновление списка названий кривых
 				if (cad.IsNewObjectADiagram)
 					{
-					LineNamesList.Items.Insert ((int)dd.LinesCount - 1, dd.GetDataColumnName (cad.YColumnNumber) +
+					/*LineNamesList.Items.Insert ((int)dd.LinesCount - 1, dd.GetDataColumnName (cad.YColumnNumber) +
+						" @ " + dd.GetDataColumnName (cad.XColumnNumber));*/
+					InsertObject ((int)dd.LinesCount - 1, dd.GetDataColumnName (cad.YColumnNumber) +
 						" @ " + dd.GetDataColumnName (cad.XColumnNumber));
-					LineNamesList.SelectedItems.Clear ();
-					LineNamesList.SelectedIndex = (int)dd.LinesCount - 1;
+					/*LineNamesList.SelectedItems.Clear ();*/
+					ClearSelectedIndices ();
+					/*LineNamesList.SelectedIndex = (int)dd.LinesCount - 1;*/
+					SelectIndex ((int)dd.LinesCount - 1);
 					}
 				else
 					{
-					LineNamesList.Items.Add (dd.GetStyle ((int)dd.LinesCount +
-						(int)dd.AdditionalObjectsCount - 1).LineName);
-					LineNamesList.SelectedItems.Clear ();
-					LineNamesList.SelectedIndex = LineNamesList.Items.Count - 1;
+					/*LineNamesList.Items.Add (dd.GetStyle ((int)dd.LinesCount +
+						(int)dd.AdditionalObjectsCount - 1).LineName);*/
+					AddObject (dd.GetStyle ((int)dd.LinesCount + (int)dd.AdditionalObjectsCount - 1).LineName);
+					/*LineNamesList.SelectedItems.Clear ();*/
+					ClearSelectedIndices ();
+					/*LineNamesList.SelectedIndex = LineNamesList.Items.Count - 1;*/
+					SelectIndex (MList.DropDownItems.Count - 1 - objectsOffset);
 					}
 
 				// Перерисовка
@@ -1440,7 +1518,8 @@ namespace RD_AAOW
 		private void DeleteColumn_Click (object sender, EventArgs e)
 			{
 			// Контроль
-			if (LineNamesList.SelectedIndices.Count == 0)
+			/*if (LineNamesList.SelectedIndices.Count == 0)*/
+			if (selectedIndices.Count < 1)
 				{
 				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 					"LinesForDeleteNSError");
@@ -1457,12 +1536,12 @@ namespace RD_AAOW
 			// Формирование массива удаляемых индексов
 			List<int> lineIndices = [];
 			List<int> objectIndices = [];
-			for (int i = 0; i < LineNamesList.SelectedIndices.Count; i++)
+			for (int i = 0; i < selectedIndices.Count; i++)
 				{
-				if (LineNamesList.SelectedIndices[i] < dd.LinesCount)
-					lineIndices.Add (LineNamesList.SelectedIndices[i]);
+				if (selectedIndices[i] < dd.LinesCount)
+					lineIndices.Add (selectedIndices[i]);
 				else
-					objectIndices.Add (LineNamesList.SelectedIndices[i] - (int)dd.LinesCount);
+					objectIndices.Add (selectedIndices[i] - (int)dd.LinesCount);
 				}
 
 			// Удаление
@@ -1473,7 +1552,7 @@ namespace RD_AAOW
 				dd.DeleteDiagram ((uint)(lineIndices[i] - offset));
 
 				// Удаление имени
-				LineNamesList.Items.RemoveAt (lineIndices[i] - offset);
+				MList.DropDownItems.RemoveAt (objectsOffset + lineIndices[i] - offset);
 
 				// Увеличение смещения по списку
 				offset++;
@@ -1486,21 +1565,28 @@ namespace RD_AAOW
 				dd.DeleteObject ((uint)(objectIndices[i] - offset));
 
 				// Удаление имени
-				LineNamesList.Items.RemoveAt (objectIndices[i] - offset + (int)dd.LinesCount);
+				MList.DropDownItems.RemoveAt (objectsOffset + objectIndices[i] - offset + (int)dd.LinesCount);
 
 				// Увеличение смещения по списку
 				offset++;
 				}
 
 			// Перерисовка
+			GetSelectedIndices ();
 			Redraw ();
 
-			// Блокировка кнопки удаления, если необходимо
+			/*// Блокировка кнопки удаления, если необходимо
 			if (LineNamesList.Items.Count != 0)
 				{
 				LineNamesList.SelectedItems.Clear ();
 				LineNamesList.SelectedIndex = 0;
-				}
+				}*/
+			}
+
+		// Метод добавляет кривую на диаграмму
+		private void MShowHide_Click (object sender, EventArgs e)
+			{
+			DrawLine.Checked = !DrawLine.Checked;
 			}
 
 		// Метод добавляет кривую на диаграмму с помощью строки параметров
@@ -1528,11 +1614,16 @@ namespace RD_AAOW
 						}
 
 					// Обновление списка названий кривых
-					LineNamesList.Items.Insert ((int)dd.LinesCount - 1,
+					/*LineNamesList.Items.Insert ((int)dd.LinesCount - 1,
+						dd.GetDataColumnName (cac.YColumnNumber[i]) + " @ " +
+						dd.GetDataColumnName (cac.XColumnNumber[i]));*/
+					InsertObject ((int)dd.LinesCount - 1,
 						dd.GetDataColumnName (cac.YColumnNumber[i]) + " @ " +
 						dd.GetDataColumnName (cac.XColumnNumber[i]));
-					LineNamesList.SelectedItems.Clear ();
-					LineNamesList.SelectedIndex = (int)dd.LinesCount - 1;
+					/*LineNamesList.SelectedItems.Clear ();*/
+					ClearSelectedIndices ();
+					/*LineNamesList.SelectedIndex = (int)dd.LinesCount - 1;*/
+					SelectIndex ((int)dd.LinesCount - 1);
 
 					// Установка параметров
 					ImageWidth.Value = cac.ImageWidth[i];
@@ -1559,9 +1650,18 @@ namespace RD_AAOW
 		// Загрузка значений в остальные поля
 		private void LineNames_SelectedIndexChanged (object sender, EventArgs e)
 			{
+			// Принудительное повторное отображение
+			if (sender != null)
+				MList.ShowDropDown ();
+
 			// Отмена операции, если поле для настройки не выбрано
-			if (LineNamesList.SelectedIndices.Count == 0)
+			/*if (LineNamesList.SelectedIndices.Count == 0)*/
+			GetSelectedIndices ();
+			if (selectedIndex < 0)
+				{
+				Redraw ();
 				return;
+				}
 
 			// Блокировка обработчиков событий _ChangeValue для всех контролов
 			loading = true;
@@ -1570,72 +1670,72 @@ namespace RD_AAOW
 			try
 				{
 				// Установка ограничений
-				MaxX.DecimalPlaces = MinX.DecimalPlaces = (dd.XRoundPos ((uint)LineNamesList.SelectedIndex) < 2) ?
-					(-dd.XRoundPos ((uint)LineNamesList.SelectedIndex) + 2) : 0;
+				MaxX.DecimalPlaces = MinX.DecimalPlaces = (dd.XRoundPos ((uint)selectedIndex) < 2) ?
+					(-dd.XRoundPos ((uint)selectedIndex) + 2) : 0;
 				MaxX.Increment = MinX.Increment = (decimal)Math.Pow (10.0, -(double)MaxX.DecimalPlaces);
-				MaxY.DecimalPlaces = MinY.DecimalPlaces = (dd.YRoundPos ((uint)LineNamesList.SelectedIndex) < 2) ?
-					(-dd.YRoundPos ((uint)LineNamesList.SelectedIndex) + 2) : 0;
+				MaxY.DecimalPlaces = MinY.DecimalPlaces = (dd.YRoundPos ((uint)selectedIndex) < 2) ?
+					(-dd.YRoundPos ((uint)selectedIndex) + 2) : 0;
 				MaxY.Increment = MinY.Increment = (decimal)Math.Pow (10.0, -(double)MaxY.DecimalPlaces);
 
 				// Загрузка значений в контролы
-				DrawLine.Checked = dd.GetStyle (LineNamesList.SelectedIndex).AllowDrawing;
+				DiagramStyle ds = dd.GetStyle (selectedIndex);
+
+				DrawLine.Checked = ds.AllowDrawing;
 
 				try
 					{
-					MinX.Value = (decimal)dd.GetStyle (LineNamesList.SelectedIndex).MinX;
-					MaxX.Value = (decimal)dd.GetStyle (LineNamesList.SelectedIndex).MaxX;
-					MinY.Value = (decimal)dd.GetStyle (LineNamesList.SelectedIndex).MinY;
-					MaxY.Value = (decimal)dd.GetStyle (LineNamesList.SelectedIndex).MaxY;
+					MinX.Value = (decimal)ds.MinX;
+					MaxX.Value = (decimal)ds.MaxX;
+					MinY.Value = (decimal)ds.MinY;
+					MaxY.Value = (decimal)ds.MaxY;
 					}
-				catch
-					{
-					}
+				catch { }
 
-				LeftOffset.Value = dd.GetStyle (LineNamesList.SelectedIndex).DiagramImageLeftOffset;
-				TopOffset.Value = dd.GetStyle (LineNamesList.SelectedIndex).DiagramImageTopOffset;
+				LeftOffset.Value = ds.DiagramImageLeftOffset;
+				TopOffset.Value = ds.DiagramImageTopOffset;
 
-				ImageWidth.Value = dd.GetStyle (LineNamesList.SelectedIndex).DiagramImageWidth;
-				ImageHeight.Value = dd.GetStyle (LineNamesList.SelectedIndex).DiagramImageHeight;
+				ImageWidth.Value = ds.DiagramImageWidth;
+				ImageHeight.Value = ds.DiagramImageHeight;
 
-				SwitchXY.Checked = dd.GetStyle (LineNamesList.SelectedIndex).SwitchXY;
+				SwitchXY.Checked = ds.SwitchXY;
 
-				AutoTextOffset.Checked = dd.GetStyle (LineNamesList.SelectedIndex).AutoTextOffset;
-				OxTextOffset.Value = dd.GetStyle (LineNamesList.SelectedIndex).OxTextOffset;
-				OyTextOffset.Value = dd.GetStyle (LineNamesList.SelectedIndex).OyTextOffset;
-				LineName.Text = dd.GetStyle (LineNamesList.SelectedIndex).LineName;
-				LineNameLeftOffset.Value = dd.GetStyle (LineNamesList.SelectedIndex).LineNameLeftOffset;
-				LineNameTopOffset.Value = dd.GetStyle (LineNamesList.SelectedIndex).LineNameTopOffset;
+				AutoTextOffset.Checked = ds.AutoTextOffset;
+				OxTextOffset.Value = ds.OxTextOffset;
+				OyTextOffset.Value = ds.OyTextOffset;
+				LineName.Text = ds.LineName;
+				LineNameLeftOffset.Value = ds.LineNameLeftOffset;
+				LineNameTopOffset.Value = ds.LineNameTopOffset;
 
 				// Оси
-				AutoDivisions.Checked = dd.GetStyle (LineNamesList.SelectedIndex).AutoPrimaryDivisions;
-				OxPrimaryDiv.Value = dd.GetStyle (LineNamesList.SelectedIndex).XPrimaryDivisions;
-				OyPrimaryDiv.Value = dd.GetStyle (LineNamesList.SelectedIndex).YPrimaryDivisions;
-				OxSecondaryDiv.Value = dd.GetStyle (LineNamesList.SelectedIndex).XSecondaryDivisions;
-				OySecondaryDiv.Value = dd.GetStyle (LineNamesList.SelectedIndex).YSecondaryDivisions;
-				AxesWidth.Value = dd.GetStyle (LineNamesList.SelectedIndex).AxesLinesWidth;
-				AxesColor.BackColor = dd.GetStyle (LineNamesList.SelectedIndex).AxesColor;
-				OxPlacementCombo.SelectedIndex = (int)dd.GetStyle (LineNamesList.SelectedIndex).OxPlacement;
-				OyPlacementCombo.SelectedIndex = (int)dd.GetStyle (LineNamesList.SelectedIndex).OyPlacement;
-				OxFormatCombo.SelectedIndex = (int)dd.GetStyle (LineNamesList.SelectedIndex).OxFormat;
-				OyFormatCombo.SelectedIndex = (int)dd.GetStyle (LineNamesList.SelectedIndex).OyFormat;
+				AutoDivisions.Checked = ds.AutoPrimaryDivisions;
+				OxPrimaryDiv.Value = ds.XPrimaryDivisions;
+				OyPrimaryDiv.Value = ds.YPrimaryDivisions;
+				OxSecondaryDiv.Value = ds.XSecondaryDivisions;
+				OySecondaryDiv.Value = ds.YSecondaryDivisions;
+				AxesWidth.Value = ds.AxesLinesWidth;
+				AxesColor.BackColor = ds.AxesColor;
+				OxPlacementCombo.SelectedIndex = (int)ds.OxPlacement;
+				OyPlacementCombo.SelectedIndex = (int)ds.OyPlacement;
+				OxFormatCombo.SelectedIndex = (int)ds.OxFormat;
+				OyFormatCombo.SelectedIndex = (int)ds.OyFormat;
 
 				// Шрифты
-				AxesFont.Font = dd.GetStyle (LineNamesList.SelectedIndex).AxesFont;
-				AxesFontColor.BackColor = dd.GetStyle (LineNamesList.SelectedIndex).AxesFontColor;
-				TextFont.Font = dd.GetStyle (LineNamesList.SelectedIndex).TextFont;
-				TextFontColor.BackColor = dd.GetStyle (LineNamesList.SelectedIndex).TextFontColor;
+				AxesFont.Font = ds.AxesFont;
+				AxesFontColor.BackColor = ds.AxesFontColor;
+				TextFont.Font = ds.TextFont;
+				TextFontColor.BackColor = ds.TextFontColor;
 
 				// Сетка
-				GridWidth.Value = dd.GetStyle (LineNamesList.SelectedIndex).GridLinesWidth;
-				GridPrimaryColor.BackColor = dd.GetStyle (LineNamesList.SelectedIndex).PrimaryGridColor;
-				GridSecondaryColor.BackColor = dd.GetStyle (LineNamesList.SelectedIndex).SecondaryGridColor;
+				GridWidth.Value = ds.GridLinesWidth;
+				GridPrimaryColor.BackColor = ds.PrimaryGridColor;
+				GridSecondaryColor.BackColor = ds.SecondaryGridColor;
 
 				// Линия
-				LineWidth.Value = dd.GetStyle (LineNamesList.SelectedIndex).LineWidth;
-				LineColor.BackColor = dd.GetStyle (LineNamesList.SelectedIndex).LineColor;
-				LineStyleCombo.SelectedIndex = (int)dd.GetStyle (LineNamesList.SelectedIndex).LineDrawingFormat;
-				LineMarker.Value = ((dd.GetStyle (LineNamesList.SelectedIndex).LineMarkerNumber > ml.MarkersCount) ?
-					1 : dd.GetStyle (LineNamesList.SelectedIndex).LineMarkerNumber);
+				LineWidth.Value = ds.LineWidth;
+				LineColor.BackColor = ds.LineColor;
+				LineStyleCombo.SelectedIndex = (int)ds.LineDrawingFormat;
+				LineMarker.Value = ((ds.LineMarkerNumber > ml.MarkersCount) ?
+					1 : ds.LineMarkerNumber);
 				}
 			catch
 				{
@@ -1652,23 +1752,24 @@ namespace RD_AAOW
 			// Возврат состояния
 			loading = false;
 
-			if (!selecting)
+			/*if (!selecting)
 				{
 				// Сохранение индексов выбранных кривых
 				selectedInidces.Clear ();
-				for (int i = 0; i < LineNamesList.SelectedIndices.Count; i++)
+				for (int i = 0; i < LineNamesList. SelectedIndices.Count; i++)
 					selectedInidces.Add (LineNamesList.SelectedIndices[i]);
+				GetSelectedIndices ();*/
 
-				// Перерисовка (необходима для отображения выделения кривых)
-				Redraw ();
-				}
+			// Перерисовка (необходима для отображения выделения кривых)
+			Redraw ();
+			/*}*/
 			}
 
 		// Совмещение кривых
 		private void MergeLines_Click (object sender, EventArgs e)
 			{
 			// Контроль
-			if (LineNamesList.SelectedIndices.Count != 2)
+			if (selectedIndices.Count != 2)
 				{
 				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 					"MergingError");
@@ -1676,8 +1777,9 @@ namespace RD_AAOW
 				}
 
 			// Запрос параметров совмещения
-			DiagramMerger dm = new DiagramMerger (LineNamesList.SelectedItems[0].ToString (),
-				LineNamesList.SelectedItems[1].ToString ());
+			string name1 = MList.DropDownItems[objectsOffset + selectedIndices[0]].Text;
+			string name2 = MList.DropDownItems[objectsOffset + selectedIndices[1]].Text;
+			DiagramMerger dm = new DiagramMerger (name1, name2);
 			if (dm.Cancelled)
 				return;
 
@@ -1685,27 +1787,30 @@ namespace RD_AAOW
 			int fromIdx, toIdx;
 			if (dm.MergeVariant == MergeVariants.FirstLine)
 				{
-				fromIdx = LineNamesList.SelectedIndices[0];
-				toIdx = LineNamesList.SelectedIndices[1];
+				fromIdx = selectedIndices[0];
+				toIdx = selectedIndices[1];
 				}
 			else
 				{
-				fromIdx = LineNamesList.SelectedIndices[1];
-				toIdx = LineNamesList.SelectedIndices[0];
+				fromIdx = selectedIndices[1];
+				toIdx = selectedIndices[0];
 				}
 
-			dd.GetStyle (toIdx).DiagramImageLeftOffset = dd.GetStyle (fromIdx).DiagramImageLeftOffset;
-			dd.GetStyle (toIdx).DiagramImageTopOffset = dd.GetStyle (fromIdx).DiagramImageTopOffset;
-			dd.GetStyle (toIdx).DiagramImageWidth = dd.GetStyle (fromIdx).DiagramImageWidth;
-			dd.GetStyle (toIdx).DiagramImageHeight = dd.GetStyle (fromIdx).DiagramImageHeight;
+			DiagramStyle toStyle = dd.GetStyle (toIdx);
+			DiagramStyle fromStyle = dd.GetStyle (fromIdx);
+
+			toStyle.DiagramImageLeftOffset = fromStyle.DiagramImageLeftOffset;
+			toStyle.DiagramImageTopOffset = fromStyle.DiagramImageTopOffset;
+			toStyle.DiagramImageWidth = fromStyle.DiagramImageWidth;
+			toStyle.DiagramImageHeight = fromStyle.DiagramImageHeight;
 
 			// Приведение к общему виду
-			dd.GetStyle (toIdx).SwitchXY = dd.GetStyle (fromIdx).SwitchXY;
-			dd.GetStyle (toIdx).AutoTextOffset = dd.GetStyle (fromIdx).AutoTextOffset = true;
-			dd.GetStyle (toIdx).AutoPrimaryDivisions = dd.GetStyle (fromIdx).AutoPrimaryDivisions = false;
-			dd.GetStyle (toIdx).AxesColor = dd.GetStyle (fromIdx).AxesColor;
-			dd.GetStyle (toIdx).AxesFont = dd.GetStyle (fromIdx).AxesFont;
-			dd.GetStyle (toIdx).AxesLinesWidth = dd.GetStyle (fromIdx).AxesLinesWidth;
+			toStyle.SwitchXY = fromStyle.SwitchXY;
+			toStyle.AutoTextOffset = fromStyle.AutoTextOffset = true;
+			toStyle.AutoPrimaryDivisions = fromStyle.AutoPrimaryDivisions = false;
+			toStyle.AxesColor = fromStyle.AxesColor;
+			toStyle.AxesFont = fromStyle.AxesFont;
+			toStyle.AxesLinesWidth = fromStyle.AxesLinesWidth;
 
 			// Обработка осей
 			bool ox = (dm.MergeAxe == MergeAxes.Ox);
@@ -1715,60 +1820,55 @@ namespace RD_AAOW
 
 			if (ox)
 				{
-				dd.GetStyle (toIdx).OxFormat = dd.GetStyle (fromIdx).OxFormat;
-				dd.GetStyle (toIdx).OxPlacement = dd.GetStyle (fromIdx).OxPlacement =
-					AxesPlacements.RightBottom;
-				dd.GetStyle (toIdx).XPrimaryDivisions = dd.GetStyle (fromIdx).XPrimaryDivisions;
-				dd.GetStyle (toIdx).XSecondaryDivisions = dd.GetStyle (fromIdx).XSecondaryDivisions;
+				toStyle.OxFormat = fromStyle.OxFormat;
+				toStyle.OxPlacement = fromStyle.OxPlacement = AxesPlacements.RightBottom;
+				toStyle.XPrimaryDivisions = fromStyle.XPrimaryDivisions;
+				toStyle.XSecondaryDivisions = fromStyle.XSecondaryDivisions;
 
-				dd.GetStyle (toIdx).MinX = dd.GetStyle (fromIdx).MinX =
-					Math.Min (dd.GetStyle (toIdx).MinX, dd.GetStyle (fromIdx).MinX);
-				dd.GetStyle (toIdx).MaxX = dd.GetStyle (fromIdx).MaxX =
-					Math.Max (dd.GetStyle (toIdx).MaxX, dd.GetStyle (fromIdx).MaxX);
+				toStyle.MinX = fromStyle.MinX = Math.Min (toStyle.MinX, fromStyle.MinX);
+				toStyle.MaxX = fromStyle.MaxX = Math.Max (toStyle.MaxX, fromStyle.MaxX);
 				}
 			else
 				{
-				dd.GetStyle (toIdx).OxPlacement = AxesPlacements.LeftTop;
-				dd.GetStyle (fromIdx).OxPlacement = AxesPlacements.RightBottom;
+				toStyle.OxPlacement = AxesPlacements.LeftTop;
+				fromStyle.OxPlacement = AxesPlacements.RightBottom;
 				}
 
 			if (oy)
 				{
-				dd.GetStyle (toIdx).OyFormat = dd.GetStyle (fromIdx).OyFormat;
-				dd.GetStyle (toIdx).OyPlacement = dd.GetStyle (fromIdx).OyPlacement =
-					AxesPlacements.LeftTop;
-				dd.GetStyle (toIdx).YPrimaryDivisions = dd.GetStyle (fromIdx).YPrimaryDivisions;
-				dd.GetStyle (toIdx).YSecondaryDivisions = dd.GetStyle (fromIdx).YSecondaryDivisions;
+				toStyle.OyFormat = fromStyle.OyFormat;
+				toStyle.OyPlacement = fromStyle.OyPlacement = AxesPlacements.LeftTop;
+				toStyle.YPrimaryDivisions = fromStyle.YPrimaryDivisions;
+				toStyle.YSecondaryDivisions = fromStyle.YSecondaryDivisions;
 
-				dd.GetStyle (toIdx).MinY = dd.GetStyle (fromIdx).MinY =
-					Math.Min (dd.GetStyle (toIdx).MinY, dd.GetStyle (fromIdx).MinY);
-				dd.GetStyle (toIdx).MaxY = dd.GetStyle (fromIdx).MaxY =
-					Math.Max (dd.GetStyle (toIdx).MaxY, dd.GetStyle (fromIdx).MaxY);
+				toStyle.MinY = fromStyle.MinY =
+					Math.Min (toStyle.MinY, fromStyle.MinY);
+				toStyle.MaxY = fromStyle.MaxY =
+					Math.Max (toStyle.MaxY, fromStyle.MaxY);
 				}
 			else
 				{
-				dd.GetStyle (toIdx).OyPlacement = AxesPlacements.LeftTop;
-				dd.GetStyle (fromIdx).OyPlacement = AxesPlacements.RightBottom;
+				toStyle.OyPlacement = AxesPlacements.LeftTop;
+				fromStyle.OyPlacement = AxesPlacements.RightBottom;
 				}
 
 			// Обработка окраски
 			if (dm.PaintAxes)
 				{
-				dd.GetStyle (toIdx).AxesFontColor = dd.GetStyle (toIdx).TextFontColor =
-					dd.GetStyle (toIdx).LineColor;
-				dd.GetStyle (fromIdx).AxesFontColor = dd.GetStyle (fromIdx).TextFontColor =
-					dd.GetStyle (fromIdx).LineColor;
+				toStyle.AxesFontColor = toStyle.TextFontColor = toStyle.LineColor;
+				fromStyle.AxesFontColor = fromStyle.TextFontColor = fromStyle.LineColor;
 				}
 
 			// Перерисовка
-			LineNames_SelectedIndexChanged (LineNamesList, null);
+			LineNames_SelectedIndexChanged (/*LineNamesList*/null, null);
 			}
 
 		// Замена данных кривой
 		private void ReplaceColumn_Click (object sender, EventArgs e)
 			{
 			// Контроль
-			if ((LineNamesList.SelectedIndices.Count == 0) || (LineNamesList.SelectedIndex >= dd.LinesCount))
+			/*if ((LineNamesList.SelectedIndices.Count == 0) || (LineNamesList.SelectedIndex >= dd.LinesCount))*/
+			if ((selectedIndices.Count == 0) || (selectedIndex >= dd.LinesCount))
 				{
 				RDInterface.LocalizedMessageBox (RDMessageFlags.Warning | RDMessageFlags.CenterText,
 					"LineForReplaceNSError");
@@ -1776,19 +1876,20 @@ namespace RD_AAOW
 				}
 
 			// Запуск выбора
-			ColumnsAdder cad = new ColumnsAdder (dd, (int)dd.GetStyle (LineNamesList.SelectedIndex).XColumnNumber,
-				(int)dd.GetStyle (LineNamesList.SelectedIndex).YColumnNumber);
+			DiagramStyle ds = dd.GetStyle (selectedIndex);
+			ColumnsAdder cad = new ColumnsAdder (dd, (int)ds.XColumnNumber, (int)ds.YColumnNumber);
 
 			if (!cad.Cancelled)
 				{
-				int res = dd.ReplaceDiagram ((uint)LineNamesList.SelectedIndex, cad.XColumnNumber, cad.YColumnNumber);
+				int res = dd.ReplaceDiagram ((uint)selectedIndex, cad.XColumnNumber, cad.YColumnNumber);
 				if (res < 0)
 					{
 					throw new Exception (RDLocale.GetText ("ExceptionMessage") + " (14)");
 					}
 
 				// Обновление списка названий кривых
-				LineNamesList.Items[LineNamesList.SelectedIndex] = dd.GetDataColumnName (cad.YColumnNumber) +
+				/*LineNamesList.Items[LineNamesList.SelectedIndex]*/
+				MList.DropDownItems[objectsOffset + selectedIndex].Text = dd.GetDataColumnName (cad.YColumnNumber) +
 					" @ " + dd.GetDataColumnName (cad.XColumnNumber);
 
 				// Перерисовка
@@ -1810,173 +1911,170 @@ namespace RD_AAOW
 			// Обновление значений
 			try
 				{
-				for (int i = 0; i < LineNamesList.SelectedIndices.Count; i++)
+				for (int i = 0; i < selectedIndices.Count; i++)
 					{
+					DiagramStyle ds = dd.GetStyle (selectedIndices[i]);
+
 					// Объединяемые параметры
 					switch (Sender.Name)
 						{
 						// Общие параметры
 						case "MinX":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).MinX = (double)MinX.Value;
+							ds.MinX = (double)MinX.Value;
 							break;
 
 						case "MaxX":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).MaxX = (double)MaxX.Value;
+							ds.MaxX = (double)MaxX.Value;
 							break;
 
 						case "MinY":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).MinY = (double)MinY.Value;
+							ds.MinY = (double)MinY.Value;
 							break;
 
 						case "MaxY":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).MaxY = (double)MaxY.Value;
+							ds.MaxY = (double)MaxY.Value;
 							break;
 
 						case "LeftOffset":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).DiagramImageLeftOffset = (uint)LeftOffset.Value;
+							ds.DiagramImageLeftOffset = (uint)LeftOffset.Value;
 							break;
 
 						case "TopOffset":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).DiagramImageTopOffset = (uint)TopOffset.Value;
+							ds.DiagramImageTopOffset = (uint)TopOffset.Value;
 							break;
 
 						case "ImageWidth":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).DiagramImageWidth = (uint)ImageWidth.Value;
+							ds.DiagramImageWidth = (uint)ImageWidth.Value;
 							break;
 
 						case "ImageHeight":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).DiagramImageHeight = (uint)ImageHeight.Value;
+							ds.DiagramImageHeight = (uint)ImageHeight.Value;
 							break;
 
 						case "SwitchXY":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).SwitchXY = SwitchXY.Checked;
+							ds.SwitchXY = SwitchXY.Checked;
 							break;
 
 						case "DrawLine":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).AllowDrawing = DrawLine.Checked;
+							ds.AllowDrawing = DrawLine.Checked;
 							break;
 
 						// Оси
 						case "AutoDivisions":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).AutoPrimaryDivisions = AutoDivisions.Checked;
+							ds.AutoPrimaryDivisions = AutoDivisions.Checked;
 							break;
 
 						case "OxPrimaryDiv":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).XPrimaryDivisions = (uint)OxPrimaryDiv.Value;
+							ds.XPrimaryDivisions = (uint)OxPrimaryDiv.Value;
 							break;
 
 						case "OyPrimaryDiv":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).YPrimaryDivisions = (uint)OyPrimaryDiv.Value;
+							ds.YPrimaryDivisions = (uint)OyPrimaryDiv.Value;
 							break;
 
 						case "OxSecondaryDiv":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).XSecondaryDivisions = (uint)OxSecondaryDiv.Value;
+							ds.XSecondaryDivisions = (uint)OxSecondaryDiv.Value;
 							break;
 
 						case "OySecondaryDiv":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).YSecondaryDivisions = (uint)OySecondaryDiv.Value;
+							ds.YSecondaryDivisions = (uint)OySecondaryDiv.Value;
 							break;
 
 						case "AxesWidth":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).AxesLinesWidth = (uint)AxesWidth.Value;
+							ds.AxesLinesWidth = (uint)AxesWidth.Value;
 							break;
 
 						case "AxesColor":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).AxesColor = AxesColor.BackColor;
+							ds.AxesColor = AxesColor.BackColor;
 							break;
 
 						case "OxPlacementCombo":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).OxPlacement =
-								(AxesPlacements)OxPlacementCombo.SelectedIndex;
+							ds.OxPlacement = (AxesPlacements)OxPlacementCombo.SelectedIndex;
 							break;
 
 						case "OyPlacementCombo":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).OyPlacement =
-								(AxesPlacements)OyPlacementCombo.SelectedIndex;
+							ds.OyPlacement = (AxesPlacements)OyPlacementCombo.SelectedIndex;
 							break;
 
 						case "OxFormatCombo":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).OxFormat =
-								(NumbersFormat)OxFormatCombo.SelectedIndex;
+							ds.OxFormat = (NumbersFormat)OxFormatCombo.SelectedIndex;
 							break;
 
 						case "OyFormatCombo":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).OyFormat =
-								(NumbersFormat)OyFormatCombo.SelectedIndex;
+							ds.OyFormat = (NumbersFormat)OyFormatCombo.SelectedIndex;
 							break;
 
 						// Шрифты
 						case "AxesFont":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).AxesFont = AxesFont.Font;
+							ds.AxesFont = AxesFont.Font;
 							break;
 
 						case "AxesFontColor":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).AxesFontColor = AxesFontColor.BackColor;
+							ds.AxesFontColor = AxesFontColor.BackColor;
 							break;
 
 						case "TextFont":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).TextFont = TextFont.Font;
+							ds.TextFont = TextFont.Font;
 							break;
 
 						case "TextFontColor":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).TextFontColor = TextFontColor.BackColor;
+							ds.TextFontColor = TextFontColor.BackColor;
 							break;
 
 						// Сетка
 						case "GridWidth":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).GridLinesWidth = (uint)GridWidth.Value;
+							ds.GridLinesWidth = (uint)GridWidth.Value;
 							break;
 
 						case "GridPrimaryColor":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).PrimaryGridColor = GridPrimaryColor.BackColor;
+							ds.PrimaryGridColor = GridPrimaryColor.BackColor;
 							break;
 
 						case "GridSecondaryColor":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).SecondaryGridColor = GridSecondaryColor.BackColor;
+							ds.SecondaryGridColor = GridSecondaryColor.BackColor;
 							break;
 
 						// Линия
 						case "LineWidth":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).LineWidth = (uint)LineWidth.Value;
+							ds.LineWidth = (uint)LineWidth.Value;
 							break;
 
 						case "LineColor":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).LineColor = LineColor.BackColor;
+							ds.LineColor = LineColor.BackColor;
 							break;
 
 						case "LineStyleCombo":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).LineDrawingFormat =
-								(DrawingLinesFormats)LineStyleCombo.SelectedIndex;
+							ds.LineDrawingFormat = (DrawingLinesFormats)LineStyleCombo.SelectedIndex;
 							break;
 
 						case "LineMarker":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).LineMarkerNumber = (uint)LineMarker.Value;
+							ds.LineMarkerNumber = (uint)LineMarker.Value;
 							break;
 
 						// Параметры, перенесённые из необъединяемых
 						case "AutoTextOffset":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).AutoTextOffset = AutoTextOffset.Checked;
+							ds.AutoTextOffset = AutoTextOffset.Checked;
 							break;
 
 						case "OxTextOffset":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).OxTextOffset = (uint)OxTextOffset.Value;
+							ds.OxTextOffset = (uint)OxTextOffset.Value;
 							break;
 
 						case "OyTextOffset":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).OyTextOffset = (uint)OyTextOffset.Value;
+							ds.OyTextOffset = (uint)OyTextOffset.Value;
 							break;
 
 						case "LineNameLeftOffset":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).LineNameLeftOffset = (uint)LineNameLeftOffset.Value;
+							ds.LineNameLeftOffset = (uint)LineNameLeftOffset.Value;
 							break;
 
 						case "LineNameTopOffset":
-							dd.GetStyle (LineNamesList.SelectedIndices[i]).LineNameTopOffset = (uint)LineNameTopOffset.Value;
+							ds.LineNameTopOffset = (uint)LineNameTopOffset.Value;
 							break;
 
 						// Необъединяемые параметры
 						case "LineName":
-							dd.GetStyle (LineNamesList.SelectedIndex).LineName = LineName.Text;
+							dd.GetStyle (selectedIndex).LineName = LineName.Text;
 							break;
 
 						// Любое нештатное значение
@@ -2020,47 +2118,147 @@ namespace RD_AAOW
 			UpdateDiagramParameters ((Control)sender);
 			}
 
+		private void MergeRanges_Click (object sender, EventArgs e)
+			{
+			// Сохранение списка обрабатываемых индексов
+			/*List<int> ind ices = [];
+			for (int i = 0; i < LineNamesList. SelectedIndices.Count; i++)
+				ind ices.Add (LineNamesList.SelectedIndices[i]);*/
+			int[] indices = GetSelectedIndices ();
+
+			if (indices.Length < 2)
+				return;
+
+			// Поиск границ
+			DiagramStyle ds = dd.GetStyle (indices[0]);
+			double[] ranges = [ds.MinX, ds.MaxX, ds.MinY, ds.MaxY];
+
+			for (int i = 1; i < indices.Length; i++)
+				{
+				ds = dd.GetStyle (indices[i]);
+				if (ranges[0] > ds.MinX)
+					ranges[0] = ds.MinX;
+				if (ranges[1] < ds.MaxX)
+					ranges[1] = ds.MaxX;
+				if (ranges[2] > ds.MinY)
+					ranges[2] = ds.MinY;
+				if (ranges[3] < ds.MaxY)
+					ranges[3] = ds.MaxY;
+				}
+
+			// Назначение
+			for (int i = 0; i < indices.Length; i++)
+				{
+				ds = dd.GetStyle (indices[i]);
+				if ((ds.XColumnNumber == 0) && (ds.YColumnNumber == 0))
+					continue;
+
+				// Выбор кривой
+				/*LineNamesList.SelectedIndices.Clear ();*/
+				ClearSelectedIndices ();
+				/*LineNamesList.SelectedIndices.Add (indices[i]);*/
+				SelectIndex (indices[i]);
+
+				MinX.Value = (decimal)ranges[0];
+				MaxX.Value = (decimal)ranges[1];
+				MinY.Value = (decimal)ranges[2];
+				MaxY.Value = (decimal)ranges[3];
+				}
+
+			/*// Завершено
+			indi ces.Clear ();*/
+			}
+
 		private void AlignAsRow_Click (object sender, EventArgs e)
 			{
-			AlignLines (true);
+			AlignLines (0);
 			}
 
 		private void AlignAsColumn_Click (object sender, EventArgs e)
 			{
-			AlignLines (false);
+			AlignLines (1);
 			}
 
-		private void AlignLines (bool InRow)
+		private void AlignLeftTop_Click (object sender, EventArgs e)
+			{
+			AlignLines (2);
+			}
+
+		private void AlignField_Click (object sender, EventArgs e)
+			{
+			AlignLines (3);
+			}
+
+		/*private void AlignLines (bool InRow)*/
+		private void AlignLines (byte Mode)
 			{
 			// Сохранение списка обрабатываемых индексов
-			List<int> indices = [];
-			for (int i = 0; i < LineNamesList.SelectedIndices.Count; i++)
-				indices.Add (LineNamesList.SelectedIndices[i]);
+			/*List<int> ind ices = [];
+			for (int i = 0; i < LineNamesList. SelectedIndices.Count; i++)
+				indi ces.Add (LineNamesList.SelectedIndices[i]);*/
+			int[] indices = GetSelectedIndices ();
 
 			// Обработка
-			for (int i = 1; i < indices.Count; i++)
+			if (Mode > 1)
+				goto align23;
+
+			for (int i = 1; i < indices.Length; i++)
 				{
 				// Выбор кривой
-				LineNamesList.SelectedIndices.Clear ();
-				LineNamesList.SelectedIndices.Add (indices[i]);
+				/*LineNamesList.SelectedIndices.Clear ();*/
+				ClearSelectedIndices ();
+				/*LineNamesList.SelectedIndices.Add (indices[i]);*/
+				SelectIndex (indices[i]);
 
 				// Установка параметров
-				if (InRow)
+				/*if (InRow)*/
+				switch (Mode)
 					{
-					LeftOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageLeftOffset +
-						dd.GetStyle (indices[i - 1]).DiagramImageWidth;
-					TopOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageTopOffset;
-					}
-				else
-					{
-					LeftOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageLeftOffset;
-					TopOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageTopOffset +
-						dd.GetStyle (indices[i - 1]).DiagramImageHeight;
+					case 0:
+						LeftOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageLeftOffset +
+							dd.GetStyle (indices[i - 1]).DiagramImageWidth;
+						TopOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageTopOffset;
+						break;
+
+					case 1:
+						LeftOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageLeftOffset;
+						TopOffset.Value = dd.GetStyle (indices[i - 1]).DiagramImageTopOffset +
+							dd.GetStyle (indices[i - 1]).DiagramImageHeight;
+						break;
 					}
 				}
 
-			// Завершено
-			indices.Clear ();
+			/*goto alignEnd;*/
+
+		align23:
+			for (int i = 0; i < indices.Length; i++)
+				{
+				// Выбор кривой
+				/*LineNamesList.SelectedIndices.Clear ();
+				LineNamesList.SelectedIndices.Add (indices[i]);*/
+				ClearSelectedIndices ();
+				SelectIndex (indices[i]);
+
+				// Установка параметров
+				switch (Mode)
+					{
+					case 2:
+						LeftOffset.Value = 0;
+						TopOffset.Value = 0;
+						break;
+
+					case 3:
+						LeftOffset.Value = 0;
+						TopOffset.Value = 0;
+						ImageWidth.Value = DiagramBox.Width;
+						ImageHeight.Value = DiagramBox.Height;
+						break;
+					}
+				}
+
+			/*// Завершено
+			alignEnd:
+			indi ces.Clear ();*/
 			}
 
 		private void AutoTextOffset_CheckedChanged (object sender, EventArgs e)
@@ -2096,7 +2294,7 @@ namespace RD_AAOW
 			UniSettings_ValueChanged (OyPrimaryDiv, null);
 			}
 
-		// Изменение числа делений
+		// Изменение цветов
 		private void AxesColorTurnOff_Click (object sender, EventArgs e)
 			{
 			AxesColor.BackColor = DiagramStyle.ImageBackColor;
@@ -2107,6 +2305,128 @@ namespace RD_AAOW
 			ColorSelectDialog.Color = AxesColor.BackColor;
 			ColorSelectDialog.ShowDialog ();
 			AxesColor.BackColor = ColorSelectDialog.Color;
+			}
+
+		private void TextColorFromCurve_Click (object sender, EventArgs e)
+			{
+			ColorFromCurve (0);
+			}
+
+		private void AxeColorFromCurve_Click (object sender, EventArgs e)
+			{
+			ColorFromCurve (1);
+			}
+
+		// Управление списком выбранных индексов объектов
+		private int[] GetSelectedIndices ()
+			{
+			selectedIndices.Clear ();
+			/*for (int i = 0; i < LineNamesList.SelectedIndices.Count; i++)
+				selectedIndices.Add (LineNamesList.SelectedIndices[i]);*/
+			for (int i = objectsOffset; i < MList.DropDownItems.Count; i++)
+				if (((ToolStripMenuItem)MList.DropDownItems[i]).Checked)
+					selectedIndices.Add (i - objectsOffset);
+
+			if (selectedIndices.Count > 0)
+				selectedIndex = selectedIndices[0];
+			else
+				selectedIndex = -1;
+
+			return selectedIndices.ToArray ();
+			}
+
+		private void ClearSelectedIndices ()
+			{
+			selectedIndices.Clear ();
+			selectedIndex = -1;
+			for (int i = objectsOffset; i < MList.DropDownItems.Count; i++)
+				((ToolStripMenuItem)MList.DropDownItems[i]).Checked = false;
+			}
+
+		// Index здесь считается с нуля, аналогично списку объектов
+		private void SelectIndex (int Index)
+			{
+			if ((Index < 0) || (Index >= MList.DropDownItems.Count - objectsOffset))
+				return;
+
+			ToolStripMenuItem item = (ToolStripMenuItem)MList.DropDownItems[Index + objectsOffset];
+			if (item.Checked)
+				return;
+
+			selectedIndices.Add (Index);
+			selectedIndices.Sort ();
+			selectedIndex = Index;
+			item.Checked = true;
+
+			LineNames_SelectedIndexChanged (null, null);
+			}
+
+		// Управление списком объектов
+		private void ClearObjects ()
+			{
+			int count = MList.DropDownItems.Count;
+			for (int i = objectsOffset; i < count; i++)
+				MList.DropDownItems.RemoveAt (objectsOffset);
+			}
+
+		private void AddObject (string Name)
+			{
+			ToolStripMenuItem item = (ToolStripMenuItem)MList.DropDownItems.Add (Name, null,
+				LineNames_SelectedIndexChanged);
+			item.CheckOnClick = true;
+			}
+
+		private void InsertObject (int Offset, string Name)
+			{
+			ToolStripMenuItem item = new ToolStripMenuItem (Name, null, LineNames_SelectedIndexChanged);
+			MList.DropDownItems.Insert (objectsOffset + Offset, item);
+			item.CheckOnClick = true;
+			}
+
+		private void MSelectAll_Click (object sender, EventArgs e)
+			{
+			for (int i = 0; i < MList.DropDownItems.Count - objectsOffset; i++)
+				SelectIndex (i);
+			MList.ShowDropDown ();
+			}
+
+		private void MDeselectAll_Click (object sender, EventArgs e)
+			{
+			ClearSelectedIndices ();
+			Redraw ();
+			MList.ShowDropDown ();
+			}
+
+		// Получение цвета шрифта от линии кривой
+		private void ColorFromCurve (byte Mode)
+			{
+			/*// Сохранение списка обрабатываемых индексов
+			List<int> ind ices = [];
+			for (int i = 0; i < LineNamesList. SelectedIndices.Count; i++)
+				indi ces.Add (LineNamesList.SelectedIndices[i]);*/
+			int[] indices = GetSelectedIndices ();
+
+			// Обработка
+			for (int i = 0; i < indices.Length; i++)
+				{
+				// Выбор кривой
+				/*LineNamesList.SelectedIndices.Clear ();
+				LineNamesList.SelectedIndices.Add (indices[i]);*/
+				ClearSelectedIndices ();
+				SelectIndex (indices[i]);
+
+				// Установка параметров
+				switch (Mode)
+					{
+					case 0:
+						TextFontColor.BackColor = LineColor.BackColor;
+						break;
+
+					case 1:
+						AxesFontColor.BackColor = LineColor.BackColor;
+						break;
+					}
+				}
 			}
 
 		// Изменение шрифтов подписей
@@ -2238,13 +2558,13 @@ namespace RD_AAOW
 			MainTabControl.Height = DiagramBox.Top - MainTabControl.Top;
 			}
 
-		// Список кривых
+		/*// Список кривых
 		private void LineNamesList_MouseHover (object sender, EventArgs e)
 			{
 			LineNamesList_MouseClick (null, null);
-			}
+			}*/
 
-		private void LineNamesList_MouseClick (object sender, MouseEventArgs e)
+		/*private void LineNamesList_MouseClick (object sender, MouseEventArgs e)
 			{
 			if (LineNamesList.Height != LineNamesList.ItemHeight * 10 + 4)
 				{
@@ -2254,24 +2574,22 @@ namespace RD_AAOW
 				// щелчке мышью
 				selecting = true;
 
-				if (LineNamesList.Items.Count >= selectedInidces.Count) // По неизвестной причине последний элемент в selectedIndices
-																		// не удаляется при опустошении LineNamesList.Items
+				if (LineNamesList.Items.Count >= selectedIndices.Count)		// По неизвестной причине последний элемент в selectedIndices
+																			// не удаляется при опустошении LineNamesList.Items
 					{
 					LineNamesList.SelectedIndices.Clear ();
-					for (int i = 0; i < selectedInidces.Count; i++)
-						{
-						LineNamesList.SelectedIndices.Add (selectedInidces[i]);
-						}
+					for (int i = 0; i < selectedIndices.Count; i++)
+						LineNamesList.SelectedIndices.Add (selectedIndices[i]);
 					}
 
 				selecting = false;
 				}
-			}
+			}*/
 
-		private void LineNamesList_Leave (object sender, EventArgs e)
+		/*private void LineNamesList_Leave (object sender, EventArgs e)
 			{
 			LineNamesList.Height = LineNamesList.ItemHeight * 1 + 4;
-			}
+			}*/
 
 		#endregion
 		}

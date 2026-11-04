@@ -421,6 +421,7 @@ the corresponding menu.
 - Operations; includes submenu:
     - Add curve or object (`[F5]`);
     - Parametric curves addition (`[Ctrl]` + `[F5]`);
+    - Hide / show curve or object (`[Ctrl]` + `[H]`);
     - Change curve data columns (`[F6]`);
     - Merge curves or objects (`[F7]`);
     - Remove curves or objects (`[F8]`);
@@ -437,7 +438,10 @@ the corresponding menu.
 - Help; includes submenu:
     - About the app / help (`[F1]`);
     - Select the interface language (list).
-    - Associate files.
+- Curves and objects; includes submenu:
+    - Select all (`[Ctrl]` + `[A]`);
+    - Clear selection (`[Ctrl]` + `[D]`);
+    - List of available curves and objects.
 
 [:arrow_double_up:](#contents)
 

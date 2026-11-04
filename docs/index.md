@@ -1,5 +1,5 @@
 # GraphArray: complete user guide
-> **ƒ** &nbsp;Nicolay B. aka RD_AAOW, Соля́ников Я.; 28.04.2025; 17:42
+> **ƒ** &nbsp;Nicolay B. aka RD_AAOW, Соля́ников Я.; 4.11.2026; 18:12
 
 # Contents
 - [General information](#general-information)

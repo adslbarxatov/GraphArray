@@ -140,13 +140,12 @@ The main elements of the window:
 
 The main window of the app during operation is shown in the figure below:
 
-<img src="/GraphArray/img/2_02.png" />
+<img src="/GraphArray/img/2_02_en.png" />
 
 All changes made by user in the diagram parameters field are immediately reflected in the diagram in relation
-to those curves and graphical objects that are marked in the list of curves and objects and highlighted
-in gray in the diagram field. The set of editable curves and objects can be arbitrary. Adding to the editable
-group is performed in the same way as selecting a group of files in Windows Explorer, i.e. using left mouse button
-and `[Ctrl]` and `[Shift]` keys. Thus, the user can fine-tune parameters quickly and efficiently.
+to those curves and graphical objects that are marked in the list of curves and objects (in the window menu) and highlighted
+in gray in the diagram field. The set of editable curves and objects can be arbitrary.
+Thus, the user can fine-tune parameters quickly and efficiently.
 
 Each control in the parameter field, tabs, as well as app menu items are provided with hints. To call them,
 it’s enough to hold the cursor over any element for two seconds. If there is no movement, the tooltip is displayed for 30 seconds.
